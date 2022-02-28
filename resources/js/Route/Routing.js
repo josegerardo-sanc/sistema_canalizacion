@@ -41,8 +41,6 @@ const mapStateToProps = ({ Auth }) => {
 
 const AllowAccessAuth = (props) => {
     const { component: Component, Auth, ...rest } = props;
-
-    console.log(Auth)
     if (Auth.auth) {
         return (
             <Fragment>

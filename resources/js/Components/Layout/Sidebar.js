@@ -91,10 +91,18 @@ const Administrador = () => {
                     <span>Inicio</span>
                 </Navitem>
             </li>
+            {/*
             <li>
                 <Navitem to={'/habitations'}>
                     <i className="fas fa-door-open"></i>
                     <span>Habitaciones</span>
+                </Navitem>
+            </li>
+            */}
+            <li>
+                <Navitem to={`/user`}>
+                    <i className="fas fa-users"></i>
+                    <span>Usuario</span>
                 </Navitem>
             </li>
         </Fragment>
@@ -109,8 +117,6 @@ const Navitem = ({ to, activeOnlyWhenExact = true, children }) => {
 
 
     let has_arrow_a = document.getElementsByClassName('has-arrow');
-
-    console.log(has_arrow_a)
 
     has_arrow_a.length > 0 && has_arrow_a.forEach(element => {
         element.classList.remove('active', 'mm-active');

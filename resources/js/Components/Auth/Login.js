@@ -10,7 +10,6 @@ import { pathApi } from '../../env'
 
 /**helpers */
 import AlertMessage from "../../Helpers/AlertMessage";
-import Preloader from "../../Helpers/Preloader";
 
 const Login = ({
     saveSesionAuth,
@@ -18,7 +17,9 @@ const Login = ({
 }) => {
 
     const [loading, setLoading] = useState(false);
-    const [data, setData] = useState({});
+    const [data, setData] = useState({
+        'remember_session': false
+    });
 
     const handleChange = (e) => {
 
@@ -69,7 +70,6 @@ const Login = ({
     return (
 
         <Fragment>
-            <Preloader></Preloader>
             <AlertMessage></AlertMessage>
             <form className="form-horizontal" action="index">
                 <div className="form-group">
@@ -83,7 +83,7 @@ const Login = ({
                 </div>
 
                 <div className="custom-control custom-checkbox">
-                    <input name="remember_session" onChange={handleChange} type="checkbox" className="custom-control-input" id="remember_session" />
+                    <input name="remember_session" onChange={handleChange} type="checkbox" className="custom-control-input" id="remember_session" defaultChecked={false} />
                     <label className="custom-control-label" htmlFor="remember_session">Permanecer registrado</label>
                     {/*
                     {data.remember_session && (

@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 
 /*Componets */
 import Login from '../Components/Auth/Login';
-
+import Preloader from "../Helpers/Preloader";
 
 import logo from '../Components/Layout/logo-fortin-large.png'
 
@@ -12,9 +12,10 @@ const ViewLogin = () => {
 
     return (
         <Fragment>
+            <Preloader></Preloader>
             <div className="containerLogin">
                 <div className="row justify-content-center align-center centerLogin">
-                    <div className="bg-white col-lg-6 col-xl-5">
+                    <div className="bg-white col-lg-6 col-xl-4">
                         <div className="bg-login text-center">
                             <div className="bg-login-overlay"></div>
                             <div className="position-relative">

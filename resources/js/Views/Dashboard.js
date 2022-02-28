@@ -8,25 +8,28 @@ import TitleModule from '../Helpers/TitleModule'
 import Navar from "../Components/Layout/Navar";
 import Sidebar from "../Components/Layout/Sidebar";
 import Footer from "../Components/Layout/Footer";
-
-
-
+import Preloader, { LoaderPreloader } from '../Helpers/Preloader'
 /**actions redux */
 import { verifySessionAuth } from '../Redux/Actions/Auth'
 
+/**resource */
+import { init } from '../Resource/app.min.js'
+
+
 
 const Dashboard = (props) => {
-    console.log(props)
     let location = useLocation();
 
     useEffect(() => {
-        //console.log(location.pathname)
-        //props.verifySessionAuth();
+        setTimeout(() => {
+            init();
+        }, 500);
     }, [location.pathname]);
 
     return (
-
         <Fragment>
+            <LoaderPreloader></LoaderPreloader>
+            <Preloader></Preloader>
             <div className="container-fluid">
                 <div id="layout-wrapper">
                     <Navar></Navar>

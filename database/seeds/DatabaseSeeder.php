@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'jose gerardo',
                 'last_name' => 'sanchez',
                 'second_last_name' => 'alvarado',
-                'email' => 'admin@gmail.com',
+                'email' => 'sanchezalvaradojose0@gmail.com',
                 'phone' => '9321078928',
                 'verification_link' => '',
                 'password' => bcrypt('password')

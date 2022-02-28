@@ -7,15 +7,12 @@ use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-
 use JWTAuth;
-use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
-use Tymon\JWTAuth\Exceptions\TokenExpiredException;
-use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Middleware\JwtMiddleware;
 
@@ -48,18 +45,21 @@ class AuthController extends Controller
      */
     public function authenticate(Request $request)
     {
-
-        $credentials = $request->only('email', 'password');
-
         /*
         return response()->json([
             empty($request->get('remember_session')) ? false : true,
             $request->all()
         ]);*/
 
-        $validator = Validator::make($credentials, [
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
+            'remember_session' => 'required|boolean',
+        ], [
+            'email.required' => 'El correo es obligatorio.',
+            'email.email' => 'Correo electrónico no válido.',
+            'password.required' => 'La contraseña es obligatoria',
+            'remember_session.boolean' => 'Marque la casilla.',
         ]);
 
         /*
@@ -77,7 +77,7 @@ class AuthController extends Controller
             ]);
         }
 
-
+        $credentials = $request->only('email', 'password');
         $user = User::where('email', $credentials['email'])->first();
         //$token = Auth::login($user);
         // $users = DB::table('users')
@@ -106,7 +106,7 @@ class AuthController extends Controller
 
         try {
             if ($token = JWTAuth::attempt($credentials)) {
-                $remember_session = $request->has('remember_session') && $request->get('remember_session') === true ? true : false;
+                $remember_session = $request->get('remember_session') === true ? true : false;
                 $data = $this->respondWithToken($token, $user, $remember_session);
                 $name = $user['name'];
                 return response()->json(['data' => $data, 'status' => 200, 'message' => "Qué bueno verte de nuevo {$name} ."]);
@@ -116,9 +116,9 @@ class AuthController extends Controller
                     'status' => 400,
                 ]);
             }
-        } catch (JWTException $e) {
+        } catch (\Exception $e) {
             return response()->json([
-                'message' => $this->ERROR_SERVER_MSG,
+                'message' => $this->ERROR_SERVER_MSG . " ," . $e->getMessage(),
                 'status' => 400
             ]);
         }
@@ -159,9 +159,9 @@ class AuthController extends Controller
      */
 
 
-    #60minutos*24horas=1 dia "1440"
-    #((60 * 24) * 7) (minutos*horas)*dias
-    #'ttl' => env('JWT_TTL', 40320), default
+    #60minutos*24horas="1440"  (1 dia)
+    #((60minutos * 24horas) * 7dias *4semanas)=40320  "1 mes"
+    #'ttl' => env('JWT_TTL', 40320) default
     protected function respondWithToken($token, $user, $remember_session = null)
     {
         $userData = $this->getDataUser($user);

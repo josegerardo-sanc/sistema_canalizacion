@@ -85,25 +85,34 @@ const Administrador = () => {
 
     return (
         <Fragment>
+            {/*
             <li>
                 <Navitem to={''}>
                     <i className="fas fa-grip-horizontal"></i>
                     <span>Inicio</span>
                 </Navitem>
-            </li>
-            {/*
-            <li>
-                <Navitem to={'/habitations'}>
-                    <i className="fas fa-door-open"></i>
-                    <span>Habitaciones</span>
-                </Navitem>
-            </li>
+            </li> 
             */}
             <li>
                 <Navitem to={`/user`}>
                     <i className="fas fa-users"></i>
-                    <span>Usuario</span>
+                    <span>Usuarios</span>
                 </Navitem>
+            </li>
+            <li>
+                <Navitem to={'/service'}>
+                    <i className="fas fa-concierge-bell"></i>
+                    <span>Habitaciones</span>
+                </Navitem>
+            </li>
+            <li>
+                <a className="has-arrow waves-effect">
+                    <i className="mdi mdi-flip-horizontal"></i>
+                    <span>Configurar correos</span>
+                </a>
+                <ul className="sub-menu mm-collapse" aria-expanded="false">
+                    <li><Navitem to={`/service/config/smtp`}>SMTP</Navitem></li>
+                </ul>
             </li>
         </Fragment>
     )

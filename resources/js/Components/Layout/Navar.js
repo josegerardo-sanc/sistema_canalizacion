@@ -67,13 +67,13 @@ const Navar = ({ Auth, fetchRequest, signOffAuth }) => {
                                 </form>
                             </div>
                         </div>
-                        */}
-
                         <div className="dropdown d-none d-lg-inline-block ml-1">
                             <button type="button" className="btn header-item noti-icon waves-effect" data-toggle="fullscreen">
                                 <i className="mdi mdi-fullscreen"></i>
                             </button>
                         </div>
+                        */}
+
 
                         {/*
                         <Notifications></Notifications>

@@ -13,7 +13,7 @@ const Preloader = ({ Preloader }) => {
 
 export const LoaderPreloader = () => {
     return (
-        <div id="preloader">
+        <div id="preloader" className="LoaderPreloader">
             <div id="status">
                 <div className="spinner-chase">
                     <div className="chase-dot"></div>

@@ -12,19 +12,19 @@ import Preloader, { LoaderPreloader } from '../Helpers/Preloader'
 /**actions redux */
 import { verifySessionAuth } from '../Redux/Actions/Auth'
 
-/**resource */
-import { init } from '../Resource/app.min.js'
-
-
-
 const Dashboard = (props) => {
     let location = useLocation();
 
+
     useEffect(() => {
         setTimeout(() => {
-            init();
-        }, 500);
-    }, [location.pathname]);
+            document.getElementsByClassName('LoaderPreloader')[0].style.display = 'none';
+        }, 2000);
+        return () => {
+            document.getElementsByClassName('LoaderPreloader')[0].style.display = 'block';
+        }
+    }, [])
+
 
     return (
         <Fragment>

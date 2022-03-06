@@ -9,6 +9,7 @@ import { pathDashboard } from "../env";
 /**views */
 import Dashboard from "../Views/Dashboard";
 import Login from '../Views/Login'
+import ViewRecoveryPassword from '../Views/ViewRecoveryPassword'
 import NoMatch from "../Helpers/NoMatch";
 
 /**Routing */
@@ -22,6 +23,7 @@ const Routing = () => {
             <Switch>
                 <DenyAccessAuthenticated exact path="/" component={Login} />
                 <DenyAccessAuthenticated path="/login" component={Login} />
+                <DenyAccessAuthenticated path="/recovery-password" component={ViewRecoveryPassword} />
                 <AllowAccessAuthenticated exact path={pathDashboard} component={() => <h1>Panel administrativo</h1>} />
                 <AllowAccessAuthenticated path={`${pathDashboard}/user`} component={RoutingUser} />
                 <AllowAccessAuthenticated path={`${pathDashboard}/service`} component={RoutingService} />

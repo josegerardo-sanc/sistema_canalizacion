@@ -17,6 +17,9 @@ use App\HistoryLog;
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
 //use Maatwebsite\Excel\Excel;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\MessageResetPassword;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -644,6 +647,44 @@ class UserController extends Controller
                 'status' => 400,
                 'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage()
             ]);
+        }
+    }
+
+    public function recoveryPassword(Request $request)
+    {
+        $email = $request->get('email');
+        $user = User::where('email', '=', $email)->first();
+
+        if (empty($user)) {
+            return json_encode([
+                'status' => 400,
+                'message' => "No hay una cuenta con {$email}."
+            ]);
+        }
+
+        try {
+            $password = Str::random(10);
+            $userData = $this->_authController->getDataUser($user);
+            $userData['newPassword'] = $password;
+            /**save user */
+            $user->password = Hash::make($password);
+            $user->save();
+
+            Mail::to($email)->send(new MessageResetPassword($userData));
+            return response()->json(
+                [
+                    'status' => 200,
+                    'message' => "Busca el correo en la bandeja de entrada o spam."
+                ]
+            );
+        } catch (\Exception $e) {
+            return response()->json(
+                [
+                    'status' => 400,
+                    'message' => $this->ERROR_SERVER_MSG,
+                    $e->getMessage()
+                ]
+            );
         }
     }
 }

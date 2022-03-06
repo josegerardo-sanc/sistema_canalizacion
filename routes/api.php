@@ -18,8 +18,6 @@ Route::group(['middleware' => ['jwt.verify'], 'prefix' => 'v1'], function () {
     Route::post('/getUsers', 'User\UserController@getUsers');
     Route::get('/deleteUser/{id}', 'User\UserController@deleteUser');
     Route::post('/updateAccount', 'User\UserController@updateAccount');
-
-
     #app/Http/Controllers/ConfigEmailController.php
     Route::post('/saveConfigEmail', 'ConfigEmailController@saveConfigEmail');
     Route::post('/getConfigEmail', 'ConfigEmailController@getConfigEmail');
@@ -30,4 +28,5 @@ Route::group(['middleware' => ['jwt.verify'], 'prefix' => 'v1'], function () {
 });
 Route::prefix('v1')->group(function () {
     Route::post('/authenticate', 'AuthController@authenticate');
+    Route::post('/recoveryPassword', 'User\UserController@recoveryPassword');
 });

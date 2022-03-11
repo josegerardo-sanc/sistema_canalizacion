@@ -15,6 +15,17 @@ import imageProfileDefault from './imageProfileDefault.png'
 import logoSystem from './Logo.png'
 import logoSystemLarge from './logo-fortin-large.png'
 
+const initLeftMenuCollapse = (event) => {
+    event.preventDefault();
+    $('body').toggleClass('sidebar-enable');
+    if ($(window).width() >= 992) {
+        $('body').toggleClass('vertical-collpsed');
+    } else {
+        $('body').removeClass('vertical-collpsed');
+    }
+}
+
+
 const Navar = ({ Auth, fetchRequest, signOffAuth }) => {
 
     const { user, token } = Auth;
@@ -41,6 +52,8 @@ const Navar = ({ Auth, fetchRequest, signOffAuth }) => {
         }
         */
     }
+
+
 
     return (
         <header id="page-topbar">
@@ -244,7 +257,9 @@ const LogoSystem = () => {
                     </a>
                 </div>
 
-                <button type="button" className="btn btn-sm px-3 font-size-16 header-item toggle-btn waves-effect" id="vertical-menu-btn">
+                <button
+                    onClick={initLeftMenuCollapse}
+                    type="button" className="btn btn-sm px-3 font-size-16 header-item toggle-btn waves-effect">
                     <i className="fa fa-fw fa-bars"></i>
                 </button>
             </div>

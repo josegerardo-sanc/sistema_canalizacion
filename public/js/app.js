@@ -77127,6 +77127,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+var initLeftMenuCollapse = function initLeftMenuCollapse(event) {
+  event.preventDefault();
+  $('body').toggleClass('sidebar-enable');
+
+  if ($(window).width() >= 992) {
+    $('body').toggleClass('vertical-collpsed');
+  } else {
+    $('body').removeClass('vertical-collpsed');
+  }
+};
+
 var Navar = function Navar(_ref) {
   var Auth = _ref.Auth,
       fetchRequest = _ref.fetchRequest,
@@ -77377,9 +77388,9 @@ var LogoSystem = function LogoSystem() {
     height: "50",
     className: "bg-white"
   })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+    onClick: initLeftMenuCollapse,
     type: "button",
-    className: "btn btn-sm px-3 font-size-16 header-item toggle-btn waves-effect",
-    id: "vertical-menu-btn"
+    className: "btn btn-sm px-3 font-size-16 header-item toggle-btn waves-effect"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
     className: "fa fa-fw fa-bars"
   }))));
@@ -77495,6 +77506,25 @@ var Sidebar = function Sidebar(_ref) {
   }, "Menu"), MenuItems())))));
 };
 
+var handleCollapse = function handleCollapse(e) {
+  e.preventDefault();
+  var subMenu_a_menu = document.querySelectorAll('.sub-menu_a_menu');
+  subMenu_a_menu.length > 0 && subMenu_a_menu.forEach(function (element) {
+    element.classList.remove("active", "mm-active");
+    element.nextSibling.classList.remove("mm-show");
+  });
+
+  if (e.currentTarget.classList.contains("active_static") == false) {
+    subMenu_a_menu.length > 0 && subMenu_a_menu.forEach(function (element) {
+      element.classList.remove("active_static");
+    });
+    e.currentTarget.classList.add("active", "mm-active", "active_static");
+    e.currentTarget.nextSibling.classList.add("mm-show");
+  } else {
+    e.currentTarget.classList.remove("active_static");
+  }
+};
+
 var Administrador = function Administrador() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Navitem, {
     to: "/user"
@@ -77505,7 +77535,8 @@ var Administrador = function Administrador() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
     className: "fas fa-concierge-bell"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Habitaciones"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-    className: "has-arrow waves-effect"
+    className: "has-arrow waves-effect sub-menu_a_menu",
+    onClick: handleCollapse
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
     className: "mdi mdi-flip-horizontal"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Configurar correos")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
@@ -77523,9 +77554,10 @@ var Navitem = function Navitem(_ref2) {
       children = _ref2.children;
   // console.log(typeof to)
   var has_arrow_a = document.getElementsByClassName('has-arrow');
+  console.log(has_arrow_a.length);
   has_arrow_a.length > 0 && has_arrow_a.forEach(function (element) {
     element.classList.remove('active', 'mm-active');
-    element.children[1].classList.remove('active', 'mm-active'); //element.parentNode.children[1].classList.add('sub-menu', 'mm-collapse');
+    element.children[1].classList.remove('active', 'mm-active');
   });
 
   if (_typeof(to) === 'object') {

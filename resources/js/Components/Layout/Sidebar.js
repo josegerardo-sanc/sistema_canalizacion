@@ -81,8 +81,25 @@ const Sidebar = ({ Auth }) => {
 
 }
 
-const Administrador = () => {
+const handleCollapse = (e) => {
+    e.preventDefault();
+    let subMenu_a_menu = document.querySelectorAll('.sub-menu_a_menu');
+    subMenu_a_menu.length > 0 && subMenu_a_menu.forEach(element => {
+        element.classList.remove("active", "mm-active")
+        element.nextSibling.classList.remove("mm-show");
+    });
+    if (e.currentTarget.classList.contains("active_static") == false) {
+        subMenu_a_menu.length > 0 && subMenu_a_menu.forEach(element => {
+            element.classList.remove("active_static")
+        });
+        e.currentTarget.classList.add("active", "mm-active", "active_static")
+        e.currentTarget.nextSibling.classList.add("mm-show");
+    } else {
+        e.currentTarget.classList.remove("active_static")
+    }
+}
 
+const Administrador = () => {
     return (
         <Fragment>
             {/*
@@ -99,14 +116,14 @@ const Administrador = () => {
                     <span>Usuarios</span>
                 </Navitem>
             </li>
-            <li>
-                <Navitem to={'/service'}>
+            <li >
+                <Navitem to={'/service'} >
                     <i className="fas fa-concierge-bell"></i>
                     <span>Habitaciones</span>
                 </Navitem>
             </li>
-            <li>
-                <a className="has-arrow waves-effect">
+            <li >
+                <a className="has-arrow waves-effect sub-menu_a_menu" onClick={handleCollapse}>
                     <i className="mdi mdi-flip-horizontal"></i>
                     <span>Configurar correos</span>
                 </a>
@@ -121,16 +138,12 @@ const Administrador = () => {
 
 
 const Navitem = ({ to, activeOnlyWhenExact = true, children }) => {
-
     // console.log(typeof to)
-
-
     let has_arrow_a = document.getElementsByClassName('has-arrow');
-
+    console.log(has_arrow_a.length)
     has_arrow_a.length > 0 && has_arrow_a.forEach(element => {
         element.classList.remove('active', 'mm-active');
         element.children[1].classList.remove('active', 'mm-active');
-        //element.parentNode.children[1].classList.add('sub-menu', 'mm-collapse');
     });
 
 

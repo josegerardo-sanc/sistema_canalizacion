@@ -12,6 +12,7 @@ use App\Traits\Helper;
 use App\Services;
 use App\ListServices;
 use App\ImagesService;
+use Mockery\Undefined;
 use PhpOffice\PhpSpreadsheet\Calculation\Web\Service;
 
 class ServiceController extends Controller
@@ -34,6 +35,7 @@ class ServiceController extends Controller
             'id_service' => 5
         ]);
         */
+
         try {
             //proceso
             $_validator = $this->validationService($request);
@@ -45,6 +47,9 @@ class ServiceController extends Controller
 
             $service = null;
             $id_service = null;
+            $file = null;
+            $saveImg = true;
+
             if ($request->has('id_service')) {
                 $id_service = $request->get('id_service');
                 $service = Services::where('id_service', '=', $id_service)->first();
@@ -54,6 +59,21 @@ class ServiceController extends Controller
                         'message' => "El servicio con ID: {$id_service} no se encontro en la base de datos"
                     ]);
                 }
+                //////////////
+                $saveImg = false;
+                if (
+                    isset($_FILES['file_primary']) &&
+                    $_FILES['file_primary'] != "undefined" &&
+                    $request->hasFile('file_primary')
+                ) {
+                    $file = $_FILES['file_primary'];
+                    $saveImg = true;
+                    $exists = Storage::disk('public')->exists($service->path);
+                    if ($exists) {
+                        Storage::delete('public/' . $service->path);
+                    }
+                }
+                //////////////
             } else {
                 $service = new Services();
 
@@ -63,8 +83,10 @@ class ServiceController extends Controller
                         'message' => "La imagen principal es obligatoria."
                     ]);
                 }
-
                 $file = $_FILES['file_primary'];
+            }
+
+            if (!empty($file)) {
                 $allowedFormats =  array(
                     'jpg', 'jpeg', 'png'
                 );
@@ -102,9 +124,10 @@ class ServiceController extends Controller
             $service->price = $price;
             $service->promotion = $promotion;
 
-
-            $file_primary_new = $request->file('file_primary')->store('servicios', 'public');
-            $service->path = $file_primary_new;
+            if ($saveImg) {
+                $file_primary_new = $request->file('file_primary')->store('servicios', 'public');
+                $service->path = $file_primary_new;
+            }
 
             $service->save();
 

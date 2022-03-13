@@ -25,8 +25,18 @@ Route::group(['middleware' => ['jwt.verify'], 'prefix' => 'v1'], function () {
 
     /**exports */
     Route::post('/exportUsers', 'User\UserController@exportUsers');
+
+    /**service */
+    #app/Http/Controllers/Service/ServiceController.php
+    Route::post('/saveService', 'Service\ServiceController@saveService');
+    Route::post('/updateStatusService', 'Service\ServiceController@updateStatusService');
+    Route::get('/deleteService/{id}', 'Service\ServiceController@deleteService');
 });
 Route::prefix('v1')->group(function () {
     Route::post('/authenticate', 'AuthController@authenticate');
     Route::post('/recoveryPassword', 'User\UserController@recoveryPassword');
+
+    /**service */
+    #app/Http/Controllers/Service/ServiceController.php
+    Route::post('/getService', 'Service\ServiceController@getService');
 });

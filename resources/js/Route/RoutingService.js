@@ -9,7 +9,8 @@ import {
 import { connect } from "react-redux";
 
 /**views */
-import ViewCatalog from "../Views/Dashboard/ViewService";
+import ViewAdd from "../Views/Dashboard/Services/ViewService";
+import ViewServiceList from "../Views/Dashboard/Services/ViewServiceList";
 import ViewConfigEmail from "../Views/Dashboard/ViewConfigEmail";
 
 /*#{ `${RutaDashboard}/service/habitations` }*/
@@ -24,8 +25,11 @@ const RoutingHabitations = ({ Auth }) => {
     return (
         <Fragment>
             <Switch>
-                <Route exact path={`${match.path}`}>
-                    <ViewCatalog></ViewCatalog>
+                <Route exact path={`${match.path}`} component={ViewAdd} />
+
+                <Route path={`${match.path}/add`} component={ViewAdd} />
+                <Route path={`${match.path}/list`}>
+                    <ViewServiceList />
                 </Route>
                 {/*#{ `${RutaDashboard}/service/config/smtp` } */}
                 <Route exact path={`${match.path}/config/smtp`}>

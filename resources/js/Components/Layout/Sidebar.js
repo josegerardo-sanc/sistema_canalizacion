@@ -117,10 +117,14 @@ const Administrador = () => {
                 </Navitem>
             </li>
             <li >
-                <Navitem to={'/service'} >
+                <a className="has-arrow waves-effect sub-menu_a_menu" onClick={handleCollapse}>
                     <i className="fas fa-concierge-bell"></i>
-                    <span>Habitaciones</span>
-                </Navitem>
+                    <span>Productos y servicios</span>
+                </a>
+                <ul className="sub-menu mm-collapse" aria-expanded="false">
+                    <li><Navitem to={'/service'} >Nuevo</Navitem></li>
+                    <li><Navitem to={'/service/list'} >Listar</Navitem></li>
+                </ul>
             </li>
             <li >
                 <a className="has-arrow waves-effect sub-menu_a_menu" onClick={handleCollapse}>

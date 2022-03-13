@@ -90,7 +90,7 @@ const Login = ({
                     <div className="input-group mb-0">
                         <div className="input-group-prepend">
                             <span className="input-group-text" >
-                                <i className="fas fa-at"></i>
+                                <i class="fas fa-envelope"></i>
                             </span>
                         </div>
                         <input

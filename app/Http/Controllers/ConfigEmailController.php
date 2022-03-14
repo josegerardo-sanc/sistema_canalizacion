@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Config;
-
+use Illuminate\Validation\Rule;
 
 use App\ConfigEmails;
 
@@ -114,7 +114,11 @@ class ConfigEmailController extends Controller
             'puerto' => 'required|numeric',
             'email_remitente' => 'required|string|max:100',
             'name_remitente' => 'required|string|max:100',
-            'encryption' => 'required|string|max:10'
+            'encryption' => 'required|string|max:10',
+            'encryption' => [
+                'required',
+                Rule::in(['tls']),
+            ],
         ];
 
         $validator = Validator::make($request->all(), $validations, [
@@ -132,7 +136,7 @@ class ConfigEmailController extends Controller
             'name_remitente.required' => 'El nombre del remitente es obligatorio.',
             'name_remitente.max' => 'El nombre del remitente debe contener como máximo 100 caracteres.',
             'encryption.required' => 'La encryption es obligatorio.',
-            'encryption.max' => 'La encryption debe contener como máximo 10 caracteres.',
+            'encryption.in' => 'Los tipos de encryption son tls.',
         ]);
 
         $validator = $validator->fails() ? json_decode($validator->errors(), true) : [];

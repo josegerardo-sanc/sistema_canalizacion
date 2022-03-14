@@ -156,8 +156,9 @@ const Smtp = ({
                             onChange={onChangeInputData}
                             className="form-control"
                             name="encryption"
-                            value={dataForm.encryption || "tls"}
+                            value={dataForm.encryption || "0"}
                         >
+                            <option value="0" disabled>Seleccione una opción</option>
                             <option value="tls">TLS</option>
                         </select>
                     </div>

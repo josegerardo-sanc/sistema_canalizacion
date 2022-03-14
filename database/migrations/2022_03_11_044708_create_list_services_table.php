@@ -17,8 +17,8 @@ class CreateListServicesTable extends Migration
             $table->bigIncrements('id_list_service');
             $table->unsignedBigInteger('id_service');
             $table->foreign('id_service')->references('id_service')->on('services')->onDelete('cascade');
-            $table->string('service');
-            $table->boolean('active');
+            $table->unsignedBigInteger('id_catalog');
+            $table->foreign('id_catalog')->references('id_catalog')->on('catalogs');
         });
     }
 

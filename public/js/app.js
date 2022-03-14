@@ -435,7 +435,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.thumbnail {\n\twidth: 120px;\n\theight: 120px;\n\tdisplay: inline-block;\n\tvertical-align: middle;\n\tborder: solid 2px #CCC;\n\tbackground-size: cover;\n\tposition: relative;\n}\n\n.thumbnail:not(:last-child) {\n\tmargin-right: 5px;\n}\n\n.thumbnail .close-button {\n\twidth: 20px;\n\theight: 20px;\n\tbackground-color: black;\n\tcolor: white;\n\ttext-align: center;\n\tposition: absolute;\n\ttop: 5px;\n\tright: 5px;\n\tborder-radius: 100px;\n\tcursor: pointer;\n}", ""]);
+exports.push([module.i, "\n.thumbnail {\n\twidth: 120px;\n\theight: 120px;\n\tdisplay: inline-block;\n\tvertical-align: middle;\n\tborder: solid 2px #CCC;\n\tbackground-size: cover;\n\tposition: relative;\n\t-o-object-fit: cover;\n\t   object-fit: cover;\n}\n\n.thumbnail:not(:last-child) {\n\tmargin-right: 5px;\n}\n\n.thumbnail .close-button {\n\twidth: 20px;\n\theight: 20px;\n\tbackground-color: black;\n\tcolor: white;\n\ttext-align: center;\n\tposition: absolute;\n\ttop: 5px;\n\tright: 5px;\n\tborder-radius: 100px;\n\tcursor: pointer;\n}\n\n\n.thumbnail .close-button-update {\n\twidth: 20px;\n\theight: 20px;\n\tbackground-color: black;\n\tcolor: white;\n\ttext-align: center;\n\tposition: absolute;\n\ttop: 5px;\n\tright: 5px;\n\tborder-radius: 100px;\n\tcursor: pointer;\n}", ""]);
 
 // exports
 
@@ -90106,8 +90106,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Redux_Actions_fetchRequest__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Redux/Actions/fetchRequest */ "./resources/js/Redux/Actions/fetchRequest.js");
 /* harmony import */ var _add_css__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./add.css */ "./resources/js/Components/Service/add.css");
 /* harmony import */ var _add_css__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_add_css__WEBPACK_IMPORTED_MODULE_12__);
-
-
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
@@ -90115,6 +90113,8 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -90164,66 +90164,190 @@ var FormAddService = function FormAddService(props) {
   var fetchRequest = props.fetchRequest;
   var location = props.location;
 
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({}),
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
       _useState2 = _slicedToArray(_useState, 2),
-      responseReq = _useState2[0],
-      setResponseReq = _useState2[1];
+      typeRegisterForm = _useState2[0],
+      setTypeRegisterForm = _useState2[1];
 
-  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({}),
       _useState4 = _slicedToArray(_useState3, 2),
-      loading = _useState4[0],
-      setLoading = _useState4[1];
+      responseReq = _useState4[0],
+      setResponseReq = _useState4[1];
 
-  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({
+  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      loading = _useState6[0],
+      setLoading = _useState6[1];
+
+  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({
     'is_active': true
   }),
-      _useState6 = _slicedToArray(_useState5, 2),
-      dataForm = _useState6[0],
-      setDataForm = _useState6[1];
+      _useState8 = _slicedToArray(_useState7, 2),
+      dataForm = _useState8[0],
+      setDataForm = _useState8[1];
 
   var formDataImages = new FormData();
 
-  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
-      _useState8 = _slicedToArray(_useState7, 2),
-      formDataFile = _useState8[0],
-      setFormDataFile = _useState8[1];
-
-  var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(true),
+  var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
       _useState10 = _slicedToArray(_useState9, 2),
-      showPromotion = _useState10[0],
-      setShowPromotion = _useState10[1];
+      formDataFile = _useState10[0],
+      setFormDataFile = _useState10[1];
 
   var _useState11 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(true),
       _useState12 = _slicedToArray(_useState11, 2),
-      showDescriptionShort = _useState12[0],
-      setShowDescriptionShort = _useState12[1];
+      showPromotion = _useState12[0],
+      setShowPromotion = _useState12[1];
 
-  var _useState13 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
+  var _useState13 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(true),
       _useState14 = _slicedToArray(_useState13, 2),
-      listServices = _useState14[0],
-      setListServices = _useState14[1];
+      showPrice = _useState14[0],
+      setShowPrice = _useState14[1];
+
+  var _useState15 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(true),
+      _useState16 = _slicedToArray(_useState15, 2),
+      showDescriptionShort = _useState16[0],
+      setShowDescriptionShort = _useState16[1];
+
+  var _useState17 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
+      _useState18 = _slicedToArray(_useState17, 2),
+      listServices = _useState18[0],
+      setListServices = _useState18[1];
+
+  var _useState19 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
+      _useState20 = _slicedToArray(_useState19, 2),
+      listImageServices = _useState20[0],
+      setListImageServices = _useState20[1];
+
+  var _useState21 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
+      _useState22 = _slicedToArray(_useState21, 2),
+      catalog = _useState22[0],
+      setCatalog = _useState22[1];
 
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
     if (location.state != undefined && location.state != "") {
-      setDataForm({
-        'id_service': location.state.id_service,
-        'type': location.state.type,
-        'title': location.state.title,
-        'description_short': location.state.description_short,
-        'description_long': location.state.description_long,
-        'price': location.state.price,
-        'promotion': location.state.promotion,
-        'path': location.state.path
-      });
-      setListServices(_toConsumableArray(location.state.list_services));
+      getService(location.state.id_service);
     }
   }, []);
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    getCatalog();
+  }, []);
 
-  var handle_Save = function handle_Save() {
-    handle_Save_Update();
+  var _useState23 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
+      _useState24 = _slicedToArray(_useState23, 2),
+      idsImagesDelete = _useState24[0],
+      setIdsImagesDelete = _useState24[1];
+
+  var updateListImageServices = function updateListImageServices(e, id_image_service) {
+    //console.log(id_image_service);
+    if (e.target.classList.contains('close-button-update')) {
+      e.target.parentNode.remove();
+      setIdsImagesDelete([].concat(_toConsumableArray(idsImagesDelete), [{
+        'id_image_service': id_image_service
+      }]));
+    }
   };
 
-  var handle_Update = function handle_Update() {
+  var getService = /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(id_service) {
+      var request, response, data;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              request = {
+                'url': "".concat(_env__WEBPACK_IMPORTED_MODULE_10__["pathApi"], "/getOneService/").concat(id_service),
+                'request': {
+                  method: 'GET',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer ".concat(token)
+                  }
+                },
+                'showMessage': false
+              };
+              _context.next = 3;
+              return fetchRequest(request);
+
+            case 3:
+              response = _context.sent;
+
+              if (response.status == 200 && response.data) {
+                data = response.data;
+                console.log(data);
+                setDataForm({
+                  'id_service': data.id_service,
+                  'type': data.type,
+                  'title': data.title,
+                  'description_short': data.description_short,
+                  'description_long': data.description_long,
+                  'price': data.price,
+                  'promotion': data.promotion,
+                  'path': data.path
+                });
+                setListServices(_toConsumableArray(data.list_services));
+                setListImageServices(_toConsumableArray(data.list_images_services));
+                typeRegister(data.type);
+                setTypeRegisterForm(true);
+              }
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function getService(_x) {
+      return _ref.apply(this, arguments);
+    };
+  }();
+
+  var getCatalog = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+      var request, response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              request = {
+                'url': "".concat(_env__WEBPACK_IMPORTED_MODULE_10__["pathApi"], "/getCatalog/"),
+                'request': {
+                  method: 'GET',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer ".concat(token)
+                  }
+                }
+              };
+              _context2.next = 3;
+              return fetchRequest(request);
+
+            case 3:
+              response = _context2.sent;
+
+              if (response.status == 200 && response.data) {
+                setCatalog(response.data);
+              }
+
+            case 5:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+
+    return function getCatalog() {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+
+  var handle_Save = function handle_Save() {
+    //console.log(listServices);
+    //console.log(idsImagesDelete);
     handle_Save_Update();
   };
 
@@ -90236,12 +90360,12 @@ var FormAddService = function FormAddService(props) {
   };
 
   var handle_Save_Update = /*#__PURE__*/function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(type) {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(type) {
       var data_object, formDataSend, key, _iterator, _step, item, file_primary, request, response, messages, messages_array, _key;
 
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
         while (1) {
-          switch (_context.prev = _context.next) {
+          switch (_context3.prev = _context3.next) {
             case 0:
               //setLoading(true);
               data_object = Object.assign(_objectSpread(_objectSpread({}, dataForm), {}, {
@@ -90249,6 +90373,7 @@ var FormAddService = function FormAddService(props) {
               }));
               formDataSend = new FormData();
               formDataSend.append('services', JSON.stringify(listServices));
+              formDataSend.append('idsImagesDelete', JSON.stringify(idsImagesDelete));
 
               for (key in dataForm) {
                 formDataSend.append(key, dataForm[key]);
@@ -90283,11 +90408,11 @@ var FormAddService = function FormAddService(props) {
                   body: formDataSend
                 }
               };
-              _context.next = 11;
+              _context3.next = 12;
               return fetchRequest(request);
 
-            case 11:
-              response = _context.sent;
+            case 12:
+              response = _context3.sent;
               setResponseReq(response);
               messages = response.message || "";
               messages_array = [];
@@ -90317,16 +90442,16 @@ var FormAddService = function FormAddService(props) {
 
               setLoading(false);
 
-            case 19:
+            case 20:
             case "end":
-              return _context.stop();
+              return _context3.stop();
           }
         }
-      }, _callee);
+      }, _callee3);
     }));
 
-    return function handle_Save_Update(_x) {
-      return _ref.apply(this, arguments);
+    return function handle_Save_Update(_x2) {
+      return _ref3.apply(this, arguments);
     };
   }();
 
@@ -90350,17 +90475,28 @@ var FormAddService = function FormAddService(props) {
     });
   };
 
-  var onChangeInputData = function onChangeInputData(e) {
-    if (e.target.name == "type") {
-      var type = e.target.value;
+  var typeRegister = function typeRegister(type) {
+    if (type == "habitacion") {
+      setShowPromotion(true);
+      setShowDescriptionShort(true);
+      setShowPrice(true);
+    }
 
-      if (type == "habitacion") {
-        setShowPromotion(true);
-        setShowDescriptionShort(true);
-      } else {
-        setShowPromotion(false);
-        setShowDescriptionShort(false);
-      }
+    if (type == "promocion" || type == "salon") {
+      setShowPromotion(false);
+      setShowDescriptionShort(false);
+    }
+
+    if (type == "salon") {
+      setShowPrice(false);
+    }
+  };
+
+  var onChangeInputData = function onChangeInputData(e) {
+    var type = e.target.value;
+
+    if (e.target.name == "type") {
+      typeRegister(type);
     }
 
     if (e.target.type == "checkbox") {
@@ -90376,17 +90512,20 @@ var FormAddService = function FormAddService(props) {
     var typeFile = Object(_Helpers_ValidateImage__WEBPACK_IMPORTED_MODULE_9__["validFileType"])(currentFile);
     var sizeImg = currentFile.size;
     var heigthMax = 5 * 1048576;
-    return false;
 
     if (!typeFile) {
-      alert("el tipo de archivo es inválido.");
+      react_toastify__WEBPACK_IMPORTED_MODULE_6__["toast"].error("Tipo de archivo inválido.");
       e.target.value = "";
     }
 
     if (currentFile.size > heigthMax) {
-      alert("El peso del archivo supero los 5MB.");
+      react_toastify__WEBPACK_IMPORTED_MODULE_6__["toast"].error("El peso del archivo supero los 5MB.");
       e.target.value = "";
     }
+
+    var image = URL.createObjectURL(currentFile);
+    document.getElementById('image_primary_container').src = image;
+    document.getElementById('image_primary_container').style.display = "block";
   };
 
   var notifyError = function notifyError(messages_array) {
@@ -90402,10 +90541,10 @@ var FormAddService = function FormAddService(props) {
     }));
   };
 
-  var Msg = function Msg(_ref2) {
-    var closeToast = _ref2.closeToast,
-        toastProps = _ref2.toastProps,
-        messages_array = _ref2.messages_array;
+  var Msg = function Msg(_ref4) {
+    var closeToast = _ref4.closeToast,
+        toastProps = _ref4.toastProps,
+        messages_array = _ref4.messages_array;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("ul", null, messages_array.map(function (item) {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", {
         key: item
@@ -90417,7 +90556,11 @@ var FormAddService = function FormAddService(props) {
     className: "col-sm-12 mb-4 mt-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Helpers_AlertMessageSingular__WEBPACK_IMPORTED_MODULE_8__["default"], responseReq)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+  }, typeRegisterForm ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h1", null, "Actualizar ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("strong", {
+    className: "text-muted"
+  }, dataForm.type || ""))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h1", null, "Registrar ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("strong", {
+    className: "text-muted"
+  }, dataForm.type || ""))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-sm-12"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "form-group form-row"
@@ -90490,7 +90633,7 @@ var FormAddService = function FormAddService(props) {
     value: dataForm.description_long || ""
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "form-row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+  }, showPrice && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-md"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "form-group"
@@ -90511,7 +90654,7 @@ var FormAddService = function FormAddService(props) {
     type: "number",
     className: "form-control",
     placeholder: ""
-  })))), showPromotion && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+  }))))), showPromotion && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-md"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "form-group"
@@ -90547,6 +90690,7 @@ var FormAddService = function FormAddService(props) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
     className: "font-weight-bold text-dark"
   }, "SERVICIOS QUE INCLUYE"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(ListServices, {
+    catalog: catalog,
     listServices: listServices,
     setListServices: setListServices
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -90564,6 +90708,27 @@ var FormAddService = function FormAddService(props) {
     id: "file_primary",
     type: "file",
     className: "form-control"
+  }), typeRegisterForm == true ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
+    className: "img-fluid",
+    alt: "imagen principal",
+    id: "image_primary_container",
+    style: {
+      height: '300px',
+      width: '100%',
+      objectFit: 'cover',
+      display: 'block'
+    },
+    src: "/storage/".concat(dataForm.path)
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
+    className: "img-fluid",
+    alt: "imagen principal",
+    id: "image_primary_container",
+    style: {
+      height: '300px',
+      width: '100%',
+      objectFit: 'cover',
+      display: 'none'
+    }
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "mt-4 col-sm-12 form-group"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("blockquote", {
@@ -90576,7 +90741,9 @@ var FormAddService = function FormAddService(props) {
   }, "IMAGENES SLIDER")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(UploadFile, {
     formDataFile: formDataFile,
     setFormDataFile: setFormDataFile,
-    formData: formDataImages
+    formData: formDataImages,
+    listImageServices: listImageServices,
+    updateListImageServices: updateListImageServices
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-sm-12 d-flex justify-content-end",
     style: {
@@ -90590,134 +90757,64 @@ var FormAddService = function FormAddService(props) {
   }, 'Guardar')))));
 };
 
-var ListServices = function ListServices(_ref3) {
-  var listServices = _ref3.listServices,
-      setListServices = _ref3.setListServices;
+var ListServices = function ListServices(_ref5) {
+  var catalog = _ref5.catalog,
+      listServices = _ref5.listServices,
+      setListServices = _ref5.setListServices;
 
-  var _useState15 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(""),
-      _useState16 = _slicedToArray(_useState15, 2),
-      newService = _useState16[0],
-      setNewService = _useState16[1];
-
-  var handleService = function handleService(e) {
-    setNewService(e.target.value);
-  };
-
-  var handleSaveNewService = function handleSaveNewService() {
-    if (newService != "") {
+  var handleSelectedService = function handleSelectedService(e, id) {
+    if (e.target.checked == true) {
+      //console.log("checked")
       setListServices([].concat(_toConsumableArray(listServices), [{
-        'service': newService,
-        'active': true,
-        'id_list_service': Date.now()
+        'id_catalog': id
       }]));
+    } else {
+      //console.log("des-checked")
+      setListServices(listServices.filter(function (item) {
+        return item.id_catalog != id;
+      }));
     }
-
-    setNewService("");
   };
 
-  var handleDelete = function handleDelete(item) {
-    //console.log(item.id)
-    //console.log(listServices.filter((ser) => ser.id_list_service != item.id_list_service))
-    setListServices(listServices.filter(function (ser) {
-      return ser.id_list_service != item.id_list_service;
-    }));
+  var isChecked = function isChecked(id) {
+    var is_cheked = listServices.find(function (item) {
+      return item.id_catalog == id;
+    });
+    return is_cheked != undefined ? true : false;
   };
 
-  var handleStatusService = function handleStatusService(item) {
-    var newList = listServices.map(function (service) {
-      if (service.id_list_service == item.id_list_service) {
-        service.active = !service.active;
-      }
-
-      return service;
-    }); //console.log(newList)
-
-    setListServices(newList);
-  };
-
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("table", {
-    className: "table-responsive-sm table table-nowrap table-centered mb-0 table-striped"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-    onChange: handleService,
-    value: newService,
-    type: "text",
-    className: "form-control",
-    placeholder: "Ingresa tu servicio"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-    title: "Agrege un servicio",
-    onClick: handleSaveNewService,
-    className: "btn btn-success waves-effect waves-light "
-  }, "Agregar Servicio"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", {
-    style: {
-      backgroundColor: "#1864ab",
-      color: 'white'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", {
-    align: "center"
-  }, "Servicios"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", {
-    align: "center"
-  }, "Acciones"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tbody", null, listServices.length > 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, listServices.map(function (item, index) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", {
-      key: index
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", {
-      align: "center"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h5", {
-      className: "text-truncate font-size-14 m-0 text-dark"
-    }, item.service)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", {
-      align: "center",
-      className: "d-flex justify-content-around"
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "d-flex flex-wrap justify-content-center align-items-center"
+  }, catalog.length > 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, catalog.map(function (item) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      style: {
+        width: "200px"
+      },
+      key: item.id_catalog
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-      className: "custom-control custom-checkbox"
+      className: "form-check mb-2"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-      checked: item.active,
+      defaultChecked: isChecked(item.id_catalog),
       onChange: function onChange(e) {
-        return handleStatusService(item);
+        return handleSelectedService(e, item.id_catalog);
       },
+      value: item.id_catalog,
+      className: "form-check-input",
       type: "checkbox",
-      className: "custom-control-input",
-      id: "customCheck1_".concat(item.id_list_service)
+      id: "defaultCheck1_".concat(item.id_catalog)
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
-      className: "custom-control-label",
-      htmlFor: "customCheck1_".concat(item.id_list_service)
-    }, "Activo")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-      onClick: function onClick(e) {
-        return handleDelete(item);
-      },
-      type: "button",
-      className: "btn btn-danger waves-effect waves-light btn-rounded btn-sm"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
-      className: "fas fa-trash"
-    }), " Eliminar")));
-  })) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", {
-    align: "center"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h5", {
-    className: "text-truncate font-size-14 m-0 text-dark"
-  }, "Mi primer servicio ejemplo.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", {
-    className: "d-flex justify-content-around"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "custom-control custom-checkbox"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-    disabled: true,
-    defaultChecked: true,
-    type: "checkbox",
-    className: "custom-control-input",
-    id: "customCheck1"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
-    className: "custom-control-label",
-    htmlFor: "customCheck1"
-  }, "Activo")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-    disabled: true,
-    type: "button",
-    className: "btn btn-danger waves-effect waves-light btn-rounded btn-sm"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
-    className: "fas fa-trash"
-  }), " Eliminar")))))));
+      className: "form-check-label",
+      htmlFor: "defaultCheck1_".concat(item.id_catalog)
+    }, item.name)));
+  })) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h1", null, "No hay servicios registrados para seleccionar."))));
 };
 
-var UploadFile = function UploadFile(_ref4) {
-  var setFormDataFile = _ref4.setFormDataFile,
-      formDataFile = _ref4.formDataFile,
-      formData = _ref4.formData;
+var UploadFile = function UploadFile(_ref6) {
+  var setFormDataFile = _ref6.setFormDataFile,
+      formDataFile = _ref6.formDataFile,
+      formData = _ref6.formData,
+      listImageServices = _ref6.listImageServices,
+      updateListImageServices = _ref6.updateListImageServices;
 
   var changeFile = function changeFile(e) {
     var file = e.target.files;
@@ -90771,7 +90868,8 @@ var UploadFile = function UploadFile(_ref4) {
       formData["delete"](e.target.parentNode.dataset.id);
       var id = e.target.parentNode.dataset.id;
     }
-  });
+  }); //funciones solo para mostrar las imagenes cuando ya estan guardadas o almacenadas
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "form-row"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
@@ -90792,19 +90890,29 @@ var UploadFile = function UploadFile(_ref4) {
       minHeight: '150px',
       height: 'auto'
     }
-  }));
+  }, listImageServices.length > 0 && listImageServices.map(function (item) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      className: "thumbnail",
+      "data-id": item.id_image_service
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
+      className: "thumbnail",
+      src: "/storage/".concat(item.path)
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      className: "close-button-update",
+      "data-id": item.id_image_service,
+      onClick: function onClick(e) {
+        return updateListImageServices(e, item.id_image_service);
+      }
+    }, "x")));
+  })));
 };
 
-ListServices.propTypes = {
-  listServices: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.array.isRequired,
-  setListServices: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.func.isRequired
-};
 var mapDispatchToProps = {
   fetchRequest: _Redux_Actions_fetchRequest__WEBPACK_IMPORTED_MODULE_11__["fetchRequest"]
 };
 
-var mapStateToProps = function mapStateToProps(_ref5) {
-  var Auth = _ref5.Auth;
+var mapStateToProps = function mapStateToProps(_ref7) {
+  var Auth = _ref7.Auth;
   return {
     Auth: Auth
   };
@@ -90842,12 +90950,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_10__);
 /* harmony import */ var _Resource_servicios_jpg__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Resource/servicios.jpg */ "./resources/js/Resource/servicios.jpg");
 /* harmony import */ var _Resource_servicios_jpg__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_Resource_servicios_jpg__WEBPACK_IMPORTED_MODULE_11__);
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -91118,20 +91220,8 @@ var ListServices = function ListServices(_ref) {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "plan-features p-4 text-muted mt-2"
       }, list_services.map(function (serv, indice) {
-        if (serv.active == 1) {
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-            key: list_services.id_list_service
-          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
-            className: "mdi mdi-check-bold text-primary mr-4"
-          }), serv.service);
-        }
-
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-          key: list_services.id_list_service,
-          style: {
-            textDecoration: 'line-through'
-          },
-          className: "text-warning"
+          key: list_services.id_list_service
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
           className: "mdi mdi-check-bold text-primary mr-4"
         }), serv.service);
@@ -91175,7 +91265,7 @@ var ListServices = function ListServices(_ref) {
         className: "card-body"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h3", {
         className: "mt-1 text-primary text-capitalize"
-      }, item.title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, item.title), item.type != "salon" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "text-center bg-soft-light"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h1", {
         className: "m-0"
@@ -91189,7 +91279,9 @@ var ListServices = function ListServices(_ref) {
       }, "Promoci\xF3n", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("sup", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("small", null, "$")), " ", item.promotion)), handleListServicesIncludes(item.list_services), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
         to: {
           pathname: "".concat(_env__WEBPACK_IMPORTED_MODULE_8__["pathDashboard"], "/service"),
-          state: _objectSpread({}, item)
+          state: {
+            'id_service': item.id_service
+          }
         },
         className: " btn btn-primary waves-effect waves-light"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
@@ -91603,8 +91695,11 @@ var Smtp = function Smtp(_ref) {
     onChange: onChangeInputData,
     className: "form-control",
     name: "encryption",
-    value: dataForm.encryption || "tls"
+    value: dataForm.encryption || "0"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "0",
+    disabled: true
+  }, "Seleccione una opci\xF3n"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
     value: "tls"
   }, "TLS")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-sm-12 form-group"

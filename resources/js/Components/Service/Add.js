@@ -28,7 +28,7 @@ const FormAddService = (props) => {
     const { fetchRequest } = props;
     const { location } = props;
 
-
+    const [typeRegisterForm, setTypeRegisterForm] = useState(false);
     const [responseReq, setResponseReq] = useState({})
     const [loading, setLoading] = useState(false);
     const [dataForm, setDataForm] = useState({
@@ -38,35 +38,99 @@ const FormAddService = (props) => {
     let formDataImages = new FormData()
     const [formDataFile, setFormDataFile] = useState([]);
     const [showPromotion, setShowPromotion] = useState(true)
+    const [showPrice, setShowPrice] = useState(true)
     const [showDescriptionShort, setShowDescriptionShort] = useState(true)
     const [listServices, setListServices] = useState([]);
-
+    const [listImageServices, setListImageServices] = useState([]);
+    const [catalog, setCatalog] = useState([]);
     useEffect(() => {
         if (location.state != undefined && location.state != "") {
-            setDataForm({
-                'id_service': location.state.id_service,
-                'type': location.state.type,
-                'title': location.state.title,
-                'description_short': location.state.description_short,
-                'description_long': location.state.description_long,
-                'price': location.state.price,
-                'promotion': location.state.promotion,
-                'path': location.state.path,
-            })
-
-            setListServices([
-                ...location.state.list_services
-            ])
-
+            getService(location.state.id_service);
         }
     }, [])
 
+    useEffect(() => {
+        getCatalog();
+    }, [])
 
+
+    const [idsImagesDelete, setIdsImagesDelete] = useState([]);
+    const updateListImageServices = (e, id_image_service) => {
+
+        //console.log(id_image_service);
+        if (e.target.classList.contains('close-button-update')) {
+            e.target.parentNode.remove();
+            setIdsImagesDelete([
+                ...idsImagesDelete,
+                { 'id_image_service': id_image_service }
+            ])
+        }
+    }
+
+    const getService = async (id_service) => {
+        let request = {
+            'url': `${pathApi}/getOneService/${id_service}`,
+            'request': {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            },
+            'showMessage': false,
+        };
+        let response = await fetchRequest(request);
+
+        if (response.status == 200 && response.data) {
+
+            let data = response.data;
+            console.log(data);
+            setDataForm({
+                'id_service': data.id_service,
+                'type': data.type,
+                'title': data.title,
+                'description_short': data.description_short,
+                'description_long': data.description_long,
+                'price': data.price,
+                'promotion': data.promotion,
+                'path': data.path,
+            })
+
+            setListServices([
+                ...data.list_services
+            ])
+            setListImageServices([
+                ...data.list_images_services
+            ])
+            typeRegister(data.type);
+            setTypeRegisterForm(true);
+        }
+    }
+
+    const getCatalog = async () => {
+        let request = {
+            'url': `${pathApi}/getCatalog/`,
+            'request': {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        };
+        let response = await fetchRequest(request);
+
+        if (response.status == 200 && response.data) {
+            setCatalog(response.data);
+        }
+    }
 
     const handle_Save = () => {
-        handle_Save_Update();
-    }
-    const handle_Update = () => {
+
+        //console.log(listServices);
+        //console.log(idsImagesDelete);
         handle_Save_Update();
     }
 
@@ -86,6 +150,7 @@ const FormAddService = (props) => {
         let formDataSend = new FormData();
 
         formDataSend.append('services', JSON.stringify(listServices));
+        formDataSend.append('idsImagesDelete', JSON.stringify(idsImagesDelete));
         for (const key in dataForm) {
             formDataSend.append(key, dataForm[key]);
         }
@@ -154,17 +219,29 @@ const FormAddService = (props) => {
         });
     }
 
+    const typeRegister = (type) => {
+
+        if (type == "habitacion") {
+            setShowPromotion(true);
+            setShowDescriptionShort(true)
+            setShowPrice(true);
+        }
+
+        if (type == "promocion" || type == "salon") {
+            setShowPromotion(false);
+            setShowDescriptionShort(false)
+        }
+
+        if (type == "salon") {
+            setShowPrice(false);
+        }
+    }
+
     const onChangeInputData = (e) => {
 
+        let type = e.target.value;
         if (e.target.name == "type") {
-            let type = e.target.value;
-            if (type == "habitacion") {
-                setShowPromotion(true);
-                setShowDescriptionShort(true)
-            } else {
-                setShowPromotion(false);
-                setShowDescriptionShort(false)
-            }
+            typeRegister(type);
         }
 
         if (e.target.type == "checkbox") {
@@ -188,16 +265,20 @@ const FormAddService = (props) => {
         let typeFile = validFileType(currentFile);
         let sizeImg = currentFile.size
         let heigthMax = (5 * 1048576);
-        return false;
 
         if (!typeFile) {
-            alert("el tipo de archivo es inválido.")
+            toast.error("Tipo de archivo inválido.");
             e.target.value = "";
         }
         if (currentFile.size > heigthMax) {
-            alert("El peso del archivo supero los 5MB.");
+            toast.error("El peso del archivo supero los 5MB.");
             e.target.value = "";
         }
+
+        let image = URL.createObjectURL(currentFile);
+        document.getElementById('image_primary_container').src = image;
+        document.getElementById('image_primary_container').style.display = "block";
+
     }
 
     const notifyError = (messages_array) => {
@@ -225,6 +306,20 @@ const FormAddService = (props) => {
                 <AlertMessageSingular {...responseReq}></AlertMessageSingular>
             </div>
             <div className="row">
+
+                {
+                    typeRegisterForm ? (
+                        <Fragment>
+                            <h1>Actualizar <strong className="text-muted">{dataForm.type || ""}</strong></h1>
+                        </Fragment>
+                    )
+                        : (
+                            <Fragment>
+                                <h1>Registrar <strong className="text-muted">{dataForm.type || ""}</strong></h1>
+                            </Fragment>
+                        )
+                }
+
                 <div className="col-sm-12">
                     {/**enabled service */}
                     <div className="form-group form-row">
@@ -298,29 +393,35 @@ const FormAddService = (props) => {
                     {/**precios */}
                     <div className="form-row">
                         {/**prices */}
-                        <div className="col-md">
-                            <div className="form-group">
-                                <p className="font-weight-bold text-dark">{'Precio (*)'}</p>
-                                {/*input group*/}
-                                <div className="input-group mb-3">
-                                    <div className="input-group-prepend">
-                                        <span className="input-group-text">
-                                            <i className="fas fa-dollar-sign"></i>
-                                        </span>
+                        {
+                            showPrice && (
+                                <Fragment>
+
+                                    <div className="col-md">
+                                        <div className="form-group">
+                                            <p className="font-weight-bold text-dark">{'Precio (*)'}</p>
+                                            {/*input group*/}
+                                            <div className="input-group mb-3">
+                                                <div className="input-group-prepend">
+                                                    <span className="input-group-text">
+                                                        <i className="fas fa-dollar-sign"></i>
+                                                    </span>
+                                                </div>
+                                                <input
+                                                    value={dataForm.price || ""}
+                                                    name="price"
+                                                    onChange={onChangeInputData}
+                                                    type="number"
+                                                    className="form-control"
+                                                    placeholder={""}
+                                                />
+                                            </div>
+                                            {/*input group */}
+                                        </div>
                                     </div>
-                                    <input
-                                        value={dataForm.price || ""}
-                                        name="price"
-                                        onChange={onChangeInputData}
-                                        type="number"
-                                        className="form-control"
-                                        placeholder={""}
-                                    />
-                                </div>
-                                {/*input group */}
-                            </div>
-                        </div>
-                        {/**prices */}
+                                </Fragment>
+                            )
+                        }
                         {/*promotions */}
                         {
                             showPromotion && (
@@ -358,6 +459,7 @@ const FormAddService = (props) => {
                             </blockquote>
                         </div>
                         <ListServices
+                            catalog={catalog}
                             listServices={listServices}
                             setListServices={setListServices}
                         />
@@ -374,6 +476,23 @@ const FormAddService = (props) => {
                             type="file"
                             className="form-control"
                         />
+                        {typeRegisterForm == true ? (
+                            <img className="img-fluid" alt="imagen principal" id="image_primary_container" style={{
+                                height: '300px',
+                                width: '100%',
+                                objectFit: 'cover',
+                                display: 'block'
+                            }}
+                                src={`/storage/${dataForm.path}`}
+                            />
+                        ) : (
+                            <img className="img-fluid" alt="imagen principal" id="image_primary_container" style={{
+                                height: '300px',
+                                width: '100%',
+                                objectFit: 'cover',
+                                display: 'none'
+                            }} />
+                        )}
                     </div>
                     {/**imagenes */}
                     <div className="mt-4 col-sm-12 form-group">
@@ -384,6 +503,8 @@ const FormAddService = (props) => {
                             formDataFile={formDataFile}
                             setFormDataFile={setFormDataFile}
                             formData={formDataImages}
+                            listImageServices={listImageServices}
+                            updateListImageServices={updateListImageServices}
                         />
                     </div>
                     <div className="col-sm-12 d-flex justify-content-end" style={{ marginTop: '50px' }}>
@@ -404,145 +525,62 @@ const FormAddService = (props) => {
 
 
 const ListServices = ({
+    catalog,
     listServices,
     setListServices
 }) => {
 
-    const [newService, setNewService] = useState("");
-    const handleService = (e) => {
-        setNewService(e.target.value)
-    }
 
-    const handleSaveNewService = () => {
-        if (newService != "") {
+    const handleSelectedService = (e, id) => {
+
+        if (e.target.checked == true) {
+            //console.log("checked")
             setListServices([
                 ...listServices,
-                {
-                    'service': newService,
-                    'active': true,
-                    'id_list_service': Date.now()
-                }
+                { 'id_catalog': id }
             ])
+        } else {
+            //console.log("des-checked")
+            setListServices(listServices.filter(item => item.id_catalog != id))
         }
 
-        setNewService("");
     }
 
-    const handleDelete = (item) => {
-        //console.log(item.id)
-        //console.log(listServices.filter((ser) => ser.id_list_service != item.id_list_service))
 
-        setListServices(listServices.filter((ser) => ser.id_list_service != item.id_list_service))
+    const isChecked = (id) => {
+
+        let is_cheked = listServices.find(item => item.id_catalog == id);
+        return is_cheked != undefined ? true : false;
+
     }
-
-    const handleStatusService = (item) => {
-
-
-        let newList = listServices.map((service) => {
-            if (service.id_list_service == item.id_list_service) {
-                service.active = !service.active;
-            }
-            return service;
-        })
-
-        //console.log(newList)
-        setListServices(newList)
-    }
-
 
     return (
         <Fragment>
-            <table className="table-responsive-sm table table-nowrap table-centered mb-0 table-striped">
-                <thead>
-                    <tr>
-                        <th>
-                            <input
-                                onChange={handleService}
-                                value={newService}
-                                type={"text"}
-                                className="form-control"
-                                placeholder="Ingresa tu servicio" />
-                        </th>
-                        <th>
-                            <button
-                                title="Agrege un servicio"
-                                onClick={handleSaveNewService}
-                                className="btn btn-success waves-effect waves-light "
-                            >
-                                Agregar Servicio
-                            </button>
-                        </th>
-                    </tr>
-                    <tr style={{ backgroundColor: "#1864ab", color: 'white' }}>
-                        <td align="center" >
-                            Servicios
-                        </td>
-                        <td align="center">
-                            Acciones
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        listServices.length > 0 ? (
-                            <Fragment>
-                                {listServices.map((item, index) =>
-                                    <tr key={index}>
-                                        <td align="center">
-                                            <h5 className="text-truncate font-size-14 m-0 text-dark">
-                                                {item.service}
-                                            </h5>
-                                        </td>
-                                        <td align="center" className="d-flex justify-content-around">
-                                            <div className="custom-control custom-checkbox">
-                                                <input
-                                                    checked={item.active}
-                                                    onChange={(e) => handleStatusService(item)}
-                                                    type="checkbox" className="custom-control-input" id={`customCheck1_${item.id_list_service}`} />
-                                                <label className="custom-control-label" htmlFor={`customCheck1_${item.id_list_service}`}>Activo</label>
-                                            </div>
-                                            < button
-                                                onClick={(e) => handleDelete(item)}
-                                                type="button"
-                                                className="btn btn-danger waves-effect waves-light btn-rounded btn-sm"
-                                            >
-                                                <i className="fas fa-trash"></i> Eliminar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                )}
-                            </Fragment>
-                        ) : (
-                            <Fragment>
-                                <tr>
-                                    <td align="center">
-                                        <h5 className="text-truncate font-size-14 m-0 text-dark">
-                                            Mi primer servicio ejemplo.
-                                        </h5>
-                                    </td>
-                                    <td className="d-flex justify-content-around">
-                                        <div className="custom-control custom-checkbox">
-                                            <input
-                                                disabled={true}
-                                                defaultChecked={true}
-                                                type="checkbox" className="custom-control-input" id="customCheck1" />
-                                            <label className="custom-control-label" htmlFor="customCheck1">Activo</label>
-                                        </div>
-                                        < button
-                                            disabled={true}
-                                            type="button"
-                                            className="btn btn-danger waves-effect waves-light btn-rounded btn-sm"
-                                        >
-                                            <i className="fas fa-trash"></i> Eliminar
-                                        </button>
-                                    </td>
-                                </tr>
-                            </Fragment>
-                        )
-                    }
-
-                </tbody>
-            </table>
+            <div className="d-flex flex-wrap justify-content-center align-items-center">
+                {catalog.length > 0 ? (
+                    <Fragment>
+                        {catalog.map(item => (
+                            <div style={{ width: "200px" }} key={item.id_catalog}>
+                                <div className="form-check mb-2">
+                                    <input
+                                        defaultChecked={isChecked(item.id_catalog)}
+                                        onChange={(e) => handleSelectedService(e, item.id_catalog)}
+                                        value={item.id_catalog}
+                                        className="form-check-input" type="checkbox"
+                                        id={`defaultCheck1_${item.id_catalog}`} />
+                                    <label className="form-check-label" htmlFor={`defaultCheck1_${item.id_catalog}`}>
+                                        {item.name}
+                                    </label>
+                                </div>
+                            </div>
+                        ))}
+                    </Fragment>
+                ) : (
+                    <Fragment>
+                        <h1>No hay servicios registrados para seleccionar.</h1>
+                    </Fragment>
+                )}
+            </div>
         </Fragment >
     )
 }
@@ -550,8 +588,12 @@ const ListServices = ({
 const UploadFile = ({
     setFormDataFile,
     formDataFile,
-    formData
+    formData,
+    listImageServices,
+    updateListImageServices
 }) => {
+
+
 
 
     const changeFile = (e) => {
@@ -605,6 +647,7 @@ const UploadFile = ({
         closeButton.innerText = 'x';
         document.getElementsByClassName(thumbnail_id)[0].appendChild(closeButton);
     }
+
     document.body.addEventListener('click', function (e) {
         if (e.target.classList.contains('close-button')) {
             e.target.parentNode.remove();
@@ -612,6 +655,12 @@ const UploadFile = ({
             let id = e.target.parentNode.dataset.id;
         }
     });
+
+
+
+    //funciones solo para mostrar las imagenes cuando ya estan guardadas o almacenadas
+
+
 
     return (
         <Fragment>
@@ -633,15 +682,27 @@ const UploadFile = ({
                 height: 'auto'
             }}>
 
+                {
+                    listImageServices.length > 0 && (
+                        listImageServices.map(item => (
+                            <Fragment>
+                                <div className="thumbnail" data-id={item.id_image_service}>
+                                    <img className="thumbnail"
+                                        src={`/storage/${item.path}`} />
+                                    <div
+                                        className="close-button-update"
+                                        data-id={item.id_image_service}
+                                        onClick={(e) => updateListImageServices(e, item.id_image_service)}
+                                    >x</div>
+                                </div>
+                            </Fragment>
+                        ))
+                    )
+                }
             </div>
         </Fragment >
     )
 }
-
-ListServices.propTypes = {
-    listServices: PropTypes.array.isRequired,
-    setListServices: PropTypes.func.isRequired,
-};
 
 
 

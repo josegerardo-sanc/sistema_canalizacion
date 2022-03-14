@@ -12,8 +12,7 @@ use App\Traits\Helper;
 use App\Services;
 use App\ListServices;
 use App\ImagesService;
-use Mockery\Undefined;
-use PhpOffice\PhpSpreadsheet\Calculation\Web\Service;
+use App\Catalog;
 
 class ServiceController extends Controller
 {
@@ -169,9 +168,11 @@ class ServiceController extends Controller
                 Rule::in(self::TYPES),
             ],
             //'is_active' => 'required',
-            'price' => 'required|numeric',
+            //'price' => 'required|numeric',
             //'description_long' => 'required|string'
         ];
+        $type = $request->get('type');
+
 
         if ($request->has('id_service')) {
             #update
@@ -180,12 +181,14 @@ class ServiceController extends Controller
         } else {
             #insert
             $validations['title'] = 'required|string|unique:services|max:255';
-
-            $type = $request->get('type');
             if ($type == "habitacion") {
                 $validations['promotion'] = 'numeric';
                 $validations['description_short'] = 'required|string';
             }
+        }
+
+        if ($type == "habitacion" || $type == "promocion") {
+            $validations['price'] = 'required|numeric';
         }
 
 
@@ -236,8 +239,7 @@ class ServiceController extends Controller
             }
 
             $queryService = Services::query();
-            $services = $queryService
-                ->with(['listServices'])
+            $services = $queryService->with(['listImagesServices'])
                 ->whereIn('type', $searchTypes);
 
             if (!empty($request->get('search'))) {
@@ -251,6 +253,8 @@ class ServiceController extends Controller
                     array("%{$search}%", "%{$search}%", "%{$search}%")
                 );
             }
+
+
             $totalRows = $services->count();
 
             if ($startRow > $totalRows) {
@@ -265,6 +269,15 @@ class ServiceController extends Controller
                 ->limit($endRow)
                 ->get();
 
+            foreach ($services as $key => $item) {
+
+                $catalog = ListServices::leftJoin('catalogs', 'list_services.id_catalog', '=', 'catalogs.id_catalog')
+                    ->where('id_service', $item['id_service'])
+                    ->select('catalogs.name as service', 'list_services.id_list_service')
+                    ->get();
+
+                $services[$key]['list_services'] = $catalog;
+            }
             return response()->json([
                 'status' => 200,
                 'message' => 'Lista de servicios.',
@@ -333,6 +346,13 @@ class ServiceController extends Controller
             if (!empty($service)) {
                 DB::beginTransaction();
                 $now = date("Y-m-d H:i:s");
+
+
+                $exists = Storage::disk('public')->exists($service->path);
+                if ($exists) {
+                    Storage::delete('public/' . $service->path);
+                }
+
                 $service->delete();
 
                 DB::commit();
@@ -369,17 +389,18 @@ class ServiceController extends Controller
             $id_service = $this->id_service;
 
 
+
             $list_services = ListServices::where('id_service', $id_service)->get();
             if (!empty($list_services)) {
                 DB::table('list_services')->where('id_service', $id_service)->delete();
             }
 
+
             $data = [];
             foreach ($services as $key => $item) {
                 $data[] = [
                     'id_service' => $id_service,
-                    'service' => $item['service'],
-                    'active' => $item['active'],
+                    'id_catalog' => $item['id_catalog']
                 ];
             }
             DB::table('list_services')->insert($data);
@@ -392,42 +413,117 @@ class ServiceController extends Controller
     {
         try {
             $id_service = $this->id_service; //required
-            $listImages = ImagesService::where('id_service', $id_service)->get();
-            if (!empty($listImages)) {
-                #verifica la existencia de la imagen
-                foreach ($listImages as $key => $item) {
-                    $exists = Storage::disk('public')->exists($item['path']);
-                    if ($exists) {
-                        Storage::delete('public/' . $item['path']);
+            #verifica la existencia de la imagen
+            #cuando se van actualizar las imagenes del slider, se tiene que comptemplar que imagenes se quieren eliminar
+            #para eso se esta recuperando mediante el request "idsImagesDelete"
+            #idsImagesDelete obtiene un arreglo con todos los ids de las imagenes a eliminar
+            #
+            $idsImagesDelete = empty($request->get('idsImagesDelete')) ? [] : json_decode($request->get('idsImagesDelete'), true);
+            #verificamos que el tipo de request sea una actualizacion
+            if ($request->has('id_service')) {
+                $searchIds = [];
+                foreach ($idsImagesDelete as $key => $item) {
+                    $searchIds[] = $item['id_image_service'];
+                }
+                $listImages = ImagesService::where('id_service', $id_service)
+                    ->whereIn('id_image_service', $searchIds)
+                    ->get();
+
+                if (!empty($listImages)) {
+                    foreach ($listImages as $key => $item) {
+                        $exists = Storage::disk('public')->exists($item['path']);
+                        if ($exists) {
+                            Storage::delete('public/' . $item['path']);
+                        }
+                        ImagesService::where('id_image_service', $item['id_image_service'])->delete();
                     }
                 }
-                DB::table('images_services')->where('id_service', $id_service)->delete();
             }
+
 
             $data = [];
             $errorsImages = [];
             $allowedFormats =  array('jpg', 'jpeg', 'png');
             foreach ($_files as $key => $file) {
-                $data[] = $file;
+                //solo guardamos los archivo que no son del file "file_primary"
+                if ($key != "file_primary") {
+                    $data[] = $file;
 
-                $allowedformat = $this->validate_extension_img($file['name'], $allowedFormats);
-                $allowedSize = (5 * 1048576);
-                $allowedSize = $this->validate_size_img($file['size'], $allowedSize);
+                    $allowedformat = $this->validate_extension_img($file['name'], $allowedFormats);
+                    $allowedSize = (5 * 1048576);
+                    $allowedSize = $this->validate_size_img($file['size'], $allowedSize);
 
-                if ($allowedformat['status'] != 200 || $allowedSize['status'] != 200) {
-                    $errorsImages[] = $allowedformat['message'] . "" . $allowedSize['message'];
+                    if ($allowedformat['status'] != 200 || $allowedSize['status'] != 200) {
+                        $errorsImages[] = $allowedformat['message'] . "" . $allowedSize['message'];
+                    }
+
+                    $pathImage = $request->file($key)->store('servicios', 'public');
+                    $imagesService = new ImagesService();
+                    $imagesService->id_service = $id_service;
+                    $imagesService->path = $pathImage;
+                    $imagesService->priority = 1;
+                    $imagesService->save();
                 }
-
-                $pathImage = $request->file($key)->store('servicios', 'public');
-                $imagesService = new ImagesService();
-                $imagesService->id_service = $id_service;
-                $imagesService->path = $pathImage;
-                $imagesService->priority = 1;
-                $imagesService->save();
             }
             return $errorsImages;
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+            throw new \Exception($e->getMessage() . "" . $e->getLine());
+        }
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getOneService($id)
+    {
+        try {
+            $service = Services::with(['listImagesServices'])
+                ->where('id_service', $id)->first();
+
+
+            if (!empty($service)) {
+                $catalog = ListServices::leftJoin('catalogs', 'list_services.id_catalog', '=', 'catalogs.id_catalog')
+                    ->where('id_service', $service->id_service)
+                    ->select('catalogs.name as service', 'list_services.id_list_service', 'list_services.id_catalog')
+                    ->get();
+
+                $service->list_services = $catalog;
+
+                return response()->json([
+                    'status' => 200,
+                    'data' => $service
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'No se encontro el servicio.'
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 400,
+                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage()
+            ]);
+        }
+    }
+
+
+    public function getCatalog()
+    {
+        try {
+            $catalog = Catalog::get();
+            return response()->json([
+                'status' => 200,
+                'data' => $catalog
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 400,
+                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage()
+            ]);
         }
     }
 }

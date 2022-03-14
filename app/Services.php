@@ -21,4 +21,9 @@ class Services extends Model
     {
         return $this->hasMany('App\ListServices', 'id_service');
     }
+
+    public function listImagesServices()
+    {
+        return $this->hasMany('App\ImagesService', 'id_service');
+    }
 }

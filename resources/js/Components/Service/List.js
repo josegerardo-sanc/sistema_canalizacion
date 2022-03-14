@@ -161,20 +161,9 @@ const ListServices = ({
                 <div className="plan-features p-4 text-muted mt-2">
                     {
                         list_services.map((serv, indice) => {
-                            if (serv.active == 1) {
-                                return (
-                                    <p key={list_services.id_list_service}>
-                                        <i className="mdi mdi-check-bold text-primary mr-4"></i>
-                                        {serv.service}
-                                    </p>
-                                )
-                            }
                             return (
-                                <p
-                                    key={list_services.id_list_service}
-                                    style={{ textDecoration: 'line-through' }} className="text-warning">
-                                    <i
-                                        className="mdi mdi-check-bold text-primary mr-4"></i>
+                                <p key={list_services.id_list_service}>
+                                    <i className="mdi mdi-check-bold text-primary mr-4"></i>
                                     {serv.service}
                                 </p>
                             )
@@ -220,9 +209,13 @@ const ListServices = ({
                                 {item.description_short}
                             </p>
                             */}
-                            <div className="text-center bg-soft-light">
-                                <h1 className="m-0">Precio<sup><small>$</small></sup>{item.price}</h1>
-                            </div>
+                            {
+                                item.type != "salon" && (
+                                    <div className="text-center bg-soft-light">
+                                        <h1 className="m-0">Precio<sup><small>$</small></sup>{item.price}</h1>
+                                    </div>
+                                )
+                            }
                             {
                                 (item.type == "habitacion" && item.promotion > 0) && (
                                     <div className="text-center bg-soft-light" style={{ textDecoration: 'line-through' }}>
@@ -234,7 +227,7 @@ const ListServices = ({
                             <Link
                                 to={{
                                     pathname: `${pathDashboard}/service`,
-                                    state: { ...item }
+                                    state: { 'id_service': item.id_service }
                                 }}
                                 className=" btn btn-primary waves-effect waves-light"
                             >

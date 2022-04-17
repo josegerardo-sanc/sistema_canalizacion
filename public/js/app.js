@@ -89947,7 +89947,10 @@ var Sidebar = function Sidebar(_ref) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
     src: Auth.hasOwnProperty('user') && user.photo != null ? user.photo : _imageProfileDefault_png__WEBPACK_IMPORTED_MODULE_4___default.a,
     alt: "logo",
-    className: "avatar-md mx-auto rounded-circle"
+    className: "avatar-md mx-auto rounded-circle",
+    style: {
+      objectFit: "cover"
+    }
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "mt-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
@@ -89989,29 +89992,7 @@ var Administrador = function Administrador() {
     to: "/user"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
     className: "fas fa-users"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Usuarios"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-    className: "has-arrow waves-effect sub-menu_a_menu",
-    onClick: handleCollapse
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "fas fa-concierge-bell"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Productos y servicios")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-    className: "sub-menu mm-collapse",
-    "aria-expanded": "false"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Navitem, {
-    to: '/service'
-  }, "Nuevo")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Navitem, {
-    to: '/service/list'
-  }, "Listar")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-    className: "has-arrow waves-effect sub-menu_a_menu",
-    onClick: handleCollapse
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "mdi mdi-flip-horizontal"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Configurar correos")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-    className: "sub-menu mm-collapse",
-    "aria-expanded": "false"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Navitem, {
-    to: "/service/config/smtp"
-  }, "SMTP")))));
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Usuarios"))));
 };
 
 var Navitem = function Navitem(_ref2) {
@@ -95226,8 +95207,8 @@ var pathApi = "/api/v1";
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/jose/Escritorio/hotelfortinplaza/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/jose/Escritorio/hotelfortinplaza/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/jose/Escritorio/encuesta/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/jose/Escritorio/encuesta/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

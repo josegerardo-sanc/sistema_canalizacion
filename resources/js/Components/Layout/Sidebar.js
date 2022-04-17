@@ -55,7 +55,11 @@ const Sidebar = ({ Auth }) => {
                         <div className="user-img">
                             <img
                                 src={(Auth.hasOwnProperty('user') && user.photo != null ? user.photo : imageProfileDefault)}
-                                alt="logo" className="avatar-md mx-auto rounded-circle" />
+                                alt="logo" className="avatar-md mx-auto rounded-circle"
+                                style={{
+                                    objectFit: "cover"
+                                }}
+                            />
                         </div>
                         <div className="mt-3">
                             <a href="#" className="text-dark font-weight-medium font-size-16">
@@ -115,25 +119,6 @@ const Administrador = () => {
                     <i className="fas fa-users"></i>
                     <span>Usuarios</span>
                 </Navitem>
-            </li>
-            <li >
-                <a className="has-arrow waves-effect sub-menu_a_menu" onClick={handleCollapse}>
-                    <i className="fas fa-concierge-bell"></i>
-                    <span>Productos y servicios</span>
-                </a>
-                <ul className="sub-menu mm-collapse" aria-expanded="false">
-                    <li><Navitem to={'/service'} >Nuevo</Navitem></li>
-                    <li><Navitem to={'/service/list'} >Listar</Navitem></li>
-                </ul>
-            </li>
-            <li >
-                <a className="has-arrow waves-effect sub-menu_a_menu" onClick={handleCollapse}>
-                    <i className="mdi mdi-flip-horizontal"></i>
-                    <span>Configurar correos</span>
-                </a>
-                <ul className="sub-menu mm-collapse" aria-expanded="false">
-                    <li><Navitem to={`/service/config/smtp`}>SMTP</Navitem></li>
-                </ul>
             </li>
         </Fragment>
     )

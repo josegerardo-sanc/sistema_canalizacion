@@ -2,7 +2,7 @@
 import React, { Fragment, useEffect, useState } from "react"
 import { connect } from "react-redux";
 import { useRouteMatch, Link } from 'react-router-dom'
-import { pathDashboard } from "../../env";
+import { pathSystem } from "../../env";
 
 /**imageLogoUser */
 import imageProfileDefault from './imageProfileDefault.png'
@@ -141,7 +141,7 @@ const Navitem = ({ to, activeOnlyWhenExact = true, children }) => {
         to = pathname;
     }
 
-    let path = pathDashboard + to;
+    let path = pathSystem.dashboard + to;
 
     let match = useRouteMatch({
         path: path,

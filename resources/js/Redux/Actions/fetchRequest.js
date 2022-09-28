@@ -104,10 +104,7 @@ export const processRequest = async (store, requestData) => {
         return response;
 
     } catch (error) {
-
-        console.log("error desde aqui")
         console.log(error);
-
         store.dispatch(handlePreloader(false));
         store.dispatch(handleAlertMessage({
             message: ["Ha ocurrido un error, intenta de nuevo más tarde.", `Error: ${error.message}`],

@@ -4,7 +4,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import Login from '../Components/Auth/Login';
 import Preloader from "../Helpers/Preloader";
 
-import logo from '../Components/Layout/logo-fortin-large.png'
+import logo from '../Components/Layout/logo-large.svg'
 
 /**styles */
 import './style.css'
@@ -22,7 +22,9 @@ const ViewLogin = () => {
                                 <h5 className="text-white font-size-20">Bienvenido de nuevo </h5>
                                 <p className="text-white-50 mb-0">Inicie sesión para continuar.</p>
                                 <a href="index" className="logo logo-admin mt-4">
-                                    <img src={logo} alt="logo" height="30" />
+                                    <img src={logo} alt="logo" height="140" style={{
+                                        borderRadius: "7px"
+                                    }} />
                                 </a>
                             </div>
                         </div>

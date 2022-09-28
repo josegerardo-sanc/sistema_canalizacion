@@ -7,13 +7,13 @@ import { Link } from "react-router-dom";
 import { signOffAuth } from '../../Redux/Actions/Auth'
 import { fetchRequest } from "../../Redux/Actions/fetchRequest";
 
-import { pathApi, pathDashboard } from "../../env";
+import { pathApi, pathSystem } from "../../env";
 
 
 /**imageLogoUser */
 import imageProfileDefault from './imageProfileDefault.png'
-import logoSystem from './Logo.png'
-import logoSystemLarge from './logo-fortin-large.png'
+import logoSystem from './logo.jpg'
+import logoSystemLarge from './logo-large.svg'
 
 const initLeftMenuCollapse = (event) => {
     event.preventDefault();
@@ -104,7 +104,7 @@ const Navar = ({ Auth, fetchRequest, signOffAuth }) => {
                             </button>
                             <div className="dropdown-menu dropdown-menu-right">
                                 {/*item */}
-                                <Link className="dropdown-item" to={`${pathDashboard}/user/profile`}>
+                                <Link className="dropdown-item" to={`${pathSystem.dashboard}/user/profile`}>
                                     <i className="bx bx-user font-size-16 align-middle mr-1"></i>
                                     Perfil
                                 </Link>

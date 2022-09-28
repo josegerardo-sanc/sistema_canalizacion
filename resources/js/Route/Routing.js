@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 
 /**storage de redux */
-import { pathDashboard } from "../env";
+import { pathSystem } from "../env";
 
 /**views */
 import Dashboard from "../Views/Dashboard";
@@ -14,7 +14,6 @@ import NoMatch from "../Helpers/NoMatch";
 
 /**Routing */
 import RoutingUser from './RoutingUser';
-import RoutingService from './RoutingService';
 
 const Routing = () => {
     return (
@@ -22,11 +21,10 @@ const Routing = () => {
         <BrowserRouter>
             <Switch>
                 <DenyAccessAuthenticated exact path="/" component={Login} />
-                <DenyAccessAuthenticated path="/login" component={Login} />
-                <DenyAccessAuthenticated path="/recovery-password" component={ViewRecoveryPassword} />
-                <AllowAccessAuthenticated exact path={pathDashboard} component={() => <h1>Panel administrativo</h1>} />
-                <AllowAccessAuthenticated path={`${pathDashboard}/user`} component={RoutingUser} />
-                <AllowAccessAuthenticated path={`${pathDashboard}/service`} component={RoutingService} />
+                <DenyAccessAuthenticated path={pathSystem.login} component={Login} />
+                <DenyAccessAuthenticated path={pathSystem.password} component={ViewRecoveryPassword} />
+                <AllowAccessAuthenticated exact path={pathSystem.dashboard} component={() => <h1>Panel administrativo</h1>} />
+                <AllowAccessAuthenticated path={`${pathSystem.dashboard}/user`} component={RoutingUser} />
                 <Route path="*" component={NoMatch} />
             </Switch>
         </BrowserRouter>
@@ -75,7 +73,7 @@ const DenyAccessAuth = (props) => {
             </Fragment>
         )
     }
-    return <Redirect to={`${pathDashboard}`} />
+    return <Redirect to={`${pathSystem.dashboard}`} />
 }
 
 

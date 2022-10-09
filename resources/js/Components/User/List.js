@@ -132,7 +132,7 @@ const TableUser = ({
         let response = await fetchRequest(request);
         //console.log(response);
         if (response.status == 200) {
-            getUser();
+            getUser(activePage, itemsCountPerPage)
         }
     }
 

@@ -65,16 +65,20 @@ const ViewUser = ({
 
 
     const handleExportUsers = async () => {
+        let typeRol = document.getElementById('typeRol').value;
         let request = {
             'url': `${pathApi}/exportUsers`,
             'request': {
                 method: 'POST',
                 headers: {
-                    //'Accept': 'application/json',
+                    'Accept': 'application/json',
                     //'Accept': 'multipart/form-data',
-                    // 'Content-Type': 'application/json',
+                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                }
+                },
+                body: JSON.stringify({
+                    'filter_rol': typeRol
+                })
             },
             'file_blob': true
         };
@@ -83,8 +87,10 @@ const ViewUser = ({
 
     return (
         <Fragment>
-            <AlertMessageSingular {...responseData} />
             <div className="row">
+                <div className="col-sm-12">
+                    <AlertMessageSingular {...responseData} />
+                </div>
                 <div className="col-sm-12">
                     {/*card */}
                     <div className="card">
@@ -107,6 +113,7 @@ const ViewUser = ({
                             <ListUser
                                 handleOpenEdit={handleOpenEdit}
                                 updateTable={updateTable}
+                                setResponseData={setResponseData}
                             />
                         </div>
                     </div>

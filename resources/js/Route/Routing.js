@@ -11,7 +11,7 @@ import Dashboard from "../Views/Dashboard";
 import Login from '../Views/Login'
 import ViewRecoveryPassword from '../Views/ViewRecoveryPassword'
 import NoMatch from "../Helpers/NoMatch";
-
+import ViewProfile from "../Views/Dashboard/ViewProfile";
 /**Routing */
 import RoutingUser from './RoutingUser';
 
@@ -24,7 +24,8 @@ const Routing = () => {
                 <DenyAccessAuthenticated path={pathSystem.login} component={Login} />
                 <DenyAccessAuthenticated path={pathSystem.password} component={ViewRecoveryPassword} />
                 <AllowAccessAuthenticated exact path={pathSystem.dashboard} component={() => <h1>Panel administrativo</h1>} />
-                <AllowAccessAuthenticated path={`${pathSystem.dashboard}/user`} component={RoutingUser} />
+                <AllowAccessAuthenticated exact path={`${pathSystem.dashboard}/${pathSystem.profile}`} component={ViewProfile} />
+                <AllowAccessAuthenticated path={`${pathSystem.dashboard}/${pathSystem.administrador.user}`} component={RoutingUser} />
                 <Route path="*" component={NoMatch} />
             </Switch>
         </BrowserRouter>
@@ -55,7 +56,7 @@ const AllowAccessAuth = (props) => {
             </Fragment>
         )
     }
-    return <Redirect to="/login" />
+    return <Redirect to={pathSystem.login} />
 }
 
 /**DenyAccessAuthenticated */

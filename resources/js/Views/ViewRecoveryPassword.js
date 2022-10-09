@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { RecoveryPassword } from '../Components/Auth/Login';
 import Preloader from "../Helpers/Preloader";
 
-import logo from '../Components/Layout/logo-fortin-large.png'
+import logo from '../Components/Layout/logo-large.svg'
 /**styles */
 import './style.css'
 const ViewRecoveryPassword = () => {
@@ -23,7 +23,9 @@ const ViewRecoveryPassword = () => {
                                 </h5>
                                 <p className="text-white mb-0 p-1"> Solo ingresa tu correo electrónico.Es normal que la olvidemos, por suerte puedes cambiarla..</p>
                                 <a href="index" className="logo logo-admin mt-4">
-                                    <img src={logo} alt="logo" height="30" className=" bg-white" />
+                                    <img src={logo} alt="logo" height="100" style={{
+                                        borderRadius: "7px"
+                                    }} />
                                 </a>
                             </div>
                         </div>

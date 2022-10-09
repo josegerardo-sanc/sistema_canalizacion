@@ -13,7 +13,7 @@ use Spatie\Permission\Models\Role;
 use App\Http\Controllers\AuthController;
 use App\Traits\Helper;
 use App\User;
-use App\HistoryLog;
+//use App\HistoryLog;
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
 //use Maatwebsite\Excel\Excel;
@@ -21,15 +21,11 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageResetPassword;
 use Illuminate\Support\Str;
 
+use App\Http\Controllers\AlumnoController;
+
 class UserController extends Controller
 {
     use Helper;
-    const CLIENTE_CREATE = "cliente_create";
-    const USUARIO_CREATE = "usuario_create";
-    const CLIENTE_UPDATE = "cliente_update";
-    const USUARIO_UPDATE = "usuario_update";
-    const ROLES = ['Cliente', 'Administrador'];
-
 
     /**
      * @var AuthController $_authController
@@ -39,13 +35,23 @@ class UserController extends Controller
     public $ERROR_SERVER_MSG = 'Ha ocurrido un error, intenta de nuevo más tarde.';
     public $idUser;
     public $nameUser;
+
     /**
+     * @var AlumnoController $_alumnoController
+     */
+    public $_alumnoController;
+    /**
+     * Undocumented function
+     *
      * @param AuthController $AuthController
+     * @param AlumnoController $AlumnoController
      */
     public function __construct(
-        AuthController $AuthController
+        AuthController $AuthController,
+        AlumnoController $AlumnoController
     ) {
         $this->_authController = $AuthController;
+        $this->_alumnoController = $AlumnoController;
         if (auth()->user()) {
             $this->idUser = auth()->user()->id_users;
             $this->nameUser = auth()->user()->name;
@@ -61,6 +67,13 @@ class UserController extends Controller
     public function saveUser(Request  $request)
     {
         try {
+            /**
+             * Nota: $isAdmin==false significa que el registro es desde la parte publica
+             */
+            $isAdmin = false;
+            if (!empty($this->idUser)) {
+                $isAdmin = auth()->user()->hasRole('Administrador');
+            }
 
             $_validator = $this->validationUser($request);
             if (isset($_validator['status']) && $_validator['status'] == 422) {
@@ -71,8 +84,8 @@ class UserController extends Controller
             $name = ucwords($request->get('name'));
             $last_name = ucwords($request->get('last_name'));
             $second_last_name = ucwords($request->get('second_last_name'));
+            $gender = $request->get('gender');
             $email = $request->get('email');
-            $typeRol = $request->get('type_rol');
 
             #variant=> type_form
             $password = $request->get('password');
@@ -80,49 +93,54 @@ class UserController extends Controller
             $addreses = $request->get('addreses');
             $type_form = $request->get('type_form');
 
+
+            $confirmation_code = Str::random(40);
+            $verification_link = base64_encode("{$confirmation_code}_{$email}");
+            $typeRol = $request->get('type_rol');
             DB::beginTransaction();
 
             $user = null;
             $adtUser = null;
-
-            if ($type_form == self::USUARIO_CREATE || $type_form == self::CLIENTE_CREATE) {
-                $user = new User;
-                //$adtUser = new AdditionalInfoUser;
-                $user->password = empty($password) ? Hash::make("password") : Hash::make($password);
-            } else if ($type_form == self::USUARIO_UPDATE || $type_form == self::CLIENTE_UPDATE) {
-                #update
-                $id_user = $request->get('id_users');
+            $id_user = $request->get('id_users');
+            if (!empty($id_user)) {
                 $user = User::where('id_users', $id_user)->first();
-                //$adtUser = AdditionalInfoUser::where('id_users', $id_user)->first();
                 if (empty($user)) {
                     return response()->json([
                         'status' => 400,
                         'message' => "No se encontro el usuario con ID: {$id_user}"
                     ]);
                 }
-                /*
-                if (empty($adtUser)) {
-                    $adtUser = new AdditionalInfoUser;
-                }
-                */
+            } else {
+                $user = new User;
+                //$adtUser = new AdditionalInfoUser;
+                $user->password = empty($password) ? Hash::make("password") : Hash::make($password);
             }
+
             #update type_rol=>request
             $rol_name = $typeRol;
             $user->name = $name;
             $user->last_name = $last_name;
             $user->second_last_name = $second_last_name;
+            $user->gender = $gender;
             $user->email = $email;
+            $user->verification_link = $verification_link;
             $user->account_status = 1;
             $user->syncRoles($rol_name);
             #variant=> type_form
             $user->addreses = $addreses;
             $user->phone = $phone;
             $user->save();
-
             $id_user = $user->id_users;
+
+            $request->request->add([
+                'id_users' => $id_user
+            ]);
+            if ($typeRol == "Alumno") {
+                $this->_alumnoController->setAlumno($request);
+            }
             //$this->saveAdditionalUser($request, $id_user, $adtUser);
             DB::commit();
-            $message = strpos($type_form, "create") ? "Se ha creado con éxito." : "Se ha actualizado con éxito.";
+            $message = strpos($type_form, "create") === false ? "Se ha actualizado con éxito." : "Se ha creado con éxito.";
 
             return response()->json([
                 'status' => 200,
@@ -149,79 +167,114 @@ class UserController extends Controller
 
     public function validationUser(Request $request)
     {
+        $type_form = "create";
+        if ($request->has('type_form')) {
+            $type_form = $request->get('type_form');
+        }
 
-        $type_form = $request->get('type_form');
-        $rol_name = $request->get('type_rol');
+        $validations = array();
 
 
         $validations = [
-            'name' => 'required|string|max:50',
-            'last_name' => 'required|string|max:50',
-            'second_last_name' => 'required|string|max:50',
-            'type_form' => 'required|string'
+            'name' => 'required|max:50',
+            'last_name' => 'required|max:50',
+            'second_last_name' => 'required|max:50',
+            'gender' => [
+                'required',
+                Rule::in(['Masculino', 'Femenino']),
+            ],
+            'email' => 'required|email|unique:users|max:100',
         ];
 
-        #insert
-        if ($type_form == self::CLIENTE_CREATE || $type_form == self::USUARIO_CREATE) {
-            $validations['email'] = 'required|string|email|unique:users|max:50';
 
-            if ($type_form == self::CLIENTE_CREATE) {
-                //$validations['phone'] = 'required|digits:10|unique:user';
-                //$validations['propiedad'] = 'required|unique:table';
-            }
-            if ($type_form == self::USUARIO_CREATE) {
-                //$validations['password'] = 'required|string|confirmed';
-            }
-        }
-        #update
-        $id_user = $request->get('id_users');
-        if ($type_form == self::CLIENTE_UPDATE || $type_form == self::USUARIO_UPDATE) {
-            $validations['email'] = ['required', 'email', 'max:50', Rule::unique('users')->ignore($id_user, 'id_users')];
-
-            if ($type_form == self::CLIENTE_UPDATE) {
-                $validations['phone'] = ['required', 'digits:10', Rule::unique('users')->ignore($id_user, 'id_users')];
-                //$validations['phone'] = 'required|digits:10';
-            }
+        if ($type_form == "create") {
+            //$validations['password'] = "required|confirmed";
         }
 
-        $validator = Validator::make($request->all(), $validations, [
+        /**
+         * si esta logueado y es un admnistrador solicitamos el tipo de rol
+         */
+        $typeRol = $request->get('type_rol');
+        $rolesName = $this->getRolesName();
+        $validations['type_rol'] = [
+            'required',
+            Rule::in($rolesName),
+        ];
+
+        if ($typeRol == "Alumno") {
+            $validations = array_merge($validations, [
+                'matricula' => [
+                    'required',
+                    'unique:students',
+                    'regex:/[0-9]{2}/',
+                    'regex:/[Ee]{1}/',
+                    'regex:/[0-9]{5}/',
+                ],
+                'careers' => 'required|numeric',
+                'semester' =>
+                [
+                    'required',
+                    'regex:/[1-9]{1}/',
+                ],
+                'school_shift' => [
+                    'required',
+                    Rule::in(['Matutino', 'Vespertino']),
+                ],
+            ]);
+        }
+
+        if ($type_form == "update") {
+            $id_user = $request->get('id_users');
+            $validations['email'] = ['required', 'email', Rule::unique('users', 'email')->ignore($id_user, 'id_users')];
+            if ($typeRol == "Alumno") {
+                $id_students = null;
+                if (!empty($request->get('alumno'))) {
+                    $id_students = intval($request->get('alumno')['id_students']);
+                    $validations['matricula'] = ['required', Rule::unique('students', 'matricula')->ignore($id_students, 'id_students')];
+                }
+            }
+        }
+
+        $messagesValidator = [
+            'type_rol.required' => 'El rol es obligatorio.',
+            'type_rol.in' => 'Seleccione un rol de la lista.',
+            'type_form.required' => 'El tipo de request es obligatorio',
             'name.required' => 'El nombre es obligatorio.',
             'name.max' => 'El nombre debe contener como máximo 50 caracteres.',
             'last_name.required' => 'El primer apellido es obligatorio.',
             'last_name.max' => 'El primer apellido debe contener como máximo 50 caracteres.',
             'second_last_name.required' => 'El segundo apellido es obligatorio.',
             'second_last_name.max' => 'El segundo apellido debe contener como máximo 50 caracteres.',
+            'gender.required' => 'El genero es obligatorio.',
             'email.required' => 'El correo es obligatorio.',
             'email.unique' => 'El correo ya está en uso.',
             'email.email' => 'El correo es invalido verifique el formato.',
-            'email.max' => 'El correo debe contener como máximo 50 caracteres.',
-            'phone.required' => 'El telefono es obligatorio.',
-            'phone.digits' => 'El telefono debe contener 10 digitos.',
-            //'password.required' => 'La contraseña es obligatoria.',
-            //'password.confirmed' => 'La contraseñas no coinciden.',
-        ]);
+            'email.max' => 'El correo debe contener como máximo 100 caracteres.',
+            //'phone.required' => 'El telefono es obligatorio.',
+            //'phone.digits' => 'El telefono debe contener 10 digitos.',
+            'password.required' => 'La contraseña es obligatoria.',
+            'password.confirmed' => 'La contraseñas no coinciden.',
+            'matricula.required' => 'La matricula es obligatorio.',
+            'matricula.regex' => 'Formato incorrecto de matricula.',
+            'matricula.unique' => 'La matricula ya está en uso.',
+            'careers.required' => 'Selecciona tu carrera',
+            'semester.required' => 'Selecciona tu semestre',
+            'semester.regex' => 'El semestre seleccionado no existe en la lista.',
+            'school_shift.required' => 'Selecciona tu turno',
+            'school_shift.in' => 'El turno seleccionado no existe en la lista.',
+        ];
 
-        if ($type_form == self::USUARIO_CREATE || $type_form == self::USUARIO_UPDATE) {
-            if (empty($rol_name) || $rol_name === 0) {
-                $validator->after(function ($validator) {
-                    $validator->errors()->add('rol', 'Debes seleccionar un rol');
-                });
-            }
-        } else if ($type_form == self::CLIENTE_CREATE || $type_form == self::CLIENTE_UPDATE) {
-            #se agrega el rol por default
-            $request->request->add([
-                'type_rol' => "Cliente"
-            ]);
-        }
-
-        $validator = $validator->fails() ? json_decode($validator->errors(), true) : [];
-
-        if (count($validator) > 0) {
+        $validator = Validator::make($request->all(), $validations, $messagesValidator);
+        if ($validator->fails()) {
             return [
                 'status' => 422,
-                'errors' => $validator
+                'errors' => $validator->errors()
             ];
         }
+
+        $request->request->add([
+            'type_rol' => $typeRol
+        ]);
     }
 
     /**
@@ -245,6 +298,16 @@ class UserController extends Controller
         }
     }
 
+
+    public function getRolesName()
+    {
+        $all_roles_in_database = \json_decode(Role::all()->pluck('name'), true);
+        if (!is_array($all_roles_in_database)) {
+            $all_roles_in_database = array();
+        }
+        return $all_roles_in_database;
+    }
+
     /**
      * list users
      * @param \Illuminate\Http\Request  $request
@@ -261,7 +324,7 @@ class UserController extends Controller
 
         try {
             $typeRol = $request->get('typeRol');
-            $searchRoles = self::ROLES;
+            $searchRoles = $this->getRolesName();
             $searchRol = array();
 
             if (in_array($typeRol, $searchRoles)) {
@@ -274,7 +337,7 @@ class UserController extends Controller
             $queryUser = User::query();
             $users = $queryUser->whereHas('roles', function ($query) use ($searchRol) {
                 $query->whereIn('name', $searchRol);
-            })->with(['roles'])
+            })->with(['roles', 'alumno'])
                 ->where('id_users', "!=", $id_user)
                 ->where('account_status', "!=", 4);
 
@@ -326,6 +389,77 @@ class UserController extends Controller
             ]);
         }
     }
+
+    /**
+     * vendor/maatwebsite/excel/src/Facades/Excel.php
+     *https://docs.laravel-excel.com/3.1/exports/collection.html
+     * export all users with filters
+     *
+     * @return file
+     */
+
+
+    public function exportUsers(Request $request)
+    {
+        try {
+            // return Excel::store(new UsersExport, '/public/exports/invoices.xlsx', null);
+            //return Excel::download(new UsersExport, 'users.xlsx');
+            $headersColumn = array();
+            $headersColumn = ["Nombre", "Correo", "Telefono", "Rol"];
+
+            $queryUser = User::query();
+            $usersData = $queryUser
+                ->with('roles')
+                ->where('account_status', '!=', '4');
+
+            $nameFile = "Usuarios";
+            $roles = $this->getRolesName();
+
+            if ($request->has('filter_rol')) {
+                $rol = $request->get('filter_rol');
+                if (in_array($rol, $this->getRolesName())) {
+                    $roles = [$rol];
+                    $nameFile = ucwords($rol);
+                }
+            }
+
+            $usersData = $queryUser
+                ->whereHas('roles', function ($query) use ($roles) {
+                    $query->whereIn('name', $roles);
+                })
+                ->orderBy('id_users')
+                ->get();
+
+
+            $ArrayExportUser = array();
+            foreach ($usersData as $key => $item) {
+                $fullName = $item['name'] . " " . $item['last_name'] . " " . $item['second_last_name'];
+                $ArrayExportUser[$key]['full_name'] = $fullName;
+                $ArrayExportUser[$key]['correo'] = $item['email'];
+                $ArrayExportUser[$key]['telefono'] = $item['phone'];
+
+                $nameRol = "";
+                foreach ($item['roles'] as $rol) {
+                    $nameRol = $rol['name'];
+                }
+                $ArrayExportUser[$key]['rol'] = $nameRol;
+            }
+
+
+            $export = new UsersExport($ArrayExportUser, $headersColumn);
+
+
+            return Excel::download($export, $nameFile . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 400,
+                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage()
+            ], 400);
+        }
+    }
+
+
+    //////////METODOS QUE SI SE OCUPARAN
 
     /**
      * Update photo of user
@@ -390,8 +524,6 @@ class UserController extends Controller
             ]);
         }
     }
-
-
     /**
      * update profile
      * @param \Illuminate\Http\Request  $request
@@ -421,16 +553,6 @@ class UserController extends Controller
                 'phone.required' => 'El telefono es obligatorio.',
                 'addreses.max' => 'La dirección debe tener como máximo 255 caracteres.'
             ]);
-            #validation of password
-            $password = $request->get('password');
-            $password_confirmation = $request->get('password_confirmation');
-
-
-            if ($password != $password_confirmation) {
-                $validator->after(function ($validator) {
-                    $validator->errors()->add('password', 'Las contraseñas no coincide.');
-                });
-            }
 
             if ($validator->fails()) {
                 return response()->json([
@@ -479,177 +601,52 @@ class UserController extends Controller
         }
     }
 
-
-
     /**
-     * eliminar cuenta
-     * @param integer $id
-     * @return \Illuminate\Http\Response
-     */
-    public function deleteUser(int $id)
-    {
-        $id_user = $this->idUser;
-        $name_user = $this->nameUser;
-
-        try {
-            $user = User::where('id_users', $id)->first();
-            if (!empty($user)) {
-                DB::beginTransaction();
-                $now = date("Y-m-d H:i:s");
-                $user->account_status = 4;
-                $user->phone = $user->phone;
-                $user->email = $user->email;
-                $user->updated_at = $now;
-                $user->save();
-
-                $historyLog = new HistoryLog;
-                $historyLog->id_user = $id_user;
-                $historyLog->id_user_delete = $user->id_users;
-                $historyLog->note = "id:$id_user {$name_user} ha eliminado temporalmente a {$user->name} id: {$user->id_users}";
-                $historyLog->save();
-
-                //$user = User::where('id_users', $id)->delete();
-                DB::commit();
-                return response()->json([
-                    'status' => 200,
-                    'data' => [],
-                    'message' => "Se ha eliminado temporalmente al usuario."
-                ]);
-            } else {
-                return response()->json([
-                    'status' => 400,
-                    'message' => 'No se encontro el usuario'
-                ]);
-            }
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => 400,
-                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage()
-            ]);
-        }
-    }
-
-    /**
-     * vendor/maatwebsite/excel/src/Facades/Excel.php
-     *https://docs.laravel-excel.com/3.1/exports/collection.html
-     * export all users with filters
-     *
-     * @return file
-     */
-
-
-    public function exportUsers(Request $request)
-    {
-        try {
-            // return Excel::store(new UsersExport, '/public/exports/invoices.xlsx', null);
-            //return Excel::download(new UsersExport, 'users.xlsx');
-
-            $headersColumn = array();
-            $headersColumn = ["Nombre", "Correo", "Telefono", "Rol"];
-
-            $queryUser = User::query();
-            $usersData = $queryUser
-                ->with('roles')
-                ->where('account_status', '!=', '4');
-
-            $nameFile = "Usuarios";
-            $roles = self::ROLES;
-
-            if ($request->has('filter_rol')) {
-                $rol = $request->get('filter_rol');
-
-                if ($rol == "Cliente") {
-                    $nameFile = "Clientes";
-                }
-
-                if (in_array($rol, self::ROLES)) {
-                    $roles = [$rol];
-                }
-            }
-
-            $usersData = $queryUser
-                ->whereHas('roles', function ($query) use ($roles) {
-                    $query->whereIn('name', $roles);
-                })
-                ->orderBy('id_users')
-                ->get();
-
-
-            $ArrayExportUser = array();
-            foreach ($usersData as $key => $item) {
-                $fullName = $item['name'] . " " . $item['last_name'] . " " . $item['second_last_name'];
-                $ArrayExportUser[$key]['full_name'] = $fullName;
-                $ArrayExportUser[$key]['correo'] = $item['email'];
-                $ArrayExportUser[$key]['telefono'] = $item['phone'];
-
-                $nameRol = "";
-                foreach ($item['roles'] as $rol) {
-                    $nameRol = $rol['name'];
-                }
-                $ArrayExportUser[$key]['rol'] = $nameRol;
-            }
-
-
-            $export = new UsersExport($ArrayExportUser, $headersColumn);
-
-
-            return Excel::download($export, $nameFile . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 400,
-                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage()
-            ], 400);
-        }
-    }
-
-    /**
-     * eliminar cuenta
+     * update password
      * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function updateAccount(Request $request)
+    public function updateProfilePassword(Request $request)
     {
-        $id_user = $this->idUser;
-        $name_user = $this->nameUser;
-
         try {
-            $user = User::where('id_users', $request->get('id_user'))->first();
-            if (!empty($user)) {
-                DB::beginTransaction();
-                $now = date("Y-m-d H:i:s");
-                $statusAccountUser = $request->get('statusAccountUser') === true ? 1 : 2; //activo 2=bloqueado
-                $user->account_status = $statusAccountUser;
-                $user->save();
 
-                $historyLog = new HistoryLog;
-                $historyLog->id_user = $id_user;
-                $historyLog->id_user_delete = $user->id_users;
-                $historyLog->note = "id:$id_user {$name_user} ha bloqueado temporalmente a {$user->name} id: {$user->id_users}";
-                $historyLog->save();
+            $validator = Validator::make($request->all(), [
+                'password' => 'required|min:6|confirmed',
+                'password_confirmation' => 'required|min:6'
+            ], [
+                'password.confirmed' => 'La contraseñas no coinciden.',
+                'password.required' => 'La contraseña es obligatorio.',
+                'password_confirmation.required' => 'La contraseña de confirmación es obligatorio.',
+            ]);
 
-                //$user = User::where('id_users', $id)->delete();
-                DB::commit();
+            if ($validator->fails()) {
                 return response()->json([
-                    'status' => 200,
-                    'data' => [],
-                    'message' => "Se ha bloqueado temporalmente al usuario."
-                ]);
-            } else {
-                return response()->json([
-                    'status' => 400,
-                    'message' => 'No se encontro el usuario'
+                    'status' => 422,
+                    'errors' => $validator->errors()
                 ]);
             }
+            $id_user = $this->idUser;
+            $password = $request->get('password');
+            //$password_confirmation = $request->get('password_confirmation');
+            $user = User::where('id_users', $id_user)->first();
+            $user->password = Hash::make($password);
+            $user->save();
+            return response()->json([
+                'status' => 200,
+                'message' => 'contraseña actualizada con éxito.'
+            ]);
         } catch (\Exception $e) {
-            DB::rollBack();
             return response()->json([
                 'status' => 400,
-                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage()
+                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage() . $e->getLine()
             ]);
         }
     }
-
+    /**
+     * recovery password
+     * @param \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function recoveryPassword(Request $request)
     {
         $email = $request->get('email');
@@ -685,6 +682,105 @@ class UserController extends Controller
                     $e->getMessage()
                 ]
             );
+        }
+    }
+
+    /**
+     * eliminar cuenta
+     * @param integer $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteUser(int $id)
+    {
+        $id_user = $this->idUser;
+        $name_user = $this->nameUser;
+
+        try {
+            $user = User::where('id_users', $id)->first();
+            if (!empty($user)) {
+                DB::beginTransaction();
+                $now = date("Y-m-d H:i:s");
+                $user->account_status = 4;
+                $user->phone = $user->phone; //modificar el numero para evitar conflictos de unique
+                $user->email = $user->email; ////modificar el numero para evitar conflictos de unique
+                $user->updated_at = $now;
+                $user->save();
+
+                /*$historyLog = new HistoryLog;
+                $historyLog->id_user = $id_user;
+                $historyLog->id_user_delete = $user->id_users;
+                $historyLog->note = "id:$id_user {$name_user} ha eliminado temporalmente a {$user->name} id: {$user->id_users}";
+                $historyLog->save();
+                */
+
+                //$user = User::where('id_users', $id)->delete();
+                DB::commit();
+                return response()->json([
+                    'status' => 200,
+                    'data' => [],
+                    'message' => "Se ha eliminado temporalmente al usuario."
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'No se encontro el usuario'
+                ]);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 400,
+                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * eliminar cuenta
+     * @param \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateAccount(Request $request)
+    {
+        $id_user = $this->idUser;
+        $name_user = $this->nameUser;
+
+        try {
+            $user = User::where('id_users', $request->get('id_user'))->first();
+            if (!empty($user)) {
+                DB::beginTransaction();
+                $now = date("Y-m-d H:i:s");
+                $statusAccountUser = $request->get('statusAccountUser') === true ? 1 : 2; //activo 2=inactivo
+                $user->account_status = $statusAccountUser;
+                $user->save();
+
+                /*
+                $historyLog = new HistoryLog;
+                $historyLog->id_user = $id_user;
+                $historyLog->id_user_delete = $user->id_users;
+                $historyLog->note = "id:$id_user {$name_user} ha bloqueado temporalmente a {$user->name} id: {$user->id_users}";
+                $historyLog->save();
+                */
+
+                //$user = User::where('id_users', $id)->delete();
+                DB::commit();
+                return response()->json([
+                    'status' => 200,
+                    'data' => [],
+                    'message' => "Se ha inactivado la cuenta temporalmente al usuario."
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'No se encontro el usuario'
+                ]);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 400,
+                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage()
+            ]);
         }
     }
 }

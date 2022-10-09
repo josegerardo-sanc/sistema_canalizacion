@@ -44,6 +44,7 @@ const downloadFile = (request, response) => {
 }
 
 export const processRequest = async (store, requestData) => {
+    console.log(requestData)
     try {
         store.dispatch(handleAlertMessage({
             showMessage: false

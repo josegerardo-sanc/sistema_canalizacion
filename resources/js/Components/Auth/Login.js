@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { saveSesionAuth } from '../../Redux/Actions/Auth'
 import { fetchRequest } from '../../Redux/Actions/fetchRequest'
 /**configurations */
-import { pathApi } from '../../env'
+import { pathApi, pathSystem } from '../../env'
 
 /**helpers */
 import AlertMessage from "../../Helpers/AlertMessage";
@@ -151,7 +151,7 @@ const Login = ({
                 </div>
 
                 <div className="mt-4 text-center">
-                    <Link to="/recovery-password" className="text-muted">
+                    <Link to={`${pathSystem.password}`} className="text-muted">
                         <i className="mdi mdi-lock mr-1"></i> ¿Olvidaste tu contraseña?
                     </Link>
                 </div>

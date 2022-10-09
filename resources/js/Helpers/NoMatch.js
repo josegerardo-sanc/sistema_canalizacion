@@ -10,12 +10,17 @@ const NoMatch = () => {
     return (
         <Fragment>
             <div style={{
-                position: 'absolute',
+                zIndex: 99999,
+                position: "fixed",
                 top: '0px',
                 left: '0px',
+                minWidth: "100vh",
+                minHeight: "100vh",
                 width: '100%',
                 height: '100%',
-                backgroundColor: 'white'
+                backgroundColor: 'white',
+                boxSizing: "content-box"
+
             }}>
                 <div className="text-center p-3"
                     style={{

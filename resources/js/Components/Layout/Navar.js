@@ -13,7 +13,7 @@ import { pathApi, pathSystem } from "../../env";
 /**imageLogoUser */
 import imageProfileDefault from './imageProfileDefault.png'
 import logoSystem from './logo.jpg'
-import logoSystemLarge from './logo-large.svg'
+import logoSystemLarge from './logotec.png'
 
 const initLeftMenuCollapse = (event) => {
     event.preventDefault();
@@ -104,7 +104,7 @@ const Navar = ({ Auth, fetchRequest, signOffAuth }) => {
                             </button>
                             <div className="dropdown-menu dropdown-menu-right">
                                 {/*item */}
-                                <Link className="dropdown-item" to={`${pathSystem.dashboard}/user/profile`}>
+                                <Link className="dropdown-item" to={`${pathSystem.dashboard}/${pathSystem.profile}`}>
                                     <i className="bx bx-user font-size-16 align-middle mr-1"></i>
                                     Perfil
                                 </Link>
@@ -252,7 +252,7 @@ const LogoSystem = () => {
                             <img src={logoSystem} alt="logo" height="60" />
                         </span>
                         <span className="logo-lg bg-white">
-                            <img src={logoSystemLarge} alt="logo" height="50" className="bg-white" />
+                            <img src={logoSystemLarge} alt="logo" height="80" className="bg-white" />
                         </span>
                     </a>
                 </div>

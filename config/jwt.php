@@ -101,7 +101,9 @@ return [
     |
     */
 
-    #'ttl' => env('JWT_TTL', 40320), default
+    #60minutos*24horas="1440"  (1 dia)
+    #((60minutos * 24horas) * 7dias *4semanas)=40320  "1 mes"
+    #'ttl' => env('JWT_TTL', 40320) default
     'ttl' => env('JWT_TTL', 40320),
 
     /*

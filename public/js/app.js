@@ -76922,7 +76922,7 @@ var Login = function Login(_ref) {
   }, "iniciar sesi\xF3n")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "mt-4 text-center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Link"], {
-    to: "/recovery-password",
+    to: "".concat(_env__WEBPACK_IMPORTED_MODULE_6__["pathSystem"].password),
     className: "text-muted"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
     className: "mdi mdi-lock mr-1"
@@ -77049,6 +77049,8 @@ var RecoveryPassword = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _env__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../env */ "./resources/js/env.js");
+
 
 /*configurations*/
 
@@ -77065,7 +77067,7 @@ var Footer = function Footer() {
     className: "col-sm-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "text-sm-right d-none d-sm-block"
-  }, new Date().getFullYear(), " \xA9 hotelfortinplaza.")))));
+  }, new Date().getFullYear(), " \xA9 ", _env__WEBPACK_IMPORTED_MODULE_1__["footerInfo"], ".")))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Footer);
@@ -77094,8 +77096,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _imageProfileDefault_png__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_imageProfileDefault_png__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var _logo_jpg__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./logo.jpg */ "./resources/js/Components/Layout/logo.jpg");
 /* harmony import */ var _logo_jpg__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_logo_jpg__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _logo_large_svg__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./logo-large.svg */ "./resources/js/Components/Layout/logo-large.svg");
-/* harmony import */ var _logo_large_svg__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_logo_large_svg__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _logotec_png__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./logotec.png */ "./resources/js/Components/Layout/logotec.png");
+/* harmony import */ var _logotec_png__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_logotec_png__WEBPACK_IMPORTED_MODULE_9__);
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -77210,7 +77212,7 @@ var Navar = function Navar(_ref) {
     className: "dropdown-menu dropdown-menu-right"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Link"], {
     className: "dropdown-item",
-    to: "".concat(_env__WEBPACK_IMPORTED_MODULE_6__["pathSystem"].dashboard, "/user/profile")
+    to: "".concat(_env__WEBPACK_IMPORTED_MODULE_6__["pathSystem"].dashboard, "/").concat(_env__WEBPACK_IMPORTED_MODULE_6__["pathSystem"].profile)
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
     className: "bx bx-user font-size-16 align-middle mr-1"
   }), "Perfil"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -77372,9 +77374,9 @@ var LogoSystem = function LogoSystem() {
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
     className: "logo-lg bg-white"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
-    src: _logo_large_svg__WEBPACK_IMPORTED_MODULE_9___default.a,
+    src: _logotec_png__WEBPACK_IMPORTED_MODULE_9___default.a,
     alt: "logo",
-    height: "50",
+    height: "80",
     className: "bg-white"
   })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
     onClick: initLeftMenuCollapse,
@@ -77457,7 +77459,8 @@ var Sidebar = function Sidebar(_ref) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Administrador, null);
         break;
 
-      case 'Cliente':
+      case 'Alumno':
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Alumno, null);
         break;
 
       default:
@@ -77519,10 +77522,18 @@ var handleCollapse = function handleCollapse(e) {
 
 var Administrador = function Administrador() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Navitem, {
-    to: "/user"
+    to: ''
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-grip-horizontal"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Graficas"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Navitem, {
+    to: "/".concat(_env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].administrador.user)
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
     className: "fas fa-users"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Usuarios"))));
+};
+
+var Alumno = function Alumno() {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null);
 };
 
 var Navitem = function Navitem(_ref2) {
@@ -77577,17 +77588,6 @@ module.exports = "/images/imageProfileDefault.png?0c96f388364f16486375d4a25c03eb
 
 /***/ }),
 
-/***/ "./resources/js/Components/Layout/logo-fortin-large.png":
-/*!**************************************************************!*\
-  !*** ./resources/js/Components/Layout/logo-fortin-large.png ***!
-  \**************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "/images/logo-fortin-large.png?cb5e7e7387378b9a3affb579571c219a";
-
-/***/ }),
-
 /***/ "./resources/js/Components/Layout/logo-large.svg":
 /*!*******************************************************!*\
   !*** ./resources/js/Components/Layout/logo-large.svg ***!
@@ -77607,6 +77607,17 @@ module.exports = "/images/logo-large.svg?18fa16cd2b9a9bcfb84b411a03dbeeb9";
 /***/ (function(module, exports) {
 
 module.exports = "/images/logo.jpg?2efbc0de5b29e7c58938412a9526b0c8";
+
+/***/ }),
+
+/***/ "./resources/js/Components/Layout/logotec.png":
+/*!****************************************************!*\
+  !*** ./resources/js/Components/Layout/logotec.png ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/logotec.png?6827654bc6e4e4678f983a70d05279f6";
 
 /***/ }),
 
@@ -77696,6 +77707,11 @@ var FormUser = function FormUser(_ref) {
       dataForm = _useState8[0],
       setDataForm = _useState8[1];
 
+  var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState10 = _slicedToArray(_useState9, 2),
+      showPassword = _useState10[0],
+      setShowPassword = _useState10[1];
+
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
     getRoles();
   }, []);
@@ -77719,8 +77735,17 @@ var FormUser = function FormUser(_ref) {
         _iterator.f();
       }
 
-      setDataForm(_objectSpread(_objectSpread({}, data), {}, {
+      console.log(data.alumno);
+      var careers = 0;
+
+      if (data.alumno != null) {
+        careers = data.alumno.id_university_careers;
+      }
+
+      setDataForm(_objectSpread(_objectSpread(_objectSpread({}, data), {}, {
         'type_rol': type_rol
+      }, data.alumno), {}, {
+        careers: careers
       }));
     } else {
       handlerResetData();
@@ -77774,15 +77799,16 @@ var FormUser = function FormUser(_ref) {
   }();
 
   var handle_Save = function handle_Save() {
-    handle_Save_Update("usuario_create");
+    handle_Save_Update("create");
   };
 
   var handle_Update = function handle_Update() {
-    handle_Save_Update("usuario_update");
+    handle_Save_Update("update");
   };
 
   var handlerResetData = function handlerResetData() {
     setDataForm({});
+    setResponseReq({});
   };
 
   var handle_Save_Update = /*#__PURE__*/function () {
@@ -77793,6 +77819,7 @@ var FormUser = function FormUser(_ref) {
           switch (_context2.prev = _context2.next) {
             case 0:
               setLoading(true);
+              setResponseReq({});
               data_object = Object.assign(_objectSpread(_objectSpread({}, dataForm), {}, {
                 'type_form': type
               }));
@@ -77808,17 +77835,17 @@ var FormUser = function FormUser(_ref) {
                   body: JSON.stringify(data_object)
                 }
               };
-              _context2.next = 5;
+              _context2.next = 6;
               return fetchRequest(request);
 
-            case 5:
+            case 6:
               response = _context2.sent;
               setResponseReq(response); //console.log(response);
 
               if (response.status == 200) {
                 setResponseData(response);
 
-                if (type == "usuario_create") {
+                if (type == "create") {
                   handlerResetData();
                 }
 
@@ -77828,7 +77855,7 @@ var FormUser = function FormUser(_ref) {
 
               setLoading(false);
 
-            case 9:
+            case 10:
             case "end":
               return _context2.stop();
           }
@@ -77843,6 +77870,12 @@ var FormUser = function FormUser(_ref) {
 
   var onChangeInputData = function onChangeInputData(e) {
     setDataForm(_objectSpread(_objectSpread({}, dataForm), {}, _defineProperty({}, e.target.name, e.target.value)));
+  };
+
+  var handleShowPassword = function handleShowPassword(e) {
+    setShowPassword(function (showPassword) {
+      return !showPassword;
+    });
   };
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -77886,6 +77919,37 @@ var FormUser = function FormUser(_ref) {
     value: dataForm.second_last_name || "",
     name: "second_last_name"
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-6 form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    htmlFor: "",
+    className: "form-label label_filter"
+  }, "Genero"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "custom-control custom-radio custom-control-inline"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    onChange: onChangeInputData,
+    defaultValue: "Masculino",
+    checked: dataForm.gender == "Masculino" ? true : false,
+    name: "gender",
+    type: "radio",
+    id: "_customRadioInline1",
+    className: "custom-control-input"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    className: "custom-control-label",
+    htmlFor: "_customRadioInline1"
+  }, "Masculino")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "custom-control custom-radio custom-control-inline"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    onChange: onChangeInputData,
+    defaultValue: "Femenino",
+    checked: dataForm.gender == "Femenino" ? true : false,
+    name: "gender",
+    type: "radio",
+    id: "_customRadioInline2",
+    className: "custom-control-input"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    className: "custom-control-label",
+    htmlFor: "_customRadioInline2"
+  }, "Femenino")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-md-12"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "form-group"
@@ -77897,7 +77961,76 @@ var FormUser = function FormUser(_ref) {
     type: "email",
     value: dataForm.email || "",
     name: "email"
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+  }))), !dataForm.hasOwnProperty('id_users') && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-12 form-row form-group",
+    style: {
+      display: "none"
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-6 form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    htmlFor: "password"
+  }, "Contrase\xF1a"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "input-group mb-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "input-group-prepend"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+    className: "input-group-text"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+    className: "fas fa-key"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    name: "password",
+    onChange: onChangeInputData,
+    value: dataForm.password || "",
+    type: "".concat(showPassword ? "text" : "password"),
+    className: "form-control",
+    id: "password",
+    placeholder: "Ingresa tu clave",
+    autoComplete: "current-password",
+    maxLength: 100
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "input-group-append",
+    onClick: handleShowPassword
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+    className: "input-group-text",
+    id: "span_icon"
+  }, showPassword ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+    className: "far fa-eye"
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+    className: "far fa-eye-slash"
+  }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-6 form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    htmlFor: "password_confirmation"
+  }, "Confirma contrase\xF1a"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "input-group mb-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "input-group-prepend"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+    className: "input-group-text"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+    className: "fas fa-key"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    name: "password_confirmation",
+    onChange: onChangeInputData,
+    value: dataForm.password_confirmation || "",
+    type: "".concat(showPassword ? "text" : "password"),
+    className: "form-control",
+    id: "password_confirmation",
+    placeholder: "Confirma tu clave",
+    autoComplete: "current-password",
+    maxLength: 100
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "input-group-append",
+    onClick: handleShowPassword
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+    className: "input-group-text",
+    id: "span_icon"
+  }, showPassword ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+    className: "far fa-eye"
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+    className: "far fa-eye-slash"
+  })))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-md-12"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "form-group"
@@ -77918,6 +78051,11 @@ var FormUser = function FormUser(_ref) {
       key: item.id
     }, item.name);
   })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-12"
+  }, dataForm.type_rol == "Alumno" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(FormStudent, {
+    onChangeInputData: onChangeInputData,
+    dataForm: dataForm
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-sm-12 d-flex justify-content-end"
   }, data.hasOwnProperty('id_users') ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
     disabled: loading,
@@ -77936,8 +78074,179 @@ var FormUser = function FormUser(_ref) {
   }, 'Guardar')))));
 };
 
-var mapStateToProps = function mapStateToProps(_ref4) {
-  var Auth = _ref4.Auth;
+var Form_Student = function Form_Student(_ref4) {
+  var fetchRequest = _ref4.fetchRequest,
+      Auth = _ref4.Auth,
+      onChangeInputData = _ref4.onChangeInputData,
+      dataForm = _ref4.dataForm;
+  var token = Auth.token;
+
+  var _useState11 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
+      _useState12 = _slicedToArray(_useState11, 2),
+      careers = _useState12[0],
+      setCareers = _useState12[1];
+
+  var _useState13 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({}),
+      _useState14 = _slicedToArray(_useState13, 2),
+      responseMessage = _useState14[0],
+      setResponseMessage = _useState14[1];
+
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    handleGetCareers();
+  }, []);
+  /**get careers */
+
+  var handleGetCareers = /*#__PURE__*/function () {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+      var request, response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              request = {
+                'url': "".concat(_env__WEBPACK_IMPORTED_MODULE_6__["pathApi"], "/getCareers"),
+                'request': {
+                  method: 'GET',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer ".concat(token)
+                  }
+                },
+                "showLoader": false
+              };
+              _context3.next = 3;
+              return fetchRequest(request);
+
+            case 3:
+              response = _context3.sent;
+
+              if (response.status != 200) {
+                setResponseMessage(response);
+              }
+
+              setCareers(response.data);
+
+            case 6:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }));
+
+    return function handleGetCareers() {
+      return _ref5.apply(this, arguments);
+    };
+  }();
+
+  var validMatricula = function validMatricula(e) {
+    var expreg = /^[0-9]{2}[Ee]{1}[0-9]{5}$/;
+
+    if (e.target.value != "") {
+      e.target.value = e.target.value.toUpperCase();
+    }
+
+    if (expreg.test(e.target.value)) {
+      e.target.classList.remove('is-invalid'); //e.target.classList.add('is-valid')
+    } else {
+      e.target.classList.add('is-invalid');
+    } //console.log(e.target.value, "matricula valid" + expreg.test(e.target.value))
+
+  };
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "form-row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Helpers_AlertMessageSingular__WEBPACK_IMPORTED_MODULE_4__["default"], responseMessage), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-12 form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    htmlFor: "matricula"
+  }, "Matricula"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "input-group mb-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    name: "matricula",
+    onChange: onChangeInputData,
+    value: dataForm.matricula || "",
+    onKeyUp: function onKeyUp(e) {
+      return validMatricula(e);
+    },
+    type: "text",
+    className: "form-control",
+    maxLength: 8,
+    placeholder: "Matricula"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-12 form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    htmlFor: "careers"
+  }, "Carrera"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", {
+    className: "form-control",
+    name: "careers",
+    id: "careers",
+    onChange: onChangeInputData,
+    value: dataForm.careers || 0
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: 0,
+    disabled: true
+  }, 'Selecciona tu carrera'), careers.map(function (item) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+      key: item.id_university_careers,
+      value: item.id_university_careers
+    }, item.name);
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-6 form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    htmlFor: "semester",
+    className: "form-label label_filter"
+  }, "Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", {
+    name: "semester",
+    onChange: onChangeInputData,
+    value: dataForm.semester || 0,
+    id: "semester",
+    className: "form-control"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "0",
+    disabled: true
+  }, "Selecciona tu semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "1"
+  }, "1\xBA Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "2"
+  }, "2\xBA Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "3"
+  }, "3\xBA Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "4"
+  }, "4\xBA Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "5"
+  }, "5\xBA Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "6"
+  }, "6\xBA Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "7"
+  }, "7\xBA Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "8"
+  }, "8\xBA Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "9"
+  }, "9\xBA Semestre"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-6 form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    htmlFor: "school_shift",
+    className: "form-label label_filter"
+  }, "Turno"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", {
+    name: "school_shift",
+    onChange: onChangeInputData,
+    value: dataForm.school_shift || 0,
+    id: "school_shift",
+    className: "form-control"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "0",
+    disabled: true
+  }, "Selecciona una opci\xF3n"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "Matutino"
+  }, "Matutino"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "Vespertino"
+  }, "Vespertino")))));
+};
+
+var mapStateToProps = function mapStateToProps(_ref6) {
+  var Auth = _ref6.Auth;
   return {
     Auth: Auth
   };
@@ -77951,6 +78260,7 @@ FormUser.propTypes = {
   handleUpdateTable: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.func.isRequired,
   setResponseData: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.func.isRequired
 };
+var FormStudent = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(Form_Student);
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(FormUser));
 
 /***/ }),
@@ -78213,7 +78523,7 @@ var TableUser = function TableUser(_ref) {
 
               //console.log(response);
               if (response.status == 200) {
-                getUser();
+                getUser(activePage, itemsCountPerPage);
               }
 
             case 6:
@@ -78619,7 +78929,7 @@ var CardProfileConnect = function CardProfileConnect(_ref) {
       /**validacion del peso */
       var sizeImg = file.size; //KB  1024
       //3MB EN EL BACKEND 3145728
-      //1MB 1048576
+      //1MB (1048576=kilobyte)
 
       var heigthMax = 3 * 1048576;
 
@@ -78688,7 +78998,7 @@ var CardProfileConnect = function CardProfileConnect(_ref) {
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
     onClick: handlePhotoSearch,
     className: "btn btn-info badge badge-info"
-  }, 'Editar'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+  }, 'Actualizar'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "block"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("small", {
     className: "text-danger",
@@ -78783,6 +79093,48 @@ var FormProfileConnect = function FormProfileConnect(_ref4) {
     setSeePassword(!seePassword);
   };
 
+  var handleUpdateProfilePassword = /*#__PURE__*/function () {
+    var _ref6 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+      var data_object, request, response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              data_object = _objectSpread(_objectSpread({}, data), {}, {
+                'type_form': 'profile'
+              });
+              request = {
+                'url': "".concat(_env__WEBPACK_IMPORTED_MODULE_5__["pathApi"], "/updateProfilePassword"),
+                'request': {
+                  method: 'POST',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer ".concat(token)
+                  },
+                  'body': JSON.stringify(data_object)
+                },
+                'showMessage': true
+              };
+              _context4.next = 4;
+              return fetchRequest(request);
+
+            case 4:
+              response = _context4.sent;
+
+            case 5:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4);
+    }));
+
+    return function handleUpdateProfilePassword() {
+      return _ref6.apply(this, arguments);
+    };
+  }();
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "card"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -78872,6 +79224,14 @@ var FormProfileConnect = function FormProfileConnect(_ref4) {
     onChange: onChangeInputData,
     placeholder: "Direcci\xF3n"
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-md-12"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "d-flex justify-content-end"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+    onClick: handleUpdateProfile,
+    type: "button",
+    className: "btn btn-primary"
+  }, 'Guardar'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "mt-3 col-md-12"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
     className: "font-weight-bold text-muted"
@@ -78923,17 +79283,19 @@ var FormProfileConnect = function FormProfileConnect(_ref4) {
     className: "far fa-eye"
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
     className: "far fa-eye-slash"
-  })))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+  }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-md-12"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "d-flex justify-content-end"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-    onClick: handleUpdateProfile,
+    onClick: handleUpdateProfilePassword,
     type: "button",
     className: "btn btn-primary"
-  }, 'Guardar')))));
+  }, 'Guardar')))))));
 };
 
-var mapStateToProps = function mapStateToProps(_ref6) {
-  var Auth = _ref6.Auth;
+var mapStateToProps = function mapStateToProps(_ref7) {
+  var Auth = _ref7.Auth;
   return {
     Auth: Auth
   };
@@ -79179,12 +79541,16 @@ var NoMatch = function NoMatch() {
   var location = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useLocation"])();
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     style: {
-      position: 'absolute',
+      zIndex: 99999,
+      position: "fixed",
       top: '0px',
       left: '0px',
+      minWidth: "100vh",
+      minHeight: "100vh",
       width: '100%',
       height: '100%',
-      backgroundColor: 'white'
+      backgroundColor: 'white',
+      boxSizing: "content-box"
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "text-center p-3",
@@ -79732,7 +80098,8 @@ var processRequest = /*#__PURE__*/function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.prev = 0;
+            console.log(requestData);
+            _context.prev = 1;
             store.dispatch(Object(_AlertMessage__WEBPACK_IMPORTED_MODULE_3__["handleAlertMessage"])({
               showMessage: false
             }));
@@ -79744,37 +80111,37 @@ var processRequest = /*#__PURE__*/function () {
               store.dispatch(Object(_Preloader__WEBPACK_IMPORTED_MODULE_4__["handlePreloader"])(true));
             }
 
-            _context.next = 8;
+            _context.next = 9;
             return fetch(requestData.url, requestData.request);
 
-          case 8:
+          case 9:
             request = _context.sent;
             typeAlert = request.status != 200 ? 'warning' : 'success'; //console.log(request);
 
             showMessageRequest = requestData.hasOwnProperty('showMessage') && requestData.showMessage ? true : false;
 
             if (!(requestData.hasOwnProperty('file_blob') && requestData.file_blob && request.status != 401)) {
-              _context.next = 18;
+              _context.next = 19;
               break;
             }
 
-            _context.next = 14;
+            _context.next = 15;
             return request.blob();
 
-          case 14:
+          case 15:
             response = _context.sent;
             downloadFile(request, response);
-            _context.next = 21;
+            _context.next = 22;
             break;
 
-          case 18:
-            _context.next = 20;
+          case 19:
+            _context.next = 21;
             return request.json();
 
-          case 20:
+          case 21:
             response = _context.sent;
 
-          case 21:
+          case 22:
             messages = response.message || "";
             messages_array.push(messages);
 
@@ -79808,9 +80175,9 @@ var processRequest = /*#__PURE__*/function () {
 
             return _context.abrupt("return", response);
 
-          case 30:
-            _context.prev = 30;
-            _context.t0 = _context["catch"](0);
+          case 31:
+            _context.prev = 31;
+            _context.t0 = _context["catch"](1);
             console.log(_context.t0);
             store.dispatch(Object(_Preloader__WEBPACK_IMPORTED_MODULE_4__["handlePreloader"])(false));
             store.dispatch(Object(_AlertMessage__WEBPACK_IMPORTED_MODULE_3__["handleAlertMessage"])({
@@ -79819,12 +80186,12 @@ var processRequest = /*#__PURE__*/function () {
               showMessage: true
             }));
 
-          case 35:
+          case 36:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 30]]);
+    }, _callee, null, [[1, 31]]);
   }));
 
   return function processRequest(_x, _x2) {
@@ -80143,7 +80510,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Views_Login__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Views/Login */ "./resources/js/Views/Login.js");
 /* harmony import */ var _Views_ViewRecoveryPassword__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Views/ViewRecoveryPassword */ "./resources/js/Views/ViewRecoveryPassword.js");
 /* harmony import */ var _Helpers_NoMatch__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Helpers/NoMatch */ "./resources/js/Helpers/NoMatch.js");
-/* harmony import */ var _RoutingUser__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./RoutingUser */ "./resources/js/Route/RoutingUser.js");
+/* harmony import */ var _Views_Dashboard_ViewProfile__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Views/Dashboard/ViewProfile */ "./resources/js/Views/Dashboard/ViewProfile.js");
+/* harmony import */ var _RoutingUser__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./RoutingUser */ "./resources/js/Route/RoutingUser.js");
 var _excluded = ["component", "Auth"],
     _excluded2 = ["component", "Auth"];
 
@@ -80160,6 +80528,7 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 
 /**views */
+
 
 
 
@@ -80187,8 +80556,12 @@ var Routing = function Routing() {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Panel administrativo");
     }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(AllowAccessAuthenticated, {
-    path: "".concat(_env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].dashboard, "/user"),
-    component: _RoutingUser__WEBPACK_IMPORTED_MODULE_8__["default"]
+    exact: true,
+    path: "".concat(_env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].dashboard, "/").concat(_env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].profile),
+    component: _Views_Dashboard_ViewProfile__WEBPACK_IMPORTED_MODULE_8__["default"]
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(AllowAccessAuthenticated, {
+    path: "".concat(_env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].dashboard, "/").concat(_env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].administrador.user),
+    component: _RoutingUser__WEBPACK_IMPORTED_MODULE_9__["default"]
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "*",
     component: _Helpers_NoMatch__WEBPACK_IMPORTED_MODULE_7__["default"]
@@ -80218,7 +80591,7 @@ var AllowAccessAuth = function AllowAccessAuth(props) {
   }
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-    to: "/login"
+    to: _env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].login
   });
 };
 /**DenyAccessAuthenticated */
@@ -80261,8 +80634,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _Views_Dashboard_ViewProfile__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Views/Dashboard/ViewProfile */ "./resources/js/Views/Dashboard/ViewProfile.js");
-/* harmony import */ var _Views_Dashboard_ViewUser__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Views/Dashboard/ViewUser */ "./resources/js/Views/Dashboard/ViewUser.js");
+/* harmony import */ var _Views_Dashboard_ViewUser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Views/Dashboard/ViewUser */ "./resources/js/Views/Dashboard/ViewUser.js");
+/* harmony import */ var _Helpers_NoMatch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Helpers/NoMatch */ "./resources/js/Helpers/NoMatch.js");
+/* harmony import */ var _env__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../env */ "./resources/js/env.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -80279,6 +80653,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 /**views */
+
 
 
 
@@ -80304,12 +80679,10 @@ var RoutingUser = function RoutingUser(_ref) {
 
   var match = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useRouteMatch"])(); //console.log(match.path)
 
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"], null, rolType.type == "Administrador" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
     exact: true,
     path: "".concat(match.path)
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Views_Dashboard_ViewUser__WEBPACK_IMPORTED_MODULE_4__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
-    path: "".concat(match.path, "/profile")
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Views_Dashboard_ViewProfile__WEBPACK_IMPORTED_MODULE_3__["default"], null))));
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Views_Dashboard_ViewUser__WEBPACK_IMPORTED_MODULE_3__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Helpers_NoMatch__WEBPACK_IMPORTED_MODULE_4__["default"], null))));
 };
 /*connection with redux */
 
@@ -80546,31 +80919,35 @@ var ViewUser = function ViewUser(_ref) {
 
   var handleExportUsers = /*#__PURE__*/function () {
     var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var request, response;
+      var typeRol, request, response;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              typeRol = document.getElementById('typeRol').value;
               request = {
                 'url': "".concat(_env__WEBPACK_IMPORTED_MODULE_7__["pathApi"], "/exportUsers"),
                 'request': {
                   method: 'POST',
                   headers: {
-                    //'Accept': 'application/json',
+                    'Accept': 'application/json',
                     //'Accept': 'multipart/form-data',
-                    // 'Content-Type': 'application/json',
+                    'Content-Type': 'application/json',
                     'Authorization': "Bearer ".concat(token)
-                  }
+                  },
+                  body: JSON.stringify({
+                    'filter_rol': typeRol
+                  })
                 },
                 'file_blob': true
               };
-              _context.next = 3;
+              _context.next = 4;
               return fetchRequest(request);
 
-            case 3:
+            case 4:
               response = _context.sent;
 
-            case 4:
+            case 5:
             case "end":
               return _context.stop();
           }
@@ -80583,9 +80960,11 @@ var ViewUser = function ViewUser(_ref) {
     };
   }();
 
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Helpers_AlertMessageSingular__WEBPACK_IMPORTED_MODULE_6__["default"], responseData), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "row"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-12"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Helpers_AlertMessageSingular__WEBPACK_IMPORTED_MODULE_6__["default"], responseData)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-sm-12"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "card"
@@ -80608,7 +80987,8 @@ var ViewUser = function ViewUser(_ref) {
     className: "font-size-16 align-middle mr-2 fas fa-file-excel"
   }), 'Exportar')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Components_User_List__WEBPACK_IMPORTED_MODULE_4__["default"], {
     handleOpenEdit: handleOpenEdit,
-    updateTable: updateTable
+    updateTable: updateTable,
+    setResponseData: setResponseData
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Helpers_Modal__WEBPACK_IMPORTED_MODULE_5__["default"], {
     title: openModal.titleModal
   }, openModal.type == "user" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Components_User_Add__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -80709,8 +81089,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _Components_Auth_Login__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Components/Auth/Login */ "./resources/js/Components/Auth/Login.js");
 /* harmony import */ var _Helpers_Preloader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Helpers/Preloader */ "./resources/js/Helpers/Preloader.js");
-/* harmony import */ var _Components_Layout_logo_fortin_large_png__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Components/Layout/logo-fortin-large.png */ "./resources/js/Components/Layout/logo-fortin-large.png");
-/* harmony import */ var _Components_Layout_logo_fortin_large_png__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_Components_Layout_logo_fortin_large_png__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _Components_Layout_logo_large_svg__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Components/Layout/logo-large.svg */ "./resources/js/Components/Layout/logo-large.svg");
+/* harmony import */ var _Components_Layout_logo_large_svg__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_Components_Layout_logo_large_svg__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./style.css */ "./resources/js/Views/style.css");
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_style_css__WEBPACK_IMPORTED_MODULE_5__);
 
@@ -80745,10 +81125,12 @@ var ViewRecoveryPassword = function ViewRecoveryPassword() {
     href: "index",
     className: "logo logo-admin mt-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-    src: _Components_Layout_logo_fortin_large_png__WEBPACK_IMPORTED_MODULE_4___default.a,
+    src: _Components_Layout_logo_large_svg__WEBPACK_IMPORTED_MODULE_4___default.a,
     alt: "logo",
-    height: "30",
-    className: " bg-white"
+    height: "100",
+    style: {
+      borderRadius: "7px"
+    }
   })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "p-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Components_Auth_Login__WEBPACK_IMPORTED_MODULE_2__["RecoveryPassword"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -80845,24 +81227,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
 var systemName = "";
-var footerInfo = "";
+var footerInfo = "sistema de canalización";
 var pathDashboard = "/panel-administrativo";
 var pathApi = "/api/v1";
 var pathSystem = {
   'dashboard': "/panel-administrativo",
   'login': "/iniciar-sesion",
   'password': "/recuperar-password",
-  'alumno': {
-    'create': "",
-    'read': ""
-  },
-  'tutor': {
-    'create': "",
-    'read': ""
-  },
+  'profile': "perfil",
   'administrador': {
-    'create': "",
-    'read': ""
+    'user': "usuarios"
   }
 };
 
@@ -80886,8 +81260,8 @@ var pathSystem = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/jose/Escritorio/estructuraProyecto/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/jose/Escritorio/estructuraProyecto/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/html/estructuraProyecto/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/html/estructuraProyecto/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

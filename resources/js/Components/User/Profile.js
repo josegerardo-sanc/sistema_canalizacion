@@ -65,7 +65,7 @@ const CardProfileConnect = ({ Auth, fetchRequest, updateDataUserAuth }) => {
             let sizeImg = file.size;
             //KB  1024
             //3MB EN EL BACKEND 3145728
-            //1MB 1048576
+            //1MB (1048576=kilobyte)
             let heigthMax = (3 * 1048576);
             if (sizeImg < heigthMax) {
                 let image = document.getElementById('avatarImg');
@@ -135,7 +135,7 @@ const CardProfileConnect = ({ Auth, fetchRequest, updateDataUserAuth }) => {
                             <div>
                                 <span
                                     onClick={handlePhotoSearch}
-                                    className="btn btn-info badge badge-info">{'Editar'}</span>
+                                    className="btn btn-info badge badge-info">{'Actualizar'}</span>
                                 {/*
                                 codigo para actualizar la foto de manera manual
                                 {uploadFile && (
@@ -223,7 +223,24 @@ const FormProfileConnect = ({ Auth, fetchRequest, updateDataUserAuth }) => {
         setSeePassword(!seePassword);
     }
 
+    const handleUpdateProfilePassword = async () => {
+        let data_object = { ...data, 'type_form': 'profile' };
 
+        let request = {
+            'url': `${pathApi}/updateProfilePassword`,
+            'request': {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                'body': JSON.stringify(data_object)
+            },
+            'showMessage': true
+        };
+        let response = await fetchRequest(request);
+    }
 
     return (
         <div className="card">
@@ -250,7 +267,6 @@ const FormProfileConnect = ({ Auth, fetchRequest, updateDataUserAuth }) => {
                                 <input className="form-control" type="text" name="second_last_name" defaultValue={data.second_last_name} onChange={onChangeInputData} />
                             </div>
                         </div>
-
                         <div className="col-md-6">
                             <div className="form-group">
                                 <label className="control-label">{'Correo *'}</label>
@@ -270,6 +286,11 @@ const FormProfileConnect = ({ Auth, fetchRequest, updateDataUserAuth }) => {
                                 <label className="control-label">{'Dirección'} <small className="text-muted">({'opcional'})</small></label>
                                 <input className="form-control" type="text" name="addreses" defaultValue={data.addreses || ""} onChange={onChangeInputData} placeholder="Dirección" />
                                 {/*<textarea className="form-control" name="addreses" value={data.addreses || ""} onChange={onChangeInputData} placeholder="Dirección"></textarea>*/}
+                            </div>
+                        </div>
+                        <div className="col-md-12">
+                            <div className="d-flex justify-content-end">
+                                <button onClick={handleUpdateProfile} type="button" className="btn btn-primary">{'Guardar'}</button>
                             </div>
                         </div>
 
@@ -314,10 +335,11 @@ const FormProfileConnect = ({ Auth, fetchRequest, updateDataUserAuth }) => {
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div className="d-flex justify-content-end">
-                        <button onClick={handleUpdateProfile} type="button" className="btn btn-primary">{'Guardar'}</button>
+                        <div className="col-md-12">
+                            <div className="d-flex justify-content-end">
+                                <button onClick={handleUpdateProfilePassword} type="button" className="btn btn-primary">{'Guardar'}</button>
+                            </div>
+                        </div>
                     </div>
                 </form >
             </div >

@@ -12,7 +12,10 @@ Route::group(['middleware' => ['jwt.verify'], 'prefix' => 'v1'], function () {
     Route::get('/logout', 'AuthController@logout');
     #app/Http/Controllers/User/UserController.php
     Route::post('/updateProfile', 'User\UserController@updateProfile');
+    Route::post('/updateProfilePassword', 'User\UserController@updateProfilePassword');
     Route::post('/updateImageProfile', 'User\UserController@updateImageProfile');
+
+
     Route::get('/getRoles', 'User\UserController@getRoles');
     Route::post('/saveUser', 'User\UserController@saveUser');
     Route::post('/getUsers', 'User\UserController@getUsers');
@@ -25,20 +28,10 @@ Route::group(['middleware' => ['jwt.verify'], 'prefix' => 'v1'], function () {
 
     /**exports */
     Route::post('/exportUsers', 'User\UserController@exportUsers');
-
-    /**service */
-    #app/Http/Controllers/Service/ServiceController.php
-    Route::post('/saveService', 'Service\ServiceController@saveService');
-    Route::post('/updateStatusService', 'Service\ServiceController@updateStatusService');
-    Route::get('/deleteService/{id}', 'Service\ServiceController@deleteService');
-    Route::get('/getCatalog', 'Service\ServiceController@getCatalog');
 });
 Route::prefix('v1')->group(function () {
     Route::post('/authenticate', 'AuthController@authenticate');
     Route::post('/recoveryPassword', 'User\UserController@recoveryPassword');
-
-    /**service */
-    #app/Http/Controllers/Service/ServiceController.php
-    Route::post('/getService', 'Service\ServiceController@getService');
-    Route::get('/getOneService/{id}', 'Service\ServiceController@getOneService');
+    #app/Http/Controllers/universityCareersController.php
+    Route::get('getCareers', 'universityCareersController@getCareers');
 });

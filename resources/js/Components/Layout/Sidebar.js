@@ -38,8 +38,8 @@ const Sidebar = ({ Auth }) => {
             case 'Administrador':
                 return (<Administrador></Administrador>)
                 break;
-            case 'Cliente':
-
+            case 'Alumno':
+                return (<Alumno />)
                 break;
             default:
                 return ''
@@ -106,16 +106,14 @@ const handleCollapse = (e) => {
 const Administrador = () => {
     return (
         <Fragment>
-            {/*
             <li>
                 <Navitem to={''}>
                     <i className="fas fa-grip-horizontal"></i>
-                    <span>Inicio</span>
+                    <span>Graficas</span>
                 </Navitem>
-            </li> 
-            */}
+            </li>
             <li>
-                <Navitem to={`/user`}>
+                <Navitem to={`/${pathSystem.administrador.user}`}>
                     <i className="fas fa-users"></i>
                     <span>Usuarios</span>
                 </Navitem>
@@ -125,6 +123,20 @@ const Administrador = () => {
 
 }
 
+const Alumno = () => {
+    return (
+        <Fragment>
+            {/*
+            <li>
+                <Navitem to={''}>
+                    <i className="fas fa-grip-horizontal"></i>
+                    <span>Inicio</span>
+                </Navitem>
+            </li>
+            */}
+        </Fragment>
+    )
+}
 
 const Navitem = ({ to, activeOnlyWhenExact = true, children }) => {
     // console.log(typeof to)

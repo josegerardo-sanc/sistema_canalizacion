@@ -9,8 +9,9 @@ import {
 import { connect } from "react-redux";
 
 /**views */
-import ViewProfile from "../Views/Dashboard/ViewProfile";
 import ViewUser from "../Views/Dashboard/ViewUser";
+import NoMatch from "../Helpers/NoMatch";
+import { pathSystem } from '../env'
 
 /*#{ `${RutaDashboard}/user` }*/
 const RoutingUser = ({ Auth }) => {
@@ -33,11 +34,15 @@ const RoutingUser = ({ Auth }) => {
     return (
         <Fragment>
             <Switch>
-                <Route exact path={`${match.path}`}>
-                    <ViewUser />
-                </Route>
-                <Route path={`${match.path}/profile`}>
-                    <ViewProfile />
+                {
+                    rolType.type == "Administrador" && (
+                        <Route exact path={`${match.path}`}>
+                            <ViewUser />
+                        </Route>
+                    )
+                }
+                <Route>
+                    <NoMatch />
                 </Route>
             </Switch>
         </Fragment >

@@ -34,17 +34,30 @@ class DatabaseSeeder extends Seeder
                 'email' => 'admin@gmail.com',
                 'phone' => '',
                 'verification_link' => '',
-                'password' => bcrypt('password')
+                'password' => bcrypt('password'),
+                'complete_register'=>true
             ],
             [
                 'account_status' => 1,
-                'name' => 'JOSE',
-                'last_name' => 'SANCHEZ',
+                'name' => 'jose',
+                'last_name' => 'sanchez',
                 'second_last_name' => '',
-                'email' => 'sanchezalvaradojose0@gmail.com',
-                'phone' => '9321078928',
+                'email' => 'tutor@gmail.com',
+                'phone' => '',
                 'verification_link' => '',
-                'password' => bcrypt('password')
+                'password' => bcrypt('password'),
+                'complete_register'=>true
+            ],
+            [
+                'account_status' => 1,
+                'name' => 'carmen',
+                'last_name' => 'sanchez',
+                'second_last_name' => '',
+                'email' => 'alumno@gmail.com',
+                'phone' => '',
+                'verification_link' => '',
+                'password' => bcrypt('password'),
+                'complete_register'=>true
             ]
         ]);
 
@@ -57,9 +70,21 @@ class DatabaseSeeder extends Seeder
 
         $user_1 = App\User::find(1);
         $user_1->syncRoles(['Administrador']);
-        $user_2 = App\User::find(2);
-        $user_2->syncRoles(['Administrador']);
 
+        $user_2 = App\User::find(2);
+        $user_2->syncRoles(['Tutor']);
+
+        $user_3 = App\User::find(3);
+        $user_3->syncRoles(['Alumno']);
+
+
+        $student = new Student;
+        $student->matricula ="14E30379";
+        $student->id_users = 3;
+        $student->id_university_careers =1;
+        $student->semester = "1 SEMESTRE";
+        $student->school_shift = "Vespertino";
+        $student->save();
 
         /*
         $this->call(UserSeeder::class);

@@ -85,6 +85,79 @@ const ViewUser = ({
         let response = await fetchRequest(request);
     }
 
+    const handleImportUsers = async () => {
+        let file = document.getElementById('file_import_search').files;
+        console.log(file)
+
+        if (file.length > 0) {
+            var formData = new FormData()
+            formData.append('file', file[0])
+
+            let request = {
+                'url': `${pathApi}/importUsers`,
+                'request': {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        //'Accept': 'multipart/form-data',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    'body': formData
+                },
+                'showLoader': true
+            };
+            let response = await fetchRequest(request);
+            setResponseData(response);
+        } else {
+            alert("No hay archivos selecionados.")
+        }
+    }
+
+
+    const handleFileImportSearch = async () => {
+        document.getElementById('file_import_search').click();
+    }
+
+    const changeFile = async (e) => {
+        let file = e.target.files[0];
+        //console.log(file)
+        let error_img = "";
+
+        if (validFileType(file)) {
+            /**validacion del peso */
+            let sizeImg = file.size;
+            //KB  1024
+            //3MB EN EL BACKEND 3145728
+            //1MB (1048576=kilobyte)
+            let heigthMax = (1 * 1048576);
+            if (sizeImg > heigthMax) {
+                error_img = `Peso maximo ${returnFileSize(heigthMax)} MB ${returnFileSize(sizeImg)}.`;
+            }
+        } else {
+            error_img = `Formato invalido ${file.name.split('.').pop()}`;
+        }
+
+        if (error_img != "") {
+            alert(`Nombre del archivo ${file.name}  ${error_img} `);
+        } else {
+            await handleImportUsers();
+        }
+
+        document.getElementById('file_import_search').value = "";
+
+    }
+
+    const fileTypes = [
+        "application/vnd.oasis.opendocument.spreadsheet",
+        "text/csv",
+        "application/vnd.ms-excel"
+    ];
+
+    function validFileType(file) {
+        return fileTypes.includes(file.type);
+    }
+
+
     return (
         <Fragment>
             <div className="row">
@@ -109,6 +182,18 @@ const ViewUser = ({
                                     <i className="font-size-16 align-middle mr-2 fas fa-file-excel"></i>
                                     {'Exportar'}
                                 </button>
+                                &nbsp;&nbsp;
+                                <button
+                                    type="button"
+                                    onClick={handleFileImportSearch}
+                                    className="btn btn-secondary waves-effect waves-light btn-rounded"
+                                >
+                                    <i
+                                        style={{ zIndex: "-10" }}
+                                        className="font-size-16 align-middle mr-2 fas fa-file-excel"></i>
+                                    {'Importar'}
+                                </button>
+                                <input type="file" id="file_import_search" onChange={changeFile} style={{ display: 'none' }} />
                             </div>
                             <ListUser
                                 handleOpenEdit={handleOpenEdit}

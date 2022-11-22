@@ -6,15 +6,23 @@ use Illuminate\Http\Request;
 use App\Student;
 use App\User;
 use Illuminate\Support\Facades\DB;
+use JWTAuth;
 
-
-class AlumnoController extends Controller
+class StudentController extends Controller
 {
     /**
      * getDataStudent
      *
      * @return void
      */
+
+    public function __construct() {
+        if (auth()->user()) {
+            $this->idUser = auth()->user()->id_users;
+            $this->nameUser = auth()->user()->name;
+        }
+    }
+
     public function getDataStudent()
     {
         try {

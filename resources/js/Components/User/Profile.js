@@ -184,11 +184,7 @@ const FormProfileConnect = ({ Auth, fetchRequest, updateDataUserAuth }) => {
     const [seePassword, setSeePassword] = useState(false)
 
     const handleUpdateProfile = async () => {
-
-        console.log(data)
-
         let data_object = Object.assign({ ...data, 'type_form': 'profile' });
-
         let request = {
             'url': `${pathApi}/updateProfile`,
             'request': {
@@ -207,8 +203,6 @@ const FormProfileConnect = ({ Auth, fetchRequest, updateDataUserAuth }) => {
         if (response.status == 200) {
             updateDataUserAuth(response.data);
         }
-
-
     }
 
     const onChangeInputData = (e) => {
@@ -315,7 +309,7 @@ const FormProfileConnect = ({ Auth, fetchRequest, updateDataUserAuth }) => {
                                 <div className="input-group-append">
                                     <span className="input-group-text" onClick={handleSeePassword} style={{ backgroundColor: 'white' }}>
                                         {
-                                            seePassword ? (<i className="far fa-eye"></i>) : (<i className="far fa-eye-slash"></i>)
+                                            seePassword ? (<i className="fas fa-eye"></i>) : (<i className="fas fa-eye-slash"></i>)
                                         }
                                     </span>
                                 </div>
@@ -329,7 +323,7 @@ const FormProfileConnect = ({ Auth, fetchRequest, updateDataUserAuth }) => {
                                 <div className="input-group-append">
                                     <span className="input-group-text" onClick={handleSeePassword} style={{ backgroundColor: 'white' }}>
                                         {
-                                            seePassword ? (<i className="far fa-eye"></i>) : (<i className="far fa-eye-slash"></i>)
+                                            seePassword ? (<i className="fas fa-eye"></i>) : (<i className="fas fa-eye-slash"></i>)
                                         }
                                     </span>
                                 </div>
@@ -347,6 +341,121 @@ const FormProfileConnect = ({ Auth, fetchRequest, updateDataUserAuth }) => {
     )
 }
 
+const FormStudent = ({
+    Auth,
+    fetchRequest,
+    updateDataUserAuth
+}) => {
+    const { user, token } = Auth;
+    const [data, setData] = useState({});
+
+    let rolType = "";
+
+    if (Auth.hasOwnProperty('user') && user.roleNames != null) {
+        rolType = Auth.user.roleNames[0]
+    }
+
+    useEffect(() => {
+        if (rolType == "Alumno") {
+            hanldeStudent();
+        }
+    }, [])
+
+
+    const hanldeStudent = async () => {
+        let request = {
+            'url': `${pathApi}/getDataStudent`,
+            'request': {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        };
+        let response = await fetchRequest(request);
+        if (response.status == 200) {
+            setData(response.data)
+        }
+    }
+
+    if (rolType == "Alumno") {
+        return (
+            <div className="card">
+                <div className="card-body">
+                    <h4 className="card-title mb-4">Información escolar</h4>
+                    {/**datos escolares */}
+                    <div className="row">
+                        {/**matricula */}
+                        <div className="col-sm-12 form-group">
+                            <label htmlFor="matricula">Matricula</label>
+                            <div className="input-group mb-0">
+                                <input
+                                    value={data.matricula || ""}
+                                    name="matricula"
+                                    type="text"
+                                    className="form-control"
+                                    maxLength={8}
+                                    placeholder="Matricula"
+                                    disabled={true}
+                                />
+                            </div>
+                        </div>
+                        {/**carreras */}
+                        <div className="col-sm-12 form-group">
+                            <label htmlFor="careers">Carrera</label>
+                            <input
+                                name="careers"
+                                type="text"
+                                value={data.name || ""}
+                                className="form-control"
+                                maxLength={8}
+                                placeholder="careers"
+                                disabled={true}
+                            />
+                        </div>
+                        {/**semestres */}
+                        <div className="col-sm-6 form-group">
+                            <label htmlFor="semester" className="form-label label_filter">Semestre</label>
+                            <select
+                                disabled={true}
+                                value={data.semester}
+                                name="semester"
+                                id="semester"
+                                className="form-control">
+                                <option value="1">1º Semestre</option>
+                                <option value="2">2º Semestre</option>
+                                <option value="3">3º Semestre</option>
+                                <option value="4">4º Semestre</option>
+                                <option value="5">5º Semestre</option>
+                                <option value="6">6º Semestre</option>
+                                <option value="7">7º Semestre</option>
+                                <option value="8">8º Semestre</option>
+                                <option value="9">9º Semestre</option>
+                            </select>
+                        </div>
+                        {/**turno */}
+                        <div className="col-sm-6 form-group">
+                            <label htmlFor="school_shift" className="form-label label_filter">Turno</label>
+                            <select
+                                disabled={true}
+                                value={data.school_shift}
+                                name="school_shift"
+                                id="school_shift"
+                                className="form-control">
+                                <option value="0" disabled >Selecciona una opción</option>
+                                <option value="Matutino">Matutino</option>
+                                <option value="Vespertino">Vespertino</option>
+                            </select>
+                        </div>
+                    </div>
+                </div >
+            </div >
+        )
+    }
+    return '';
+}
 
 const mapStateToProps = ({ Auth }) => {
     return {
@@ -360,8 +469,9 @@ const mapDispatchToProps = {
 
 const CardProfile = connect(mapStateToProps, mapDispatchToProps)(CardProfileConnect);
 const FormProfile = connect(mapStateToProps, mapDispatchToProps)(FormProfileConnect);
-
+const FormProfileStudent = connect(mapStateToProps, mapDispatchToProps)(FormStudent);
 export {
     CardProfile,
-    FormProfile
+    FormProfile,
+    FormProfileStudent
 };

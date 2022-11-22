@@ -37,6 +37,14 @@ const AlertMessageSingular = (
                         messages_array.push(response.errors[key]);
                     }
                 }
+                if (response.errorImport) {
+                    messages_array = [];
+                    for (const item of response.errorImport) {
+                        console.log(item.value ?? email);
+                        let messageImport = `Fila:${item.row} columna:${item.attribute} , ${item.value.email} , ${item.error}`;
+                        messages_array.push(messageImport);
+                    }
+                }
             }
             setAlertMessage({
                 message: messages_array,

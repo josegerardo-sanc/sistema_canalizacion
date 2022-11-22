@@ -28,10 +28,16 @@ Route::group(['middleware' => ['jwt.verify'], 'prefix' => 'v1'], function () {
 
     /**exports */
     Route::post('/exportUsers', 'User\UserController@exportUsers');
+
+    /**alumno */
+    Route::get('/getDataStudent', 'StudentController@getDataStudent');
 });
 Route::prefix('v1')->group(function () {
     Route::post('/authenticate', 'AuthController@authenticate');
     Route::post('/recoveryPassword', 'User\UserController@recoveryPassword');
+    Route::get('/verifyAccount/{id}', 'User\UserController@verifyAccount');
     #app/Http/Controllers/universityCareersController.php
     Route::get('getCareers', 'universityCareersController@getCareers');
+    //testing
+    Route::post('/importUsers', 'User\UserController@importUser');
 });

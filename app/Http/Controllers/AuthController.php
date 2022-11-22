@@ -143,7 +143,8 @@ class AuthController extends Controller
             'phone' => $user['phone'],
             'photo' => ($user['photo'] != null && $exists) ? Storage::url($user['photo']) : null,
             'roleNames' => $user->getRoleNames(),
-            'addreses' => $user['addreses']
+            'addreses' => $user['addreses'],
+            'complete_register'=>$user['complete_register']
             //'level_account' => $user['level_account']
         ];
 
@@ -162,7 +163,7 @@ class AuthController extends Controller
     #60minutos*24horas="1440"  (1 dia)
     #((60minutos * 24horas) * 7dias *4semanas)=40320  "1 mes"
     #'ttl' => env('JWT_TTL', 40320) default
-    protected function respondWithToken($token, $user, $remember_session = null)
+    public function respondWithToken($token, $user, $remember_session = null)
     {
         $userData = $this->getDataUser($user);
         $timeExpireJWT = $remember_session != null && $remember_session === true ? auth()->factory()->getTTL() : (1440);

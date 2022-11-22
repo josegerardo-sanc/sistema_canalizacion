@@ -8,29 +8,26 @@
 </head>
 
 <body>
-    <table>
-        <tbody>
-            <tr>
-                <center>
+    <center>
+        <table>
+            <tbody>
+                <tr>
                     <h3>
                         <strong>Hola! {{ $user['name'] }}</strong>
                     </h3>
                     <strong>Escuchamos que perdió su contrase&ntilde;a . ¡Lo siento por eso &#33;</strong>
                     <br>
                     Te enviamos una nueva que funciona para que puedas entrar a tu cuenta.
-                </center>
-            </tr>
-            <tr>
-                <th>
-                    <strong>Nueva contrase&ntilde;a: </strong>
-                    {{ $user['newPassword'] }}
-                </th>
-            </tr>
-            <tr>
-                Te recomendamos que cambies esta contrase&ntilde;a por una que recuerdes fácilmente.
-            </tr>
-        </tbody>
-    </table>
+                </tr>
+                <tr>
+                    <strong>Nueva contrase&ntilde;a: </strong> {{ $user['newPassword'] }}
+                </tr>
+                <tr>
+                    Te recomendamos que cambies esta contrase&ntilde;a por una que recuerdes fácilmente.
+                </tr>
+            </tbody>
+        </table>
+    </center>
 </body>
 
 </html>

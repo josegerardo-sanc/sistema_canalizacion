@@ -1,5 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
-
+import {
+    useLocation
+} from "react-router-dom";
 /*Componets */
 import Login from '../Components/Auth/Login';
 import Preloader from "../Helpers/Preloader";
@@ -9,6 +11,10 @@ import logo from '../Components/Layout/logo-large.svg'
 /**styles */
 import './style.css'
 const ViewLogin = () => {
+
+    let location = useLocation();
+    console.log(location);
+    const searchParams = new URLSearchParams(location.search)
 
     return (
         <Fragment>
@@ -29,6 +35,18 @@ const ViewLogin = () => {
                             </div>
                         </div>
                         <div className="p-4">
+                            {
+                                searchParams.has('message') && (
+                                    <Fragment>
+                                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                            <strong>{searchParams.get('message')}</strong>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    </Fragment>
+                                )
+                            }
                             <Login></Login>
                         </div>
                     </div>

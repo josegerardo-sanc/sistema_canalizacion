@@ -15,8 +15,8 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id_users');
-            $table->string('name', 50);
-            $table->string('last_name', 50);
+            $table->string('name', 50)->nullable();
+            $table->string('last_name', 50)->nullable();
             $table->string('second_last_name', 50)->nullable();
             $table->string('gender', 20)->nullable();
             $table->string('email', 100)->unique();
@@ -29,6 +29,7 @@ class CreateUsersTable extends Migration
             $table->integer('account_status')->default(3)->comment("1=activo 2=bloqueado  3=verificarCuentaCorreo 4=eliminado");
             $table->rememberToken();
             $table->timestamps();
+            $table->boolean("complete_register")->default(false);
         });
     }
 

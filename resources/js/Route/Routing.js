@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { connect } from "react-redux";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect,useLocation } from "react-router-dom";
 
 
 /**storage de redux */
@@ -26,6 +26,7 @@ const Routing = () => {
                 <AllowAccessAuthenticated exact path={pathSystem.dashboard} component={() => <h1>Panel administrativo</h1>} />
                 <AllowAccessAuthenticated exact path={`${pathSystem.dashboard}/${pathSystem.profile}`} component={ViewProfile} />
                 <AllowAccessAuthenticated path={`${pathSystem.dashboard}/${pathSystem.administrador.user}`} component={RoutingUser} />
+                <Route exact path="/ErrorverifyAccount" component={NoMatch} />
                 <Route path="*" component={NoMatch} />
             </Switch>
         </BrowserRouter>
@@ -43,7 +44,19 @@ const mapStateToProps = ({ Auth }) => {
 
 const AllowAccessAuth = (props) => {
     const { component: Component, Auth, ...rest } = props;
+
+    let location = useLocation();
+
+    let profile=`${pathSystem.dashboard}/${pathSystem.profile}`;
+
     if (Auth.auth) {
+
+        //si no ha completado el registro y la ruta es diferente a perfil
+        //lo redirecionamos forzadamente a perfil, ya que no se debe navegar sin haber completado su perfil
+        if(!(Auth.user.complete_register)&&location.pathname!=profile){
+            window.location.href=profile;       
+        }
+
         return (
             <Fragment>
                 <Route {...rest}

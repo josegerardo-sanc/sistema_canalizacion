@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Exports\UsersExport;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\StudentController;
+use App\Imports\UsersImport;
+use App\Mail\MessageResetPassword;
+use App\Traits\Helper;
+//use App\HistoryLog;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
-use Spatie\Permission\Models\Role;
-use App\Http\Controllers\AuthController;
-use App\Traits\Helper;
-use App\User;
-//use App\HistoryLog;
-use App\Exports\UsersExport;
-use Maatwebsite\Excel\Facades\Excel;
-//use Maatwebsite\Excel\Excel;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\MessageResetPassword;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-
-use App\Http\Controllers\AlumnoController;
+use Illuminate\Validation\Rule;
+use JWTAuth;
+use Maatwebsite\Excel\Facades\Excel;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -37,34 +37,33 @@ class UserController extends Controller
     public $nameUser;
 
     /**
-     * @var AlumnoController $_alumnoController
+     * @var StudentController $_studentController
      */
-    public $_alumnoController;
+    public $_studentController;
     /**
      * Undocumented function
      *
      * @param AuthController $AuthController
-     * @param AlumnoController $AlumnoController
+     * @param StudentController $StudentController
      */
     public function __construct(
         AuthController $AuthController,
-        AlumnoController $AlumnoController
+        StudentController $StudentController
     ) {
         $this->_authController = $AuthController;
-        $this->_alumnoController = $AlumnoController;
+        $this->_studentController = $StudentController;
         if (auth()->user()) {
             $this->idUser = auth()->user()->id_users;
             $this->nameUser = auth()->user()->name;
         }
     }
 
-
     /**
      * save users
      * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function saveUser(Request  $request)
+    public function saveUser(Request $request)
     {
         try {
             /**
@@ -92,10 +91,6 @@ class UserController extends Controller
             $phone = $request->get('phone');
             $addreses = $request->get('addreses');
             $type_form = $request->get('type_form');
-
-
-            $confirmation_code = Str::random(40);
-            $verification_link = base64_encode("{$confirmation_code}_{$email}");
             $typeRol = $request->get('type_rol');
             DB::beginTransaction();
 
@@ -107,13 +102,13 @@ class UserController extends Controller
                 if (empty($user)) {
                     return response()->json([
                         'status' => 400,
-                        'message' => "No se encontro el usuario con ID: {$id_user}"
+                        'message' => "No se encontro el usuario con ID: {$id_user}",
                     ]);
                 }
             } else {
                 $user = new User;
                 //$adtUser = new AdditionalInfoUser;
-                $user->password = empty($password) ? Hash::make("password") : Hash::make($password);
+                $user->password = Hash::make(empty($password) ? "password" : $password);
             }
 
             #update type_rol=>request
@@ -123,20 +118,20 @@ class UserController extends Controller
             $user->second_last_name = $second_last_name;
             $user->gender = $gender;
             $user->email = $email;
-            $user->verification_link = $verification_link;
-            $user->account_status = 1;
+            $user->account_status = 1; //1=activo 2=bloqueado  3=verificarCuentaCorreo 4=eliminado
             $user->syncRoles($rol_name);
             #variant=> type_form
             $user->addreses = $addreses;
             $user->phone = $phone;
+            $user->complete_register = false;
             $user->save();
-            $id_user = $user->id_users;
 
+            $id_user = $user->id_users;
             $request->request->add([
-                'id_users' => $id_user
+                'id_users' => $id_user,
             ]);
             if ($typeRol == "Alumno") {
-                $this->_alumnoController->setAlumno($request);
+                $this->_studentController->setAlumno($request);
             }
             //$this->saveAdditionalUser($request, $id_user, $adtUser);
             DB::commit();
@@ -144,18 +139,17 @@ class UserController extends Controller
 
             return response()->json([
                 'status' => 200,
-                'message' => $message
+                'message' => $message,
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
 
             return response()->json([
                 'status' => 400,
-                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage()
+                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage(),
             ]);
         }
     }
-
 
     /**
      * validation function
@@ -174,7 +168,6 @@ class UserController extends Controller
 
         $validations = array();
 
-
         $validations = [
             'name' => 'required|max:50',
             'last_name' => 'required|max:50',
@@ -185,7 +178,6 @@ class UserController extends Controller
             ],
             'email' => 'required|email|unique:users|max:100',
         ];
-
 
         if ($type_form == "create") {
             //$validations['password'] = "required|confirmed";
@@ -268,12 +260,12 @@ class UserController extends Controller
         if ($validator->fails()) {
             return [
                 'status' => 422,
-                'errors' => $validator->errors()
+                'errors' => $validator->errors(),
             ];
         }
 
         $request->request->add([
-            'type_rol' => $typeRol
+            'type_rol' => $typeRol,
         ]);
     }
 
@@ -288,16 +280,15 @@ class UserController extends Controller
             $all_roles_in_database = Role::all();
             return response()->json([
                 'status' => 200,
-                'data' => $all_roles_in_database
+                'data' => $all_roles_in_database,
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 400,
-                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e
+                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e,
             ]);
         }
     }
-
 
     public function getRolesName()
     {
@@ -318,7 +309,7 @@ class UserController extends Controller
         $id_user = $this->idUser;
 
         $numberPage = abs($request->get('numberPage') ?? 1);
-        $endRow =     abs($request->get('endRow') ?? 10);
+        $endRow = abs($request->get('endRow') ?? 10);
         $startRow = (($numberPage * $endRow) - $endRow);
         $totalRows = 0;
 
@@ -346,18 +337,18 @@ class UserController extends Controller
                 $users = $queryUser->whereRaw(
                     '(
                         users.name like ? OR
-                        users.last_name like ? OR 
-                        users.second_last_name like ? OR 
+                        users.last_name like ? OR
+                        users.second_last_name like ? OR
                         users.email like ? OR
                         users.phone like ?
                     )',
                     array("%{$search}%", "%{$search}%", "%{$search}%", "%{$search}%", "%{$search}%")
                 );
                 /*
-                return response()->json([
-                    'status' => 500,
-                    'eloquent' => $users->getQuery()->toSql()
-                ]);*/
+            return response()->json([
+            'status' => 500,
+            'eloquent' => $users->getQuery()->toSql()
+            ]);*/
             }
             $totalRows = $users->count();
 
@@ -385,7 +376,7 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 400,
-                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage()
+                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage(),
             ]);
         }
     }
@@ -397,7 +388,6 @@ class UserController extends Controller
      *
      * @return file
      */
-
 
     public function exportUsers(Request $request)
     {
@@ -430,7 +420,6 @@ class UserController extends Controller
                 ->orderBy('id_users')
                 ->get();
 
-
             $ArrayExportUser = array();
             foreach ($usersData as $key => $item) {
                 $fullName = $item['name'] . " " . $item['last_name'] . " " . $item['second_last_name'];
@@ -445,19 +434,16 @@ class UserController extends Controller
                 $ArrayExportUser[$key]['rol'] = $nameRol;
             }
 
-
             $export = new UsersExport($ArrayExportUser, $headersColumn);
-
 
             return Excel::download($export, $nameFile . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 400,
-                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage()
+                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage(),
             ], 400);
         }
     }
-
 
     //////////METODOS QUE SI SE OCUPARAN
 
@@ -474,7 +460,7 @@ class UserController extends Controller
             DB::beginTransaction();
             if ($request->hasFile('photo') && count($_FILES) > 0) {
                 $file = $_FILES['photo'];
-                $allowedFormats =  array('jpg', 'jpeg', 'png');
+                $allowedFormats = array('jpg', 'jpeg', 'png');
                 $allowedformat = $this->validate_extension_img($file['name'], $allowedFormats);
 
                 $allowedSize = (3 * 1048576);
@@ -484,7 +470,7 @@ class UserController extends Controller
                     $errors = $allowedformat['message'] . "" . $allowedSize['message'];
                     return response()->json([
                         'status' => 400,
-                        'message' => $errors
+                        'message' => $errors,
                     ]);
                 }
                 $photo_new = $request->file('photo')->store('users', 'public');
@@ -508,19 +494,19 @@ class UserController extends Controller
                 return response()->json([
                     'status' => 200,
                     'data' => $userData,
-                    'message' => "Se ha cambiado con éxito la foto de perfil"
+                    'message' => "Se ha cambiado con éxito la foto de perfil",
                 ]);
             } else {
                 return response()->json([
                     'status' => 400,
-                    'message' => "No se encontro archivos para actualizar."
+                    'message' => "No se encontro archivos para actualizar.",
                 ]);
             }
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
                 'status' => 400,
-                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage()
+                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage(),
             ]);
         }
     }
@@ -529,7 +515,7 @@ class UserController extends Controller
      * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function updateProfile(Request  $request)
+    public function updateProfile(Request $request)
     {
 
         $id_user = $this->idUser;
@@ -551,13 +537,13 @@ class UserController extends Controller
                 'email.required' => 'El correo es obligatorio.',
                 'email.unique' => 'El correo ya está en uso.',
                 'phone.required' => 'El telefono es obligatorio.',
-                'addreses.max' => 'La dirección debe tener como máximo 255 caracteres.'
+                'addreses.max' => 'La dirección debe tener como máximo 255 caracteres.',
             ]);
 
             if ($validator->fails()) {
                 return response()->json([
                     'status' => 422,
-                    'errors' => $validator->errors()
+                    'errors' => $validator->errors(),
                 ]);
             }
 
@@ -567,7 +553,7 @@ class UserController extends Controller
             $second_last_name = ucwords($request->get('second_last_name'));
             $email = $request->get('email');
             $addreses = $request->get('addreses');
-
+            $phone = $request->get('phone');
 
             DB::beginTransaction();
             $user = User::where('id_users', $id_user)->first();
@@ -582,6 +568,8 @@ class UserController extends Controller
             $user->last_name = $last_name;
             $user->second_last_name = $second_last_name;
             $user->email = $email;
+            $user->phone = $phone;
+            $user->complete_register = true;
             $user->save();
             DB::commit();
 
@@ -589,14 +577,14 @@ class UserController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'información actualizada con éxito.',
-                'data' => $userData
+                'data' => $userData,
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
 
             return response()->json([
                 'status' => 400,
-                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage() . $e->getLine()
+                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage() . $e->getLine(),
             ]);
         }
     }
@@ -612,7 +600,7 @@ class UserController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'password' => 'required|min:6|confirmed',
-                'password_confirmation' => 'required|min:6'
+                'password_confirmation' => 'required|min:6',
             ], [
                 'password.confirmed' => 'La contraseñas no coinciden.',
                 'password.required' => 'La contraseña es obligatorio.',
@@ -622,7 +610,7 @@ class UserController extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'status' => 422,
-                    'errors' => $validator->errors()
+                    'errors' => $validator->errors(),
                 ]);
             }
             $id_user = $this->idUser;
@@ -633,12 +621,12 @@ class UserController extends Controller
             $user->save();
             return response()->json([
                 'status' => 200,
-                'message' => 'contraseña actualizada con éxito.'
+                'message' => 'contraseña actualizada con éxito.',
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 400,
-                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage() . $e->getLine()
+                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage() . $e->getLine(),
             ]);
         }
     }
@@ -655,7 +643,7 @@ class UserController extends Controller
         if (empty($user)) {
             return json_encode([
                 'status' => 400,
-                'message' => "No hay una cuenta con {$email}."
+                'message' => "No hay una cuenta con {$email}.",
             ]);
         }
 
@@ -671,7 +659,7 @@ class UserController extends Controller
             return response()->json(
                 [
                     'status' => 200,
-                    'message' => "Busca el correo en la bandeja de entrada o spam."
+                    'message' => "Busca el correo en la bandeja de entrada o spam.",
                 ]
             );
         } catch (\Exception $e) {
@@ -679,7 +667,7 @@ class UserController extends Controller
                 [
                     'status' => 400,
                     'message' => $this->ERROR_SERVER_MSG,
-                    $e->getMessage()
+                    $e->getMessage(),
                 ]
             );
         }
@@ -711,32 +699,32 @@ class UserController extends Controller
                 $historyLog->id_user_delete = $user->id_users;
                 $historyLog->note = "id:$id_user {$name_user} ha eliminado temporalmente a {$user->name} id: {$user->id_users}";
                 $historyLog->save();
-                */
+                 */
 
                 //$user = User::where('id_users', $id)->delete();
                 DB::commit();
                 return response()->json([
                     'status' => 200,
                     'data' => [],
-                    'message' => "Se ha eliminado temporalmente al usuario."
+                    'message' => "Se ha eliminado temporalmente al usuario.",
                 ]);
             } else {
                 return response()->json([
                     'status' => 400,
-                    'message' => 'No se encontro el usuario'
+                    'message' => 'No se encontro el usuario',
                 ]);
             }
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
                 'status' => 400,
-                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage()
+                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage(),
             ]);
         }
     }
 
     /**
-     * eliminar cuenta
+     * actualizar estatus de la cuenta
      * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -747,40 +735,127 @@ class UserController extends Controller
 
         try {
             $user = User::where('id_users', $request->get('id_user'))->first();
-            if (!empty($user)) {
-                DB::beginTransaction();
-                $now = date("Y-m-d H:i:s");
-                $statusAccountUser = $request->get('statusAccountUser') === true ? 1 : 2; //activo 2=inactivo
-                $user->account_status = $statusAccountUser;
-                $user->save();
-
-                /*
-                $historyLog = new HistoryLog;
-                $historyLog->id_user = $id_user;
-                $historyLog->id_user_delete = $user->id_users;
-                $historyLog->note = "id:$id_user {$name_user} ha bloqueado temporalmente a {$user->name} id: {$user->id_users}";
-                $historyLog->save();
-                */
-
-                //$user = User::where('id_users', $id)->delete();
-                DB::commit();
-                return response()->json([
-                    'status' => 200,
-                    'data' => [],
-                    'message' => "Se ha inactivado la cuenta temporalmente al usuario."
-                ]);
-            } else {
+            if (empty($user)) {
                 return response()->json([
                     'status' => 400,
-                    'message' => 'No se encontro el usuario'
+                    'message' => 'No se encontro el usuario',
                 ]);
             }
+
+            DB::beginTransaction();
+            $now = date("Y-m-d H:i:s");
+            $statusAccountUser = $request->get('statusAccountUser') === true ? 1 : 2; //activo 2=inactivo
+            $user->account_status = $statusAccountUser;
+            $user->save();
+
+            /*
+            $historyLog = new HistoryLog;
+            $historyLog->id_user = $id_user;
+            $historyLog->id_user_delete = $user->id_users;
+            $historyLog->note = "id:$id_user {$name_user} ha bloqueado temporalmente a {$user->name} id: {$user->id_users}";
+            $historyLog->save();
+             */
+
+            //$user = User::where('id_users', $id)->delete();
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'data' => [],
+                'message' => "se ha modificado el estatus de la cuenta.",
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
                 'status' => 400,
-                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage()
+                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage(),
             ]);
+        }
+    }
+
+    /**
+     * importacion de usuarios
+     * @param \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function importUser(Request $request)
+    {
+        //csv,xls,ods
+        $error = [];
+        try {
+            //$filePath = dirname((__FILE__)) . '/usuarios.csv';
+            $filePath = request()->file('file');
+            $records = Excel::toArray(new UsersImport(), $filePath);
+
+            if (\count($records[0]) <= 0) {
+                return response()->json([
+                    'status' => 200,
+                    'data' => [],
+                    'message' => "El archivo no contiene registros.",
+                ]);
+            }
+
+            $importUser = new UsersImport($this->_authController);
+            $importUser->import($filePath);
+
+            $rowCount = $importUser->getRowCount();
+            return response()->json([
+                'status' => 200,
+                'data' => [],
+                'message' => "Se ha completado la importación,#{$rowCount} importados.",
+            ]);
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            foreach ($failures as $failure) {
+                $error[] = [
+                    "row" => $failure->row(), // row that went wrong
+                    "attribute" => $failure->attribute(), // either heading key (if using heading row concern) or column index
+                    "error" => $failure->errors(), // Actual error messages from Laravel validator
+                    "value" => $failure->values(), // The values of the row that has failed.
+                ];
+            }
+            return response()->json([
+                'status' => 422,
+                'errorImport' => $error,
+            ]);
+        }
+    }
+
+    /**
+     * verificacion de cuenta
+     * @param \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function verifyAccount($id)
+    {
+        try {
+
+            /* 
+                //SOLO PARA TEST url/api/v1/verifyAccount
+                $id_user=1;
+                $code="957852";
+                $correo="admin@gmail.com";
+                $verification_link="{$code}_{$correo}"; //debe de ir la columna de verification_link
+                $code=base64_encode("{$code}_{$correo}_{$id_user}");// OTU3ODUyX2FkbWluQGdtYWlsLmNvbV8x
+                $id="OTU3ODUyX2FkbWluQGdtYWlsLmNvbV8x";
+             */
+
+            
+            $code = explode("_", base64_decode($id));
+            $id_user = $code[2];
+            $verificationLink = $code[0]."_".$code[1];
+            $user = User::where('id_users', $id_user)->where('verification_link', $verificationLink)->first();
+            if(empty($user)){
+                return redirect('/ErrorverifyAccount');
+            }
+            $now = date("Y-m-d H:i:s");
+            $user->account_status = 1;//activamos cuenta
+            $user->email_verified_at=$now;
+            $user->verification_link='';
+            $user->save();
+            return redirect('/iniciar-sesion?message="La cuenta fue activada con éxito"'); 
+
+        } catch (\Exception $e) {
+            return redirect("/iniciar-sesion?message={$this->ERROR_SERVER_MSG}");
         }
     }
 }

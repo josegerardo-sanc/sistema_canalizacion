@@ -1,0 +1,36 @@
+**nombre de la actividad
+- datos que solicita
+--VALIDACIONES
+
+
+**iniciar sesion
+   -ingresar correo
+   -ingresar contraseña
+   
+descripcion: realizar la comparacion de correo y contraseña en la base de datos para ser redirecionado al panel administrativo.
+
+
+**recuperar cuenta
+   -correo electronico
+descripcion: verificacion del correo en la DB para ser enviado una contraseña temporal la cual permite acceder al panel administrativo.
+
+
+**verificar cuenta
+   -link de correo
+descripcion: el usuario da click al enlace el cual activa cuenta.
+
+**Exportar usuarios
+descripcion:permite descargar un archivo excel con los datos del usuario "alumno,administrador,tutor,etc". 
+
+**Importar usuarios
+  -correo
+descripcion:se procede a registrar los correos y se envia un enlace a cada correo para poder activar la cuenta.
+
+**Modificar estatus de la cuenta 
+descripcion: permite habilitar o inhabilitar las cuentas de los usuarios.
+
+**Eliminar cuenta
+descripcion: elimina el acceso de la cuenta. 
+
+**actualizar perfil
+descripcion: el usario para poder navegar en el panel administrativo, debera completar su perfil.

@@ -14,8 +14,8 @@ export const statusAccount = ($status) => {
             $color = "warning";
             break;
         case 3:
-            $info = "No ha verificado su cuenta de correo electrónico.";
-            $color = "info";
+            $info = "Proceso de registro incompleto.";
+            $color = "danger";
             break;
         case 4:
             $info = "bloqueado forma permanente";

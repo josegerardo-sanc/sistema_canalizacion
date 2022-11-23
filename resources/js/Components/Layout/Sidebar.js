@@ -41,6 +41,9 @@ const Sidebar = ({ Auth }) => {
             case 'Alumno':
                 return (<Alumno />)
                 break;
+            case 'Tutor':
+                return (<Tutor />)
+                break;
             default:
                 return ''
                 break;
@@ -136,6 +139,21 @@ const Alumno = () => {
             */}
         </Fragment>
     )
+}
+
+const Tutor = () => {
+    const { tutor} = pathSystem;
+    return (
+        <Fragment>
+            <li>
+                <Navitem to={`${tutor.index}${tutor.myGroup}`}>
+                    <i className="fas fa-users"></i>
+                    <span>Mis grupos</span>
+                </Navitem>
+            </li>
+        </Fragment>
+    )
+
 }
 
 const Navitem = ({ to, activeOnlyWhenExact = true, children }) => {

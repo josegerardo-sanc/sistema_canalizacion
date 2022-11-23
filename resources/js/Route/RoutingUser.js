@@ -15,27 +15,14 @@ import { pathSystem } from '../env'
 
 /*#{ `${RutaDashboard}/user` }*/
 const RoutingUser = ({ Auth }) => {
-
-    const [rolType, setRolType] = useState({
-        'type': null
-    });
-
-    useEffect(() => {
-        if (Auth.user) {
-            setRolType({ 'type': Auth.user.roleNames[0] });
-        }
-    }, [Auth]);
-
     //console.log(props)
     let match = useRouteMatch();
     //console.log(match.path)
-
-
     return (
         <Fragment>
             <Switch>
                 {
-                    rolType.type == "Administrador" && (
+                    Auth?.user?.roleNames[0] == "Administrador" && (
                         <Route exact path={`${match.path}`}>
                             <ViewUser />
                         </Route>

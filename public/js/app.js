@@ -77463,6 +77463,10 @@ var Sidebar = function Sidebar(_ref) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Alumno, null);
         break;
 
+      case 'Tutor':
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Tutor, null);
+        break;
+
       default:
         return '';
         break;
@@ -77534,6 +77538,15 @@ var Administrador = function Administrador() {
 
 var Alumno = function Alumno() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null);
+};
+
+var Tutor = function Tutor() {
+  var tutor = _env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].tutor;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Navitem, {
+    to: "".concat(tutor.index).concat(tutor.myGroup)
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-users"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Mis grupos"))));
 };
 
 var Navitem = function Navitem(_ref2) {
@@ -80701,6 +80714,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Helpers_NoMatch__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Helpers/NoMatch */ "./resources/js/Helpers/NoMatch.js");
 /* harmony import */ var _Views_Dashboard_ViewProfile__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Views/Dashboard/ViewProfile */ "./resources/js/Views/Dashboard/ViewProfile.js");
 /* harmony import */ var _RoutingUser__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./RoutingUser */ "./resources/js/Route/RoutingUser.js");
+/* harmony import */ var _RoutingTutor__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./RoutingTutor */ "./resources/js/Route/RoutingTutor.js");
 var _excluded = ["component", "Auth"],
     _excluded2 = ["component", "Auth"];
 
@@ -80727,30 +80741,40 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 
 
+
 var Routing = function Routing() {
+  var login = _env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].login,
+      password = _env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].password,
+      dashboard = _env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].dashboard,
+      profile = _env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].profile;
+  var tutor = _env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].tutor;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(DenyAccessAuthenticated, {
     exact: true,
     path: "/",
     component: _Views_Login__WEBPACK_IMPORTED_MODULE_5__["default"]
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(DenyAccessAuthenticated, {
-    path: _env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].login,
+    path: login,
     component: _Views_Login__WEBPACK_IMPORTED_MODULE_5__["default"]
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(DenyAccessAuthenticated, {
-    path: _env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].password,
+    path: password,
     component: _Views_ViewRecoveryPassword__WEBPACK_IMPORTED_MODULE_6__["default"]
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(AllowAccessAuthenticated, {
     exact: true,
-    path: _env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].dashboard,
+    path: dashboard,
     component: function component() {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Panel administrativo");
     }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(AllowAccessAuthenticated, {
     exact: true,
-    path: "".concat(_env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].dashboard, "/").concat(_env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].profile),
+    path: "".concat(dashboard, "/").concat(profile),
     component: _Views_Dashboard_ViewProfile__WEBPACK_IMPORTED_MODULE_8__["default"]
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(AllowAccessAuthenticated, {
-    path: "".concat(_env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].dashboard, "/").concat(_env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].administrador.user),
+    exact: true,
+    path: "".concat(dashboard, "/").concat(_env__WEBPACK_IMPORTED_MODULE_3__["pathSystem"].administrador.user),
     component: _RoutingUser__WEBPACK_IMPORTED_MODULE_9__["default"]
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(AllowAccessAuthenticated, {
+    path: "".concat(dashboard).concat(tutor.index),
+    component: _RoutingTutor__WEBPACK_IMPORTED_MODULE_10__["default"]
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     exact: true,
     path: "/ErrorverifyAccount",
@@ -80823,6 +80847,65 @@ var AllowAccessAuthenticated = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["
 
 /***/ }),
 
+/***/ "./resources/js/Route/RoutingTutor.js":
+/*!********************************************!*\
+  !*** ./resources/js/Route/RoutingTutor.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _Views_Dashboard_ViewProfile__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Views/Dashboard/ViewProfile */ "./resources/js/Views/Dashboard/ViewProfile.js");
+/* harmony import */ var _Helpers_NoMatch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Helpers/NoMatch */ "./resources/js/Helpers/NoMatch.js");
+/* harmony import */ var _env__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../env */ "./resources/js/env.js");
+
+
+
+/**views */
+
+
+
+
+/*#{ `${RutaDashboard}/user` }*/
+
+var RoutingTutor = function RoutingTutor(_ref) {
+  var Auth = _ref.Auth;
+  var user = Auth.user;
+  var match = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useRouteMatch"])();
+  var tutor = _env__WEBPACK_IMPORTED_MODULE_5__["pathSystem"].tutor;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"], null, (user === null || user === void 0 ? void 0 : user.roleNames[0]) == "Tutor" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
+    exact: true,
+    path: "".concat(match.path),
+    component: _Views_Dashboard_ViewProfile__WEBPACK_IMPORTED_MODULE_3__["default"]
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
+    exact: true,
+    path: "".concat(match.path).concat(tutor.myGroup),
+    component: function component() {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Hola desde el tutor");
+    }
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
+    component: _Helpers_NoMatch__WEBPACK_IMPORTED_MODULE_4__["default"]
+  }));
+};
+/*connection with redux */
+
+
+var mapStateToProps = function mapStateToProps(_ref2) {
+  var Auth = _ref2.Auth;
+  return {
+    Auth: Auth
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps)(RoutingTutor));
+
+/***/ }),
+
 /***/ "./resources/js/Route/RoutingUser.js":
 /*!*******************************************!*\
   !*** ./resources/js/Route/RoutingUser.js ***!
@@ -80839,18 +80922,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Views_Dashboard_ViewUser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Views/Dashboard/ViewUser */ "./resources/js/Views/Dashboard/ViewUser.js");
 /* harmony import */ var _Helpers_NoMatch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Helpers/NoMatch */ "./resources/js/Helpers/NoMatch.js");
 /* harmony import */ var _env__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../env */ "./resources/js/env.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 
 
 
@@ -80862,26 +80933,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 /*#{ `${RutaDashboard}/user` }*/
 
 var RoutingUser = function RoutingUser(_ref) {
+  var _Auth$user;
+
   var Auth = _ref.Auth;
-
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({
-    'type': null
-  }),
-      _useState2 = _slicedToArray(_useState, 2),
-      rolType = _useState2[0],
-      setRolType = _useState2[1];
-
-  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-    if (Auth.user) {
-      setRolType({
-        'type': Auth.user.roleNames[0]
-      });
-    }
-  }, [Auth]); //console.log(props)
-
+  //console.log(props)
   var match = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useRouteMatch"])(); //console.log(match.path)
 
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"], null, rolType.type == "Administrador" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"], null, (Auth === null || Auth === void 0 ? void 0 : (_Auth$user = Auth.user) === null || _Auth$user === void 0 ? void 0 : _Auth$user.roleNames[0]) == "Administrador" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
     exact: true,
     path: "".concat(match.path)
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Views_Dashboard_ViewUser__WEBPACK_IMPORTED_MODULE_3__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Helpers_NoMatch__WEBPACK_IMPORTED_MODULE_4__["default"], null))));
@@ -81627,6 +81685,10 @@ var pathSystem = {
   'profile': "perfil",
   'administrador': {
     'user': "usuarios"
+  },
+  'tutor': {
+    'index': '/tutor',
+    'myGroup': '/mis_grupos'
   }
 };
 

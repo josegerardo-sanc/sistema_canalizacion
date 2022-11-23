@@ -12,5 +12,9 @@ export const pathSystem = {
     'profile': "perfil",
     'administrador': {
         'user': "usuarios"
+    },
+    'tutor':{
+        'index':'/tutor',
+        'myGroup':'/mis_grupos',
     }
 }

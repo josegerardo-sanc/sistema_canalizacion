@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { connect } from "react-redux";
-import { BrowserRouter, Route, Switch, Redirect,useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect, useLocation } from "react-router-dom";
 
 
 /**storage de redux */
@@ -14,18 +14,22 @@ import NoMatch from "../Helpers/NoMatch";
 import ViewProfile from "../Views/Dashboard/ViewProfile";
 /**Routing */
 import RoutingUser from './RoutingUser';
+import RoutingTutor from "./RoutingTutor";
 
 const Routing = () => {
+    const { login, password, dashboard, profile } = pathSystem;
+    const { tutor} = pathSystem;
     return (
-
         <BrowserRouter>
             <Switch>
                 <DenyAccessAuthenticated exact path="/" component={Login} />
-                <DenyAccessAuthenticated path={pathSystem.login} component={Login} />
-                <DenyAccessAuthenticated path={pathSystem.password} component={ViewRecoveryPassword} />
-                <AllowAccessAuthenticated exact path={pathSystem.dashboard} component={() => <h1>Panel administrativo</h1>} />
-                <AllowAccessAuthenticated exact path={`${pathSystem.dashboard}/${pathSystem.profile}`} component={ViewProfile} />
-                <AllowAccessAuthenticated path={`${pathSystem.dashboard}/${pathSystem.administrador.user}`} component={RoutingUser} />
+                <DenyAccessAuthenticated path={login} component={Login} />
+                <DenyAccessAuthenticated path={password} component={ViewRecoveryPassword} />
+                <AllowAccessAuthenticated exact path={dashboard} component={() => <h1>Panel administrativo</h1>} />
+                <AllowAccessAuthenticated exact path={`${dashboard}/${profile}`} component={ViewProfile} />
+                <AllowAccessAuthenticated exact path={`${dashboard}/${pathSystem.administrador.user}`} component={RoutingUser} />
+                <AllowAccessAuthenticated path={`${dashboard}${tutor.index}`} component={RoutingTutor} />
+
                 <Route exact path="/ErrorverifyAccount" component={NoMatch} />
                 <Route path="*" component={NoMatch} />
             </Switch>
@@ -47,14 +51,14 @@ const AllowAccessAuth = (props) => {
 
     let location = useLocation();
 
-    let profile=`${pathSystem.dashboard}/${pathSystem.profile}`;
+    let profile = `${pathSystem.dashboard}/${pathSystem.profile}`;
 
     if (Auth.auth) {
 
         //si no ha completado el registro y la ruta es diferente a perfil
         //lo redirecionamos forzadamente a perfil, ya que no se debe navegar sin haber completado su perfil
-        if(!(Auth.user.complete_register)&&location.pathname!=profile){
-            window.location.href=profile;       
+        if (!(Auth.user.complete_register) && location.pathname != profile) {
+            window.location.href = profile;
         }
 
         return (

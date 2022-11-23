@@ -33,4 +33,95 @@ descripcion: permite habilitar o inhabilitar las cuentas de los usuarios.
 descripcion: elimina el acceso de la cuenta. 
 
 **actualizar perfil
+NOTA:PARA EL PERFIL DEL "ALUMNO" LOS DATOS ACADEMICOS YA VENDRAN CARGADOS.
+NOTA: PARA EL PERFIL DEL "TUTOR" QUE DATOS ADICIONALES SE SOLICITARA????
 descripcion: el usario para poder navegar en el panel administrativo, debera completar su perfil.
+
+
+que falta?
+NOTA:hacer los diagramas de flujo para aun mejor comprension.
+
+**creacion de grupos
+-datos: carrera,semestre,grupo,turno,periodo.
+descripcion: el tutor tendra la falcutad de crear grupos lo cual le permitira subir o registrar el alumno.
+
+
+**alta alumno.
+descripcion : el tutor selecionara el grupo y subira un excel con los correos y la matricula de los alumnos o lo registrara de manera manual
+el cual permitira mediante un enlace activar la cuenta y posterior de iniciar sesion deberan completar los
+datos de su perfil. 
+
+
+**actualizar grupos .
+descripcion: el tutor podra actualizar los datos del semestre,carrera del grupo, ademas de poder modificar la matricula correo del alumno.
+
+
+USUARIOS:
+ control escolar.
+ ciencias básicas.
+ spicologia. "administrador"
+ tutores
+ alumnos
+
+TUTOR
+**creacion de grupos.
+**actualizacion de grupos.
+**listas alumnos por grupo.
+**alta alumnos "importar [correo,matricula],manual".
+**reporte de canalizaciones "exportacions".
+**canalizar alumno por area "spicologia,control escolar,ciencias basicas". asignando el estatus de "espera" para la area asignada.
+**ver seguimiento de la canalizaciones
+
+ALUMNO
+**ver datos del tutor
+**actualizar perfil
+**descargar canalizaciones.
+
+ADMINISTRADOR
+ ---USUARIOS----
+**exportar usuarios.
+**importar usuarios.
+**crear cuentas de usuarios
+**eliminar cuentas
+**actualizar usuarios
+**habilitar o inhabilitar cuentas.
+**ver usuarios registrados
+**graficas
+
+
+
+ADMINISTRADOR,CIENCIAS BASICAS,CONTROL ESCOLAR,SPICOLOGIA
+**ver seguimiento.
+**actualizar datos del seguimiento.
+**actualizar estatus de seguimiento "ESPERA,EN PROCESO,FINALIZADO"
+**generar nueva cita.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

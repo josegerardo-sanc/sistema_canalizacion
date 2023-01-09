@@ -30,16 +30,16 @@ descripcion:se procede a registrar los correos y se envia un enlace a cada corre
 descripcion: permite habilitar o inhabilitar las cuentas de los usuarios.
 
 **Eliminar cuenta
-descripcion: elimina el acceso de la cuenta. 
+descripcion: Elimina el acceso de la cuenta. 
 
-**actualizar perfil
+**Actualizar perfil
 NOTA:PARA EL PERFIL DEL "ALUMNO" LOS DATOS ACADEMICOS YA VENDRAN CARGADOS.
-NOTA: PARA EL PERFIL DEL "TUTOR" QUE DATOS ADICIONALES SE SOLICITARA????
+NOTA: PARA EL PERFIL DEL "TUTOR" QUE DATOS ADICIONALES SE SOLICITARA???? la carrera se debera solicitar para colocarla por defaul al crear los grupos.
 descripcion: el usario para poder navegar en el panel administrativo, debera completar su perfil.
 
 
 que falta?
-NOTA:hacer los diagramas de flujo para aun mejor comprension.
+NOTA:hacer los diagramas de flujo para  mejorar la comprension.
 
 **creacion de grupos
 -datos: carrera,semestre,grupo,turno,periodo.
@@ -73,7 +73,7 @@ TUTOR
 **ver seguimiento de la canalizaciones
 
 ALUMNO
-**ver datos del tutor
+**ver datos del tutor "esto se obtendra apartir del id_grupo"
 **actualizar perfil
 **descargar canalizaciones.
 
@@ -102,6 +102,27 @@ ADMINISTRADOR,CIENCIAS BASICAS,CONTROL ESCOLAR,SPICOLOGIA
 
 
 
+
+creacion de grupo->modal para ingresar los datos 
+
+
+1.-verificar la existencia de un grupo con los datos "carrera.semestre.grupo.turno.periodo"
+2.-si el grupo pertenece al mismo tutor , mensaje que el grupo ya fue creado
+3.-si el grupo no le pertenece ,mensaje el grupo ya exite
+
+
+
+tabla="grupos"  
+id_tutor
+fecha_creacion
+semestre
+grupo
+turno
+periodo enero-julio ,agosto-diciembre  "año actual???"
+carrera, se cargara en automativo ya que fue rellenada en el perfil.
+
+tabla="alumno" "student" cuando se ingrese los alumno(s)
+id_grupo "opcional" ya el alumno lo puede crear un administrador y no se solicita
 
 
 

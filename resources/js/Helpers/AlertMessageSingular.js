@@ -25,11 +25,11 @@ const AlertMessageSingular = (
         if (response.hasOwnProperty('status')) {
 
             let showMessageRequest = response.status == 200 ? false : true;
+            let backGroundMessage=response.status != 200 ? 'warning' : 'success';
             let messages = response.message || "";
             let messages_array = [];
 
             messages_array.push(messages);
-
             if (response.status != 200) {
                 if (response.errors) {
                     messages_array = []
@@ -37,18 +37,20 @@ const AlertMessageSingular = (
                         messages_array.push(response.errors[key]);
                     }
                 }
-                if (response.errorImport) {
-                    messages_array = [];
-                    for (const item of response.errorImport) {
-                        console.log(item.value ?? email);
-                        let messageImport = `Fila:${item.row} columna:${item.attribute} , ${item.value.email} , ${item.error}`;
-                        messages_array.push(messageImport);
-                    }
+            }
+            
+            if (response.errorImport&&response.errorImport.length>0) {
+                messages_array = [];
+                for (const item of response.errorImport) {
+                    console.log(item.value ?? email);
+                    let messageImport = `Fila:${item.row} columna:${item.attribute} ${item.value.email||""}, ${item.error}`;
+                    messages_array.push(messageImport);
                 }
+                backGroundMessage="warning";
             }
             setAlertMessage({
                 message: messages_array,
-                type: response.status != 200 ? 'warning' : 'success',
+                type: backGroundMessage,
                 showMessage: true
             });
         } else {

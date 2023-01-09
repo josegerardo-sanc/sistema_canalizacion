@@ -32,6 +32,7 @@ const ViewUser = ({
         'type': null,
         'titleModal': ''
     });
+    const [textMessage, setTextMessage] = useState(null);
 
 
     const handleOpenEdit = (e, item) => {
@@ -107,6 +108,9 @@ const ViewUser = ({
                 'showLoader': true
             };
             let response = await fetchRequest(request);
+            if(response.errorImport.length>0){
+                setTextMessage(response.message);
+            }
             setResponseData(response);
         } else {
             alert("No hay archivos selecionados.")
@@ -150,6 +154,7 @@ const ViewUser = ({
     const fileTypes = [
         "application/vnd.oasis.opendocument.spreadsheet",
         "text/csv",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         "application/vnd.ms-excel"
     ];
 
@@ -157,11 +162,29 @@ const ViewUser = ({
         return fileTypes.includes(file.type);
     }
 
+    function returnFileSize(number) {
+        //El tamaño del archivo en bytes.
+        if (number < 1024) {
+            return number + 'bytes';
+        } else if (number >= 1024 && number < 1048576) {
+            return (number / 1024).toFixed(1) + 'KB';
+        } else if (number >= 1048576) {
+            return (number / 1048576).toFixed(1) + 'MB';
+        }
+    }
 
     return (
         <Fragment>
             <div className="row">
                 <div className="col-sm-12">
+                    {textMessage!=null&&(
+                    <div className={`alert alert-success alert-dismissible fade show`} role="alert">
+                        <strong>{textMessage}</strong>
+                        <button type="button" className="close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    )}
                     <AlertMessageSingular {...responseData} />
                 </div>
                 <div className="col-sm-12">
@@ -191,7 +214,7 @@ const ViewUser = ({
                                     <i
                                         style={{ zIndex: "-10" }}
                                         className="font-size-16 align-middle mr-2 fas fa-file-excel"></i>
-                                    {'Importar'}
+                                    {'Importar tutores'}
                                 </button>
                                 <input type="file" id="file_import_search" onChange={changeFile} style={{ display: 'none' }} />
                             </div>

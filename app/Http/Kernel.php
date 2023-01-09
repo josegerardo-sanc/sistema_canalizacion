@@ -64,5 +64,9 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
+        /* Permite acceder a las cuentas con role de Administrador */
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'tutor' => \App\Http\Middleware\TutorMiddleware::class,
+        'alumno' => \App\Http\Middleware\AlumnoMiddleware::class,
     ];
 }

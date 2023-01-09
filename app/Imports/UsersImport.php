@@ -12,15 +12,15 @@ use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-use Maatwebsite\Excel\Validators\Failure;
-use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageCompleteRegistration;
+use Maatwebsite\Excel\Concerns\SkipsOnFailure;
+use Maatwebsite\Excel\Concerns\SkipsFailures;
 
 
-class UsersImport implements ToModel, WithHeadingRow, WithValidation
+class UsersImport implements ToModel, WithHeadingRow, WithValidation,SkipsOnFailure
 {
-    use Importable;
+    use Importable,SkipsFailures;
 
     /**
      * @var AuthController $_authController
@@ -68,7 +68,8 @@ class UsersImport implements ToModel, WithHeadingRow, WithValidation
         $userData['link'] = action('User\UserController@verifyAccount', ['id' => $code]);
         $userData['newPassword'] = $password;
         $this->attempts = 0;
-        $this->sendEmail($userData, $email);
+        
+        //$this->sendEmail($userData, $email);
         return $user;
     }
 

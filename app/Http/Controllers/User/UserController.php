@@ -797,11 +797,23 @@ class UserController extends Controller
             $importUser = new UsersImport($this->_authController);
             $importUser->import($filePath);
 
+
+
+            foreach ($importUser->failures() as $failure) {
+                $error[] = [
+                    "row" => $failure->row(), // row that went wrong
+                    "attribute" => $failure->attribute(), // either heading key (if using heading row concern) or column index
+                    "error" => $failure->errors(), // Actual error messages from Laravel validator
+                    "value" => $failure->values(), // The values of the row that has failed.
+                ];
+            }
+
             $rowCount = $importUser->getRowCount();
             return response()->json([
                 'status' => 200,
                 'data' => [],
                 'message' => "Se ha completado la importación,#{$rowCount} importados.",
+                'errorImport'=>$error
             ]);
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             $failures = $e->failures();

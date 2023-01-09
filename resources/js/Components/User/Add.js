@@ -7,6 +7,7 @@ import AlertMessageSingular from "../../Helpers/AlertMessageSingular";
 import { fetchRequest } from '../../Redux/Actions/fetchRequest'
 /**configurations */
 import { pathApi } from '../../env'
+import {Careers, Enrollment, Semester, Shift } from "../../Helpers/School";
 
 const FormUser = ({
     Auth,
@@ -308,59 +309,10 @@ const FormUser = ({
 
 
 const Form_Student = ({
-    fetchRequest,
-    Auth,
     onChangeInputData,
     dataForm
 }) => {
-    const { token } = Auth;
-    const [careers, setCareers] = useState([]);
     const [responseMessage, setResponseMessage] = useState({})
-
-
-    useEffect(() => {
-        handleGetCareers()
-    }, [])
-
-    /**get careers */
-    const handleGetCareers = async () => {
-        let request = {
-            'url': `${pathApi}/getCareers`,
-            'request': {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-            },
-            "showLoader": false
-        };
-        const response = await fetchRequest(request);
-        if (response.status != 200) {
-            setResponseMessage(response)
-        }
-        setCareers(response.data)
-
-    }
-
-
-    const validMatricula = (e) => {
-        var expreg = /^[0-9]{2}[Ee]{1}[0-9]{5}$/;
-
-        if (e.target.value != "") {
-            e.target.value = e.target.value.toUpperCase();
-        }
-
-        if (expreg.test(e.target.value)) {
-            e.target.classList.remove('is-invalid');
-            //e.target.classList.add('is-valid')
-        } else {
-            e.target.classList.add('is-invalid');
-        }
-        //console.log(e.target.value, "matricula valid" + expreg.test(e.target.value))
-
-    }
 
     return (
         <Fragment>
@@ -369,70 +321,19 @@ const Form_Student = ({
                 <AlertMessageSingular {...responseMessage}></AlertMessageSingular>
                 {/**matricula */}
                 <div className="col-sm-12 form-group">
-                    <label htmlFor="matricula">Matricula</label>
-                    <div className="input-group mb-0">
-                        <input
-                            name="matricula"
-                            onChange={onChangeInputData}
-                            value={dataForm.matricula || ""}
-                            onKeyUp={(e) => validMatricula(e)}
-                            type="text"
-                            className="form-control"
-                            maxLength={8}
-                            placeholder="Matricula"
-                        />
-                    </div>
+                    <Enrollment onChangeInputData={onChangeInputData} matricula={dataForm.matricula}/>
                 </div>
                 {/**carreras */}
                 <div className="col-sm-12 form-group">
-                    <label htmlFor="careers">Carrera</label>
-                    <select
-                        className="form-control"
-                        name="careers"
-                        id="careers"
-                        onChange={onChangeInputData}
-                        value={dataForm.careers || 0}
-                    >
-                        <option value={0} disabled>{'Selecciona tu carrera'}</option>
-                        {
-                            careers.map(item => <option key={item.id_university_careers} value={item.id_university_careers}>{item.name}</option>)
-                        }
-                    </select>
+                    <Careers setResponseMessage={setResponseMessage} onChangeInputData={onChangeInputData} careersSelected={dataForm.careers}/>
                 </div>
                 {/**semestres */}
                 <div className="col-sm-6 form-group">
-                    <label htmlFor="semester" className="form-label label_filter">Semestre</label>
-                    <select
-                        name="semester"
-                        onChange={onChangeInputData}
-                        value={dataForm.semester || 0}
-                        id="semester"
-                        className="form-control">
-                        <option value="0" disabled>Selecciona tu semestre</option>
-                        <option value="1">1º Semestre</option>
-                        <option value="2">2º Semestre</option>
-                        <option value="3">3º Semestre</option>
-                        <option value="4">4º Semestre</option>
-                        <option value="5">5º Semestre</option>
-                        <option value="6">6º Semestre</option>
-                        <option value="7">7º Semestre</option>
-                        <option value="8">8º Semestre</option>
-                        <option value="9">9º Semestre</option>
-                    </select>
+                    <Semester onChangeInputData={onChangeInputData} semester={dataForm.semester}/>
                 </div>
                 {/**turno */}
                 <div className="col-sm-6 form-group">
-                    <label htmlFor="school_shift" className="form-label label_filter">Turno</label>
-                    <select
-                        name="school_shift"
-                        onChange={onChangeInputData}
-                        value={dataForm.school_shift || 0}
-                        id="school_shift"
-                        className="form-control">
-                        <option value="0" disabled >Selecciona una opción</option>
-                        <option value="Matutino">Matutino</option>
-                        <option value="Vespertino">Vespertino</option>
-                    </select>
+                    <Shift onChangeInputData={onChangeInputData} school_shift={dataForm.school_shift}/>
                 </div>
             </div>
         </Fragment>

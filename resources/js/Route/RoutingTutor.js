@@ -13,6 +13,8 @@ import ViewProfile from "../Views/Dashboard/ViewProfile";
 import NoMatch from "../Helpers/NoMatch";
 import { pathSystem } from '../env'
 
+import Index from '../Views/Dashboard/Tutor/Index'
+
 /*#{ `${RutaDashboard}/user` }*/
 const RoutingTutor = ({ Auth }) => {
     const { user } = Auth;
@@ -26,7 +28,7 @@ const RoutingTutor = ({ Auth }) => {
                 user?.roleNames[0] == "Tutor" && (
                     <Fragment>
                         <Route exact path={`${match.path}`} component={ViewProfile} />
-                        <Route exact path={`${match.path}${tutor.myGroup}`} component={() => <h1>Hola desde el tutor</h1>} />
+                        <Route exact path={`${match.path}${tutor.myGroup}`} component={Index} />
                     </Fragment >
                 )
             }

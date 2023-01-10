@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class schoolGroup extends Model
+class SchoolGroup extends Model
 {
     protected $primaryKey = 'id_school_group';
     protected $fillable = [
@@ -12,6 +12,7 @@ class schoolGroup extends Model
         'id_university_careers',
         'semester',
         'shift',
+        'year_period',
         'period',
         //'group',
     ];

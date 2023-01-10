@@ -21,8 +21,8 @@ class CreateSchoolGroupsTable extends Migration
             $table->foreign('id_university_careers')->references('id_university_careers')->on('university_careers');
             $table->string('semester');
             $table->string('shift');
+            $table->string('year_period');
             $table->string('period');
-            $table->string('status')->comment("activar/desactivar un grupo");
             //$table->string('group');
             $table->timestamps();
         });

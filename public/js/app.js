@@ -77643,13 +77643,21 @@ module.exports = "/images/logotec.png?6827654bc6e4e4678f983a70d05279f6";
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _Helpers_AlertMessageSingular__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Helpers/AlertMessageSingular */ "./resources/js/Helpers/AlertMessageSingular.js");
-/* harmony import */ var _env__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../env */ "./resources/js/env.js");
-/* harmony import */ var _Redux_Actions_fetchRequest__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Redux/Actions/fetchRequest */ "./resources/js/Redux/Actions/fetchRequest.js");
-/* harmony import */ var _Helpers_School__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Helpers/School */ "./resources/js/Helpers/School.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _Helpers_AlertMessageSingular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Helpers/AlertMessageSingular */ "./resources/js/Helpers/AlertMessageSingular.js");
+/* harmony import */ var _env__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../env */ "./resources/js/env.js");
+/* harmony import */ var _Redux_Actions_fetchRequest__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Redux/Actions/fetchRequest */ "./resources/js/Redux/Actions/fetchRequest.js");
+/* harmony import */ var _Helpers_School__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Helpers/School */ "./resources/js/Helpers/School.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -77682,67 +77690,241 @@ var CreateGroup = function CreateGroup(_ref) {
       fetchRequest = _ref.fetchRequest;
   var token = Auth.token;
 
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({}),
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({}),
       _useState2 = _slicedToArray(_useState, 2),
-      responseReq = _useState2[0],
-      setResponseReq = _useState2[1];
+      responseMessage = _useState2[0],
+      setResponseMessage = _useState2[1];
 
-  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({}),
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({}),
       _useState4 = _slicedToArray(_useState3, 2),
-      responseMessage = _useState4[0],
-      setResponseMessage = _useState4[1];
-
-  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({}),
-      _useState6 = _slicedToArray(_useState5, 2),
-      dataForm = _useState6[0],
-      setDataForm = _useState6[1];
+      dataForm = _useState4[0],
+      setDataForm = _useState4[1];
 
   var onChangeInputData = function onChangeInputData(e) {
     setDataForm(_objectSpread(_objectSpread({}, dataForm), {}, _defineProperty({}, e.target.name, e.target.value)));
   };
 
   var date = new Date();
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+
+  var handleGroup = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var year_period, data_object, request, response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              year_period = document.getElementById('year_period').value;
+              data_object = Object.assign(_objectSpread(_objectSpread({}, dataForm), {}, {
+                'year_period': year_period
+              }));
+              console.log(data_object);
+              request = {
+                'url': "".concat(_env__WEBPACK_IMPORTED_MODULE_4__["pathApi"], "/schoolGroup"),
+                'request': {
+                  method: 'POST',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer ".concat(token)
+                  },
+                  body: JSON.stringify(data_object)
+                },
+                "showLoader": true
+              };
+              _context.next = 6;
+              return fetchRequest(request);
+
+            case 6:
+              response = _context.sent;
+              setResponseMessage(response);
+
+            case 8:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function handleGroup() {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "form-row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-sm-12 mt-4 mb-4"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Helpers_AlertMessageSingular__WEBPACK_IMPORTED_MODULE_2__["default"], responseMessage)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Helpers_AlertMessageSingular__WEBPACK_IMPORTED_MODULE_3__["default"], responseMessage)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-sm-12 form-group"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Helpers_School__WEBPACK_IMPORTED_MODULE_5__["Careers"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Helpers_School__WEBPACK_IMPORTED_MODULE_6__["Careers"], {
     setResponseMessage: setResponseMessage,
     onChangeInputData: onChangeInputData,
     careersSelected: dataForm.careers
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-sm-6 form-group"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Helpers_School__WEBPACK_IMPORTED_MODULE_5__["Semester"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Helpers_School__WEBPACK_IMPORTED_MODULE_6__["Semester"], {
     onChangeInputData: onChangeInputData,
     semester: dataForm.semester
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-sm-6 form-group"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Helpers_School__WEBPACK_IMPORTED_MODULE_5__["Shift"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Helpers_School__WEBPACK_IMPORTED_MODULE_6__["Shift"], {
     onChangeInputData: onChangeInputData,
     school_shift: dataForm.school_shift
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-sm-6 form-group"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Helpers_School__WEBPACK_IMPORTED_MODULE_5__["Period"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Helpers_School__WEBPACK_IMPORTED_MODULE_6__["Period"], {
     onChangeInputData: onChangeInputData,
     year_period: dataForm.year_period || date.getFullYear(),
     period: dataForm.period,
     setDataForm: setDataForm
-  }))));
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-12 form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+    type: "button",
+    className: "btn btn-primary waves-effect waves-light btn-rounded",
+    onClick: handleGroup
+  }, 'Crear grupo'))));
 };
 
-var mapStateToProps = function mapStateToProps(_ref2) {
-  var Auth = _ref2.Auth;
+var mapStateToProps = function mapStateToProps(_ref3) {
+  var Auth = _ref3.Auth;
   return {
     Auth: Auth
   };
 };
 
 var mapDispatchToProps = {
-  fetchRequest: _Redux_Actions_fetchRequest__WEBPACK_IMPORTED_MODULE_4__["fetchRequest"]
+  fetchRequest: _Redux_Actions_fetchRequest__WEBPACK_IMPORTED_MODULE_5__["fetchRequest"]
 };
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, mapDispatchToProps)(CreateGroup));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(CreateGroup));
+
+/***/ }),
+
+/***/ "./resources/js/Components/Tutor/ListGroups.js":
+/*!*****************************************************!*\
+  !*** ./resources/js/Components/Tutor/ListGroups.js ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _Redux_Actions_fetchRequest__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Redux/Actions/fetchRequest */ "./resources/js/Redux/Actions/fetchRequest.js");
+/* harmony import */ var _env__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../env */ "./resources/js/env.js");
+/* harmony import */ var _Helpers_AlertMessageSingular__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Helpers/AlertMessageSingular */ "./resources/js/Helpers/AlertMessageSingular.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+var ListGroups = function ListGroups(_ref) {
+  var Auth = _ref.Auth,
+      fetchRequest = _ref.fetchRequest;
+  var token = Auth.token;
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({}),
+      _useState2 = _slicedToArray(_useState, 2),
+      responseMessage = _useState2[0],
+      setResponseMessage = _useState2[1];
+
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
+      _useState4 = _slicedToArray(_useState3, 2),
+      listGroups = _useState4[0],
+      setListGroups = _useState4[1];
+
+  var handleListGroup = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var request, response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              request = {
+                'url': "".concat(_env__WEBPACK_IMPORTED_MODULE_4__["pathApi"], "/listSchoolGroup"),
+                'request': {
+                  method: 'GET',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer ".concat(token)
+                  }
+                },
+                "showLoader": true
+              };
+              _context.next = 3;
+              return fetchRequest(request);
+
+            case 3:
+              response = _context.sent;
+
+              if (!(response.status != 200)) {
+                _context.next = 7;
+                break;
+              }
+
+              setResponseMessage(response);
+              return _context.abrupt("return");
+
+            case 7:
+              setListGroups(response.data);
+
+            case 8:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function handleListGroup() {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    handleListGroup();
+  }, []);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Helpers_AlertMessageSingular__WEBPACK_IMPORTED_MODULE_5__["default"], responseMessage), listGroups.map(function (item) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", null, "$", item.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", null, "$", item.semester, " \xBA Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", null, "$", item.shift), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", null, "$", item.year_period), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", null, "$", item.period)));
+  }));
+};
+
+var mapStateToProps = function mapStateToProps(_ref3) {
+  var Auth = _ref3.Auth;
+  return {
+    Auth: Auth
+  };
+};
+
+var mapDispatchToProps = {
+  fetchRequest: _Redux_Actions_fetchRequest__WEBPACK_IMPORTED_MODULE_3__["fetchRequest"]
+};
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(ListGroups));
 
 /***/ }),
 
@@ -79970,7 +80152,6 @@ var CareersSchool = function CareersSchool(_ref4) {
       Auth = _ref4.Auth,
       fetchRequest = _ref4.fetchRequest,
       setResponseMessage = _ref4.setResponseMessage;
-  console.log("careersSelected", careersSelected);
   var token = Auth.token;
 
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
@@ -80007,7 +80188,6 @@ var CareersSchool = function CareersSchool(_ref4) {
 
             case 3:
               response = _context.sent;
-              console.log(response);
 
               if (response.status != 200) {
                 setResponseMessage(response);
@@ -80015,7 +80195,7 @@ var CareersSchool = function CareersSchool(_ref4) {
                 setCareers(response.data);
               }
 
-            case 6:
+            case 5:
             case "end":
               return _context.stop();
           }
@@ -80053,7 +80233,6 @@ var Period = function Period(_ref6) {
       period = _ref6.period,
       setDataForm = _ref6.setDataForm;
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
-    console.log(period);
     var date = new Date();
     var yearMax = date.getFullYear();
     var yearSelected = yearMax;
@@ -80573,7 +80752,7 @@ var processRequest = /*#__PURE__*/function () {
             }));
             messages = "";
             messages_array = [];
-            showLoader = requestData.hasOwnProperty('showLoader') && requestData.showMessage === false ? false : true;
+            showLoader = requestData.hasOwnProperty('showLoader') && requestData.showLoader === false ? false : true;
 
             if (showLoader) {
               store.dispatch(Object(_Preloader__WEBPACK_IMPORTED_MODULE_4__["handlePreloader"])(true));
@@ -81303,6 +81482,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _env__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../env */ "./resources/js/env.js");
 /* harmony import */ var _Redux_Actions_fetchRequest__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../Redux/Actions/fetchRequest */ "./resources/js/Redux/Actions/fetchRequest.js");
 /* harmony import */ var _Components_Tutor_CreateGroup__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../Components/Tutor/CreateGroup */ "./resources/js/Components/Tutor/CreateGroup.js");
+/* harmony import */ var _Components_Tutor_ListGroups__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../Components/Tutor/ListGroups */ "./resources/js/Components/Tutor/ListGroups.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -81329,6 +81509,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 /**components */
+
 
 
 
@@ -81552,11 +81733,7 @@ var Index = function Index(_ref) {
     style: {
       display: 'none'
     }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-    type: "button",
-    className: "btn btn-primary waves-effect waves-light btn-rounded",
-    onClick: handleCreateGroup
-  }, 'Crear grupo')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Components_Tutor_CreateGroup__WEBPACK_IMPORTED_MODULE_6__["default"], null))))));
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Components_Tutor_CreateGroup__WEBPACK_IMPORTED_MODULE_6__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Components_Tutor_ListGroups__WEBPACK_IMPORTED_MODULE_7__["default"], null))))));
 };
 
 var mapStateToProps = function mapStateToProps(_ref5) {

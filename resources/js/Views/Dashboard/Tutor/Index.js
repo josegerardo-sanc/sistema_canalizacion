@@ -9,7 +9,7 @@ import { fetchRequest } from "../../../Redux/Actions/fetchRequest";
 
 /**components */
 import CreateGroup from "../../../Components/Tutor/CreateGroup";
-
+import ListGroups from "../../../Components/Tutor/ListGroups";
 const Index = ({
     Auth,
     fetchRequest
@@ -148,16 +148,11 @@ const Index = ({
                                     {'Importar Alumnos'}
                                 </button>
                                 <input type="file" id="file_import_search" onChange={changeFile} style={{ display: 'none' }} />
-                                <button 
-                                type="button"
-                                className="btn btn-primary waves-effect waves-light btn-rounded"
-                                onClick={handleCreateGroup}>
-                                    {'Crear grupo'}
-                                </button>
                             </div>
 
                             {/** */}
                             <CreateGroup/>
+                            <ListGroups/>
                         </div>
                     </div>
                     {/*Modal */}

@@ -13,10 +13,9 @@ const CreateGroup = ({
     fetchRequest
 }) => {
     const { token } = Auth;
-    const [responseReq, setResponseReq] = useState({})
     const [responseMessage, setResponseMessage] = useState({})
-    
-    
+
+
     let [dataForm, setDataForm] = useState({});
     const onChangeInputData = (e) => {
         setDataForm({
@@ -25,13 +24,36 @@ const CreateGroup = ({
         });
     }
     const date = new Date();
-    
+
+    const handleGroup = async () => {
+        
+        let year_period=document.getElementById('year_period').value;
+        let data_object=Object.assign({...dataForm,'year_period':year_period});
+        console.log(data_object);
+
+        let request = {
+            'url': `${pathApi}/schoolGroup`,
+            'request': {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(data_object)
+            },
+            "showLoader": true
+        };
+        let response = await fetchRequest(request);
+        setResponseMessage(response);
+    }
+
     return (
         <Fragment>
             <div className="form-row">
-               <div className="col-sm-12 mt-4 mb-4">
-                   <AlertMessageSingular {...responseMessage}></AlertMessageSingular>
-               </div>
+                <div className="col-sm-12 mt-4 mb-4">
+                    <AlertMessageSingular {...responseMessage}></AlertMessageSingular>
+                </div>
                 {/**carreras */}
                 <div className="col-sm-12 form-group">
                     <Careers
@@ -52,10 +74,18 @@ const CreateGroup = ({
                 <div className="col-sm-6 form-group">
                     <Period
                         onChangeInputData={onChangeInputData}
-                        year_period={dataForm.year_period||date.getFullYear()}
+                        year_period={dataForm.year_period || date.getFullYear()}
                         period={dataForm.period}
                         setDataForm={setDataForm}
                     />
+                </div>
+                <div className="col-sm-12 form-group">
+                    <button
+                        type="button"
+                        className="btn btn-primary waves-effect waves-light btn-rounded"
+                        onClick={handleGroup}>
+                        {'Crear grupo'}
+                    </button>
                 </div>
             </div>
         </Fragment>

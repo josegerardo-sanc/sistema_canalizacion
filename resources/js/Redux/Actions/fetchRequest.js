@@ -53,7 +53,7 @@ export const processRequest = async (store, requestData) => {
         let response;
         let messages = "";
         let messages_array = [];
-        let showLoader = requestData.hasOwnProperty('showLoader') && requestData.showMessage === false ? false : true;
+        let showLoader = requestData.hasOwnProperty('showLoader') && requestData.showLoader === false ? false : true;
 
         if (showLoader) {
             store.dispatch(handlePreloader(true));

@@ -19,7 +19,8 @@ Route::group(['middleware' => ['admin','jwt.verify'], 'prefix' => 'v1'], functio
 });
 
 Route::group(['middleware' => ['tutor','jwt.verify'], 'prefix' => 'v1'], function () {
-    Route::get('/createGroup', 'StudentController@createGroup');
+    Route::post('/schoolGroup', 'Tutor\SchoolGroupController@schoolGroup');
+    Route::get('/listSchoolGroup', 'Tutor\SchoolGroupController@listSchoolGroup');
 });
 
 Route::group(['middleware' => ['alumno','jwt.verify'], 'prefix' => 'v1'], function () {
@@ -31,6 +32,7 @@ Route::group(['middleware' => ['jwt.verify'], 'prefix' => 'v1'], function () {
     /**
      * app/Http/Controllers/AuthController.php
      */
+    
     Route::get('/refreshToken', 'AuthController@refresh');
     Route::get('/logout', 'AuthController@logout');
     #app/Http/Controllers/User/UserController.php

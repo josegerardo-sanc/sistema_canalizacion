@@ -103,9 +103,6 @@ const CareersSchool = ({
     fetchRequest,
     setResponseMessage
 }) => {
-
-    console.log("careersSelected", careersSelected)
-
     const { token } = Auth;
     const [careers, setCareers] = useState([]);
 
@@ -128,7 +125,6 @@ const CareersSchool = ({
             "showLoader": false
         };
         const response = await fetchRequest(request);
-        console.log(response)
         if (response.status != 200) {
             setResponseMessage(response)
         } else {
@@ -165,7 +161,6 @@ const Period = ({
 
 
     useEffect(() => {
-        console.log(period)
         const date = new Date();
         let yearMax = date.getFullYear();
         let yearSelected = yearMax;
